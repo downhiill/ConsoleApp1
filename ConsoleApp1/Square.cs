@@ -24,6 +24,14 @@ namespace ConsoleApp1
             Console.WriteLine($"Квадрат: Ширина = {A}, Высота = {A}");
             Console.WriteLine($"Площадь = {CalculateArea():F2}");
             Console.WriteLine($"Периметр = {CalculatePerimetr():F2}");
+
+        }
+
+
+
+        public override string GetInputData()
+        {
+            return $"Квадрат: Ширина = {A}, Высота = {A}";
         }
     }
 }

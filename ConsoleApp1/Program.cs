@@ -8,54 +8,93 @@ namespace ConsoleApp1
 {
     internal class Program
     {
+
+        static List<Shape> shapes = new List<Shape>();  
         static void Main(string[] args)
         {
 
             while (true)
             {
                 Console.Clear();
-                Console.WriteLine("Выберите фигуру для расчета:");
-                Console.WriteLine("1. Круг");
-                Console.WriteLine("2. Прямоугольник");
-                Console.WriteLine("3. Треугольник");
-                Console.WriteLine("4. Квадрат");
-                Console.WriteLine("5. Выход");
+                Console.WriteLine("Выберите действие:");
+                Console.WriteLine(" 1. Добавить фигуру");
+                Console.WriteLine(" 2. Показать все введенные данные");
+                Console.WriteLine(" 3. Выход");
+                Console.Write("Введите номер выбранного действия: ");
 
                 var choice = Console.ReadLine();
-                Shape shape = null;
 
                 switch (choice)
                 {
                     case "1":
-                        shape = CreateCircle();
+                        addShape();
                         break;
                     case "2":
-                        shape = CreateRectangle();
+                        DisplayAllInputData();
                         break;
                     case "3":
-                        shape = CreateTriangle();
-                        break;
-                    case "4":
-                        shape = CreateSquare();
-                        break;
-                    case "5":
                         return;
                     default:
-                        Console.WriteLine("Неверный выбо. Попробуйте снова.");
+                        Console.WriteLine("Неверный выбор.Попробуйте снова.");
                         continue;
                 }
-                if (shape != null)
-                {
-                    shape.Display(); // Вызов метода Display() для отображения информации о фигуре
-                }
-                else
-                {
-                    Console.WriteLine("Не удалось создать фигуру.");
-                }
-
-                // Ожидание ввода пользователя перед продолжением
                 Console.WriteLine("Нажмите любую клавишу для продолжения...");
                 Console.ReadKey();
+            }
+        }
+
+        static void addShape ()
+        {
+            Console.Clear();
+            Console.WriteLine("Выберите фигуру для расчета:");
+            Console.WriteLine("1. Круг");
+            Console.WriteLine("2. Прямоугольник");
+            Console.WriteLine("3. Треугольник");
+            Console.WriteLine("4. Квадрат");
+            Console.WriteLine("5. Вернуться в главное меню");
+            
+
+            var choice = Console.ReadLine();
+            Shape shape = null;
+
+            switch (choice)
+            {
+                case "1":
+                    shape = CreateCircle();
+                    break;
+                case "2":
+                    shape = CreateRectangle();
+                    break;
+                case "3":
+                    shape = CreateTriangle();
+                    break;
+                case "4":
+                    shape = CreateSquare();
+                    break;
+                case "5":
+                    return;
+                default:
+                    Console.WriteLine("Неверный выбор. Попробуйте снова.");
+                    return;
+            }
+            if (shape != null)
+            {
+                shapes.Add(shape);
+                shape.Display(); // Вызов метода Display() для отображения информации о фигуре
+            }
+            else
+            {
+                Console.WriteLine("Не удалось создать фигуру.");
+            }
+        }
+
+        static void DisplayAllInputData()
+        {
+            Console.Clear();
+            Console.WriteLine("Введеные данные о фигурах:");
+            foreach (var shape in shapes)
+            {
+                Console.WriteLine(shape.GetInputData());
             }
         }
 

@@ -33,5 +33,11 @@ namespace ConsoleApp1
             Console.WriteLine($"Площадь = {CalculateArea():F2}");
             Console.WriteLine($"Периметр = {CalculatePerimetr():F2}");
         }
+
+
+        public override string GetInputData()
+        {
+            return $"Треугольник: Сторона A = {A}, Сторона B = {B}, Сторона C = {C}";
+        }
     }
 }

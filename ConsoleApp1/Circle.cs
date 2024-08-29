@@ -24,6 +24,12 @@ namespace ConsoleApp1
             Console.WriteLine($"Круг: Радиус = {Radius}");
             Console.WriteLine($"Площадь = {CalculateArea():F2}");
             Console.WriteLine($"Длина окружности = {CalculatePerimetr():F2}");
-        }     
+
+        }
+
+        public override string GetInputData()
+        {
+            return $"Круг: Радиус = {Radius} Площадь = {CalculateArea()} Периметр = {CalculatePerimetr()}";
+        }
     }
 }

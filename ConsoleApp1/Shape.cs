@@ -11,6 +11,7 @@ namespace ConsoleApp1
         public abstract double CalculateArea();
         public abstract double CalculatePerimetr();
         public abstract void Display();
+        public abstract string GetInputData();
 
     }
 }
