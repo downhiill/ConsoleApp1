@@ -48,6 +48,7 @@
     <Compile Include="Circle.cs" />
     <Compile Include="Rectangle.cs" />
     <Compile Include="Shape.cs" />
+    <Compile Include="ShapeController.cs" />
     <Compile Include="Square.cs" />
     <Compile Include="Triangle.cs" />
   </ItemGroup>

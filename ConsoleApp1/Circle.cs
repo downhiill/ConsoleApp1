@@ -15,21 +15,21 @@ namespace ConsoleApp1
             Radius = radius;
         }
 
-        public override double CalculateArea() => Math.PI * Radius * Radius;
+        public override double GetArea() => Math.PI * Radius * Radius;
 
-        public override double CalculatePerimetr() => 2 * Math.PI * Radius;
+        public override double GetPerimeter() => 2 * Math.PI * Radius;
 
         public override void Display()
         {
             Console.WriteLine($"Круг: Радиус = {Radius}");
-            Console.WriteLine($"Площадь = {CalculateArea():F2}");
-            Console.WriteLine($"Длина окружности = {CalculatePerimetr():F2}");
+            Console.WriteLine($"Площадь = {GetArea():F2}");
+            Console.WriteLine($"Длина окружности = {GetPerimeter():F2}");
 
         }
 
         public override string GetInputData()
         {
-            return $"Круг: Радиус = {Radius} Площадь = {CalculateArea()} Периметр = {CalculatePerimetr()}";
+            return $"Круг: Радиус = {Radius} Площадь = {GetArea()} Периметр = {GetPerimeter()}";
         }
     }
 }

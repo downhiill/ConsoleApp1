@@ -15,15 +15,15 @@ namespace ConsoleApp1
             A = a;
         }
 
-        public override double CalculateArea() => A * A;
+        public override double GetArea() => A * A;
 
-        public override double CalculatePerimetr() => 4 * A;
+        public override double GetPerimeter() => 4 * A;
 
         public override void Display()
         {
             Console.WriteLine($"Квадрат: Ширина = {A}, Высота = {A}");
-            Console.WriteLine($"Площадь = {CalculateArea():F2}");
-            Console.WriteLine($"Периметр = {CalculatePerimetr():F2}");
+            Console.WriteLine($"Площадь = {GetArea():F2}");
+            Console.WriteLine($"Периметр = {GetPerimeter():F2}");
 
         }
 

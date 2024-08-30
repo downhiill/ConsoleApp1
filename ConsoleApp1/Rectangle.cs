@@ -18,15 +18,15 @@ namespace ConsoleApp1
             Height = height;
         }
 
-        public override double CalculateArea() => Width * Height;
+        public override double GetArea() => Width * Height;
 
-        public override double CalculatePerimetr() => 2 * (Width + Height);
+        public override double GetPerimeter() => 2 * (Width + Height);
 
         public override void Display()
         {
             Console.WriteLine($"Прямоугольник: Ширина = {Width}, Высота = {Height}");
-            Console.WriteLine($"Площадь = {CalculateArea():F2}");
-            Console.WriteLine($"Периметр = {CalculatePerimetr():F2}");
+            Console.WriteLine($"Площадь = {GetArea():F2}");
+            Console.WriteLine($"Периметр = {GetPerimeter():F2}");
         }
 
         public override string GetInputData()

@@ -19,19 +19,19 @@ namespace ConsoleApp1
             C = c;
         }
 
-        public override double CalculateArea()
+        public override double GetArea()
         {
-            double s = CalculatePerimetr() / 2;
+            double s = GetPerimeter() / 2;
             return Math.Sqrt(s * (s - A) * (s - B) * (s - C));
         }
 
-        public override double CalculatePerimetr() => A + B + C;
+        public override double GetPerimeter() => A + B + C;
 
         public override void Display()
         {
             Console.WriteLine($"Треугольник: Сторона A = {A}, Сторона B = {B}, Сторона C = {C}");
-            Console.WriteLine($"Площадь = {CalculateArea():F2}");
-            Console.WriteLine($"Периметр = {CalculatePerimetr():F2}");
+            Console.WriteLine($"Площадь = {GetArea():F2}");
+            Console.WriteLine($"Периметр = {GetPerimeter():F2}");
         }
 
 

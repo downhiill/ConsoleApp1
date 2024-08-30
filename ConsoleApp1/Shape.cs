@@ -8,8 +8,8 @@ namespace ConsoleApp1
 {
     abstract class Shape
     {
-        public abstract double CalculateArea();
-        public abstract double CalculatePerimetr();
+        public abstract double GetArea();
+        public abstract double GetPerimeter();
         public abstract void Display();
         public abstract string GetInputData();
 
