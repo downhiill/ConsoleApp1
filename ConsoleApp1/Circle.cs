@@ -6,19 +6,40 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp1
 {
+    /// <summary>
+    /// Представляет круг с его радиусом 
+    /// </summary>
     internal class Circle : Shape
     {
+        /// <summary>
+        /// Радиус круга
+        /// </summary>
         public double Radius { get; set; }
 
+        /// <summary>
+        /// Инициализация нового экземпляра круга с указанным радиусом 
+        /// </summary>
+        /// <param name="radius">Радиус круга</param>
         public Circle(double radius)
         {
             Radius = radius;
         }
 
+        /// <summary>
+        /// Переопределяет метод для вычисления площади круга.
+        /// </summary>
+        /// <returns>Площадь круга</returns>
         public override double GetArea() => Math.PI * Radius * Radius;
 
+        /// <summary>
+        /// Переопределяет метод для вычисления периметра круга.
+        /// </summary>
+        /// <returns>Периметр круга</returns>
         public override double GetPerimeter() => 2 * Math.PI * Radius;
 
+        /// <summary>
+        /// Переопределение метода для отображения информации о круге.
+        /// </summary>
         public override void Display()
         {
             Console.WriteLine($"Круг: Радиус = {Radius}");
@@ -27,9 +48,31 @@ namespace ConsoleApp1
 
         }
 
+        /// <summary>
+        /// Переопределяет метод для получения строки с данными о круге.
+        /// </summary>
+        /// <returns> Данные о круге</returns>
         public override string GetInputData()
         {
             return $"Круг: Радиус = {Radius} Площадь = {GetArea()} Периметр = {GetPerimeter()}";
+        }
+
+        /// <summary>
+        /// Создает новый экземпляр круга на основе ввода пользователя.
+        /// </summary>
+        /// <returns>Новый экземпляр круга или <c>null</c>, если ввод неверен.</returns>
+        public static Circle CreateCircle()
+        {
+            Console.Write("Введите радиус круга: ");
+            if (double.TryParse(Console.ReadLine(), out double radius))
+            {
+                return new Circle(radius);
+            }
+            else
+            {
+                Console.WriteLine("Неверное значение радиуса.");
+                return null;
+            }
         }
     }
 }
