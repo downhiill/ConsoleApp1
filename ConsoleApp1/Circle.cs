@@ -48,14 +48,6 @@ namespace ConsoleApp1
 
         }
 
-        /// <summary>
-        /// Переопределяет метод для получения строки с данными о круге.
-        /// </summary>
-        /// <returns> Данные о круге</returns>
-        public override string GetInputData()
-        {
-            return $"Круг: Радиус = {Radius} Площадь = {GetArea()} Периметр = {GetPerimeter()}";
-        }
 
         /// <summary>
         /// Создает новый экземпляр круга на основе ввода пользователя.

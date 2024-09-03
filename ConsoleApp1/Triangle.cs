@@ -65,14 +65,6 @@ namespace ConsoleApp1
             Console.WriteLine($"Периметр = {GetPerimeter():F2}");
         }
 
-        /// <summary>
-        /// Переопределение метода для получения строки с данными о треугольнике.
-        /// </summary>
-        /// <returns></returns>
-        public override string GetInputData()
-        {
-            return $"Треугольник: Сторона A = {A}, Сторона B = {B}, Сторона C = {C}";
-        }
 
         /// <summary>
         /// Создание нового экземпляра треугольника на основе ввода пользователя.

@@ -48,14 +48,7 @@ namespace ConsoleApp1
 
         }
 
-        /// <summary>
-        /// Переопределяет метод для получения строки с данными о квадрате.
-        /// </summary>
-        /// <returns>Данные о квадрате.</returns>
-        public override string GetInputData()
-        {
-            return $"Квадрат: Ширина = {A}, Высота = {A}";
-        }
+
 
         /// <summary>
         /// Создает новый экземпляр квадрата на основе ввода пользователя.

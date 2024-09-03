@@ -27,9 +27,10 @@ namespace ConsoleApp1
             Console.WriteLine("2. Прямоугольник");
             Console.WriteLine("3. Треугольник");
             Console.WriteLine("4. Квадрат");
-            Console.WriteLine("5. Показать сумму площади фигур");
-            Console.WriteLine("6. Показать все периметры");
-            Console.WriteLine("7. Выход");
+            Console.WriteLine("5. Многоугольник");
+            Console.WriteLine("6. Показать сумму площади фигур");
+            Console.WriteLine("7. Показать все периметры");
+            Console.WriteLine("8. Выход");
 
 
             var choice = Console.ReadLine();
@@ -50,10 +51,16 @@ namespace ConsoleApp1
                     shape = Square.CreateSquare();
                     break;
                 case "5":
-                    DisplayTotalArea();
+                    shape = Polygon.CreateRegularPolygon();
                     break;
                 case "6":
+                    DisplayTotalArea();
+                    break;
+                case "7":
                     DisplayTotalPerimeters();
+                    break;
+                case "8":
+                    Environment.Exit(0);
                     break;
                 default:
                     Console.WriteLine("Неверный выбор. Попробуйте снова.");

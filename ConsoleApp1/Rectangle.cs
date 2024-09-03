@@ -51,14 +51,7 @@ namespace ConsoleApp1
             Console.WriteLine($"Площадь = {GetArea():F2}");
             Console.WriteLine($"Периметр = {GetPerimeter():F2}");
         }
-        /// <summary>
-        /// Переопределяет метод для получения строки с данными о прямоугольнике.
-        /// </summary>
-        /// <returns> Данные о прямоугольнике.</returns>
-        public override string GetInputData()
-        {
-            return $"Прямоугольник: Ширина = {Width}, Высота = {Height}";
-        }
+
 
         /// <summary>
         /// Создает новый экземпляр прямоугольника на основе ввода пользователя.
