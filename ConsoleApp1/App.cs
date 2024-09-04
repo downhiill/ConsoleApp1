@@ -13,9 +13,6 @@ namespace ConsoleApp1
     internal class App
     {
         MyList<Shape> shapesList = new MyList<Shape>();
-        /// <summary>
-        /// Список фигур, созданных в приложении.
-        /// </summary>
 
         /// <summary>
         /// Обрабатывает выбор фигуры и выполняет соответствующие действия.
