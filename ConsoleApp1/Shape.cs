@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp1
 {
-    abstract class Shape
+    public abstract class Shape
     {
         public abstract double GetArea();
         public abstract double GetPerimeter();

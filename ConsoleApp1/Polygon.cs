@@ -27,6 +27,17 @@ namespace ConsoleApp1
         }
 
         /// <summary>
+        /// Метод для расчета площади треугольника
+        /// </summary>
+        /// <param name="p1">Первая точка</param>
+        /// <param name="p2">Вторая точка</param>
+        /// <param name="p3">Третья точка</param>
+        /// <returns></returns>
+        private double CalculateTriangleArea(PointsPolygon p1, PointsPolygon p2, PointsPolygon p3)
+        {
+            return Math.Abs((p1.X * (p2.Y - p3.Y) + p2.X * (p3.Y - p1.Y) + p3.X * (p1.Y - p2.Y)) / 2.0);
+        }
+        /// <summary>
         /// Переопределяет метод для вычисления площади многоугольника, используя координаты его вершин по формуле Гаусса.
         /// </summary>
         /// <returns>Площадь многоугольника.</returns>
@@ -35,14 +46,13 @@ namespace ConsoleApp1
             double area = 0;
             int n = Points.Count;
 
-            for (int i = 0; i < n; i++)
+            // Простой метод разбиения многоугольника на треугольники
+            // используя первую вершину как общую для всех треугольников
+            for (int i = 1; i < n - 1; i++)
             {
-                int j = (i + 1) % n;
-                area += Points[i].X * Points[j].Y;
-                area -= Points[j].X * Points[i].Y;
+                area += CalculateTriangleArea(Points[0], Points[i], Points[i + 1]);
             }
 
-            area = Math.Abs(area) / 2.0;
             return area;
         }
 
@@ -58,7 +68,7 @@ namespace ConsoleApp1
             for (int i = 0; i < n; i++)
             {
                 int j = (i + 1) % n;
-                perimeter += Distance(Points[i], Points[j]);
+                perimeter += Geometry.Distance(Points[i], Points[j]);
             }
 
             return perimeter;
@@ -126,16 +136,7 @@ namespace ConsoleApp1
         }
 
 
-        /// <summary>
-        /// Вычисляет расстояние между двумя точками.
-        /// </summary>
-        /// <param name="p1">Первая точка.</param>
-        /// <param name="p2">Вторая точка.</param>
-        /// <returns>Расстояние между точками.</returns>
-        private static double Distance(PointsPolygon p1, PointsPolygon p2)
-        {
-            return Math.Sqrt(Math.Pow(p2.X - p1.X, 2) + Math.Pow(p2.Y - p1.Y, 2));
-        }
+
 
     }
 }

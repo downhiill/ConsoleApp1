@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp1
 {
-    internal class PointsPolygon
+    public class PointsPolygon
     {
         public int X { get; set; }
         public int Y { get; set; }

@@ -6,15 +6,16 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp1
 {
+     
     /// <summary>
     /// Представляет основное приложение для работы с различными фигурами.
     /// </summary>
     internal class App
     {
+        MyList<Shape> shapesList = new MyList<Shape>();
         /// <summary>
         /// Список фигур, созданных в приложении.
         /// </summary>
-        static List<Shape> shapes = new List<Shape>();
 
         /// <summary>
         /// Обрабатывает выбор фигуры и выполняет соответствующие действия.
@@ -23,73 +24,68 @@ namespace ConsoleApp1
         {
             Console.Clear();
             Console.WriteLine("Выберите фигуру для расчета:");
-            Console.WriteLine("1. Круг");
-            Console.WriteLine("2. Прямоугольник");
-            Console.WriteLine("3. Треугольник");
-            Console.WriteLine("4. Квадрат");
-            Console.WriteLine("5. Многоугольник");
-            Console.WriteLine("6. Показать сумму площади фигур");
-            Console.WriteLine("7. Показать все периметры");
-            Console.WriteLine("8. Выход");
 
-
-            var choice = Console.ReadLine();
-            Shape shape = null;
-
-            switch (choice)
+            var menuItems = new Dictionary<int, string>
             {
-                case "1":
-                    shape = Circle.CreateCircle();
-                    break;
-                case "2":
-                    shape = Rectangle.CreateRectangle();
-                    break;
-                case "3":
-                    shape = Triangle.CreateTriangle();
-                    break;
-                case "4":
-                    shape = Square.CreateSquare();
-                    break;
-                case "5":
-                    shape = Polygon.CreateRegularPolygon();
-                    break;
-                case "6":
-                    DisplayTotalArea();
-                    break;
-                case "7":
-                    DisplayTotalPerimeters();
-                    break;
-                case "8":
-                    Environment.Exit(0);
-                    break;
-                default:
-                    Console.WriteLine("Неверный выбор. Попробуйте снова.");
-                    return;
+                { 1, "Круг" },
+                { 2, "Прямоугольник" },
+                { 3, "Треугольник" },
+                { 4, "Квадрат" },
+                { 5, "Многоугольник" },
+                { 6, "Показать сумму площади фигур" },
+                { 7, "Показать все периметры" },
+                { 8, "Выход" }
+            };
+
+            // Печать меню
+            foreach (var item in menuItems)
+            {
+                Console.WriteLine($"{item.Key}. {item.Value}");
             }
-            if (shape != null)
+
+            // Обработка выбора пользователя
+            if (int.TryParse(Console.ReadLine(), out int choice) && menuItems.ContainsKey(choice))
             {
-                shapes.Add(shape);
-                shape.Display(); // Вызов метода Display() для отображения информации о фигуре
+                Shape shape = null;
+                var actions = new Dictionary<int, Action>
+                {
+                    { 1, () => shape = Circle.CreateCircle() },
+                    { 2, () => shape = Rectangle.CreateRectangle() },
+                    { 3, () => shape = Triangle.CreateTriangle() },
+                    { 4, () => shape = Square.CreateSquare() },
+                    { 5, () => shape = Polygon.CreateRegularPolygon() },
+                    { 6, () => DisplayTotalArea() },
+                    { 7, () => DisplayTotalPerimeters() },
+                    { 8, () => Environment.Exit(0) }
+                };
+
+                // Выполнение выбранного действия
+                actions[choice]();
+
+                // Обработка созданной фигуры
+                if (shape != null)
+                {
+                    shapesList.Add(shape);
+                    shape.Display(); // Вызов метода Display() для отображения информации о фигуре
+                }
+                else if (choice != 6 && choice != 7 && choice != 8)
+                {
+                    Console.WriteLine("Не удалось создать фигуру.");
+                }
             }
-            else 
+            else
             {
-                Console.WriteLine("Не удалось создать фигуру.");
+                Console.WriteLine("Неверный выбор, попробуйте снова.");
             }
         }
-
         /// <summary>
         ///  Выводит сумму всех площадей фигур в списке.
         /// </summary>
         private void DisplayTotalArea()
         {
             Console.Clear();
-            double totalArea = 0;
 
-            foreach (var shape in shapes)
-            {
-                totalArea += shape.GetArea();
-            }
-            Console.WriteLine($"Сумма всех S = {totalArea}");
+            shapesList.PrintSquare();
 
            
         }
@@ -101,11 +97,7 @@ namespace ConsoleApp1
         {
             Console.Clear();
 
-            Console.WriteLine("\nПериметры всех фигур:");
-            foreach (var shape in shapes)
-            {
-                Console.WriteLine($"Фигура: {shape.GetType().Name}, P = {shape.GetPerimeter()}");
-            }
+            shapesList.PrintPerimeter();
 }
 
         /// <summary>
