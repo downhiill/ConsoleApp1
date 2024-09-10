@@ -40,6 +40,7 @@ namespace ConsoleApp1
         /// Создает новый экземпляр квадрата на основе ввода пользователя.
         /// </summary>
         /// <returns>Новый экземпляр квадрата или <c>null</c>, если ввод неверен.</returns>
+        /*
         public static Square CreateSquare()
         {
 
@@ -54,5 +55,6 @@ namespace ConsoleApp1
                 return null;
             }
         }
+        */
     }
 }

@@ -78,6 +78,7 @@ namespace ConsoleApp1
         /// Создает новый экземпляр правильного многоугольника на основе ввода пользователя.
         /// </summary>
         /// <returns>Новый экземпляр многоугольника или <c>null</c>, если ввод неверен.</returns>
+        /*
         public static Polygon CreateRegularPolygon()
         {
             List<Point> points = new List<Point>();
@@ -120,9 +121,6 @@ namespace ConsoleApp1
 
             return new Polygon(points);
         }
-
-
-
-
+        */
     }
 }

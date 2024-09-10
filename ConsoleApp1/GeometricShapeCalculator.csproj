@@ -43,7 +43,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CreateCommand\CommandDispetcher.cs" />
     <Compile Include="CreateCommand\CreateCircleCommand.cs" />
     <Compile Include="CreateCommand\CreatePolygonCommand.cs" />
     <Compile Include="CreateCommand\CreateRectangleCommand.cs" />

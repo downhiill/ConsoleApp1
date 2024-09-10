@@ -47,6 +47,7 @@ namespace ConsoleApp1
         /// Создает новый экземпляр прямоугольника на основе ввода пользователя.
         /// </summary>
         /// <returns>Новый экземпляр прямоугольника или <c>null</c>, если ввод неверен.</returns>
+        /*
         public static Rectangle CreateRectangle()
         {
             Console.Write("Введите ширину прямоугольника: ");
@@ -69,6 +70,7 @@ namespace ConsoleApp1
                 return null;
             }
         }
+        */
     }
 }
 
