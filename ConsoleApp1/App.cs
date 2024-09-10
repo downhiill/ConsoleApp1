@@ -1,8 +1,10 @@
-﻿using System;
+﻿using ConsoleApp1.GeometricShapeCalculator.Infrastructure;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace ConsoleApp1
 {
@@ -10,9 +12,21 @@ namespace ConsoleApp1
     /// <summary>
     /// Представляет основное приложение для работы с различными фигурами.
     /// </summary>
-    internal class App
+    public class App: ShapeCollection
     {
-        MyList<Shape> shapesList = new MyList<Shape>();
+        private readonly Dictionary<string, IApp> commands = new Dictionary<string, IApp>();
+        public App()
+        {
+            // Регистрация команд
+            commands["добавить_круг"] = new CreateCircleCommand();
+            commands["добавить_прямоугольник"] = new CreateRectangleCommand();
+            commands["добавить_треугольник"] = new CreateTriangleCommand();
+            commands["добавить_квадрат"] = new CreateSquareCommand();
+            commands["добавить_многоугольник"] = new CreatePolygonCommand();
+            commands["показать_сумму_площадей"] = new DisplayTotalAreaCommand();
+            commands["показать_периметры"] = new DisplayTotalPerimetrsCommand();
+            commands["выход"] = new ExitCommand();
+        }
 
         /// <summary>
         /// Обрабатывает выбор фигуры и выполняет соответствующие действия.
@@ -20,83 +34,59 @@ namespace ConsoleApp1
         private void HandleShapeSelection()
         {
             Console.Clear();
-            Console.WriteLine("Выберите фигуру для расчета:");
-
-            var menuItems = new Dictionary<int, string>
-            {
-                { 1, "Круг" },
-                { 2, "Прямоугольник" },
-                { 3, "Треугольник" },
-                { 4, "Квадрат" },
-                { 5, "Многоугольник" },
-                { 6, "Показать сумму площади фигур" },
-                { 7, "Показать все периметры" },
-                { 8, "Выход" }
-            };
-
-            // Печать меню
-            foreach (var item in menuItems)
-            {
-                Console.WriteLine($"{item.Key}. {item.Value}");
+            string text = "Список команд";
+            PrintCenteredText(text);
+            PrintLine();
+            // Печать доступных команд
+            foreach (var command in commands.Keys)
+            {       
+                Console.Write("\t"+ command +"\n");
+                
             }
-
-            // Обработка выбора пользователя
-            if (int.TryParse(Console.ReadLine(), out int choice) && menuItems.ContainsKey(choice))
+            PrintLine();
+            string input = Console.ReadLine()?.Trim();
+            if (input != null)
             {
-                Shape shape = null;
-                var actions = new Dictionary<int, Action>
-                {
-                    { 1, () => shape = Circle.CreateCircle() },
-                    { 2, () => shape = Rectangle.CreateRectangle() },
-                    { 3, () => shape = Triangle.CreateTriangle() },
-                    { 4, () => shape = Square.CreateSquare() },
-                    { 5, () => shape = Polygon.CreateRegularPolygon() },
-                    { 6, () => DisplayTotalArea() },
-                    { 7, () => DisplayTotalPerimeters() },
-                    { 8, () => Environment.Exit(0) }
-                };
+                var parts = input.Split(new[] { ' ' }, 2);
+                var commandKey = parts[0].ToLower();
+                var parameters = parts.Length > 1 ? parts[1] : "";
 
-                // Выполнение выбранного действия
-                actions[choice]();
-
-                // Обработка созданной фигуры
-                if (shape != null)
+                if (commands.TryGetValue(commandKey, out IApp command))
                 {
-                    shapesList.Add(shape);
-                    shape.Display(); // Вызов метода Display() для отображения информации о фигуре
+                    try
+                    {
+                        command.Execute(this, parameters);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Ошибка: {ex.Message}");
+                    }
                 }
-                else if (choice != 6 && choice != 7 && choice != 8)
+                else
                 {
-                    Console.WriteLine("Не удалось создать фигуру.");
+                    Console.WriteLine("Неизвестная команда. Пожалуйста, попробуйте снова.");
                 }
             }
             else
             {
-                Console.WriteLine("Неверный выбор, попробуйте снова.");
+                Console.WriteLine("Неверный ввод.");
             }
         }
-        /// <summary>
-        ///  Выводит сумму всех площадей фигур в списке.
-        /// </summary>
-        private void DisplayTotalArea()
+
+        private static void PrintCenteredText(string text)
         {
-            Console.Clear();
+            int width = Console.WindowWidth;
+            int textLength = text.Length;
+            int spaces = (width - textLength) / 2;
 
-            shapesList.PrintSquare();
-
-           
+            Console.WriteLine(new string(' ', spaces) + text);
         }
-
-        /// <summary>
-        /// Выводит периметры всех фигур в списке.
-        /// </summary>
-        private void DisplayTotalPerimeters()
+        private void PrintLine()
         {
-            Console.Clear();
-
-            shapesList.PrintPerimeter();
-}
-
+            int width = Console.WindowWidth;
+            string line = new string('_', width);
+            Console.WriteLine(line);
+        }
         /// <summary>
         /// Запускает основной цикл приложения для обработки выбора пользователя.
         /// </summary>

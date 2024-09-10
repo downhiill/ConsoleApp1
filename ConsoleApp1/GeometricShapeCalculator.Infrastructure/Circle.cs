@@ -15,7 +15,6 @@ namespace ConsoleApp1
         /// Радиус круга
         /// </summary>
         public double Radius { get; set; }
-
         /// <summary>
         /// Инициализация нового экземпляра круга с указанным радиусом 
         /// </summary>
@@ -24,7 +23,6 @@ namespace ConsoleApp1
         {
             Radius = radius;
         }
-
         /// <summary>
         /// Переопределяет метод для вычисления площади круга.
         /// </summary>
@@ -40,14 +38,6 @@ namespace ConsoleApp1
         /// <summary>
         /// Переопределение метода для отображения информации о круге.
         /// </summary>
-        public override void Display()
-        {
-            Console.WriteLine($"Круг: Радиус = {Radius}");
-            Console.WriteLine($"Площадь = {GetArea():F2}");
-            Console.WriteLine($"Длина окружности = {GetPerimeter():F2}");
-
-        }
-
 
         /// <summary>
         /// Создает новый экземпляр круга на основе ввода пользователя.

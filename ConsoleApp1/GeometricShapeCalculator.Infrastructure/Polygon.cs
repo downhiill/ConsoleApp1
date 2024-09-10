@@ -15,13 +15,13 @@ namespace ConsoleApp1
         /// <summary>
         /// Список точек многоугольника.
         /// </summary>
-        public List<PointsPolygon> Points { get; private set; }
+        public List<Point> Points { get; private set; }
 
         /// <summary>
         /// Инициализация нового экземпляра правильного многоугольника с заданными точками.
         /// </summary>
         /// <param name="points">Список точек многоугольника.</param>
-        public Polygon(List<PointsPolygon> points)
+        public Polygon(List<Point> points)
         {
             Points = points;
         }
@@ -33,7 +33,7 @@ namespace ConsoleApp1
         /// <param name="p2">Вторая точка</param>
         /// <param name="p3">Третья точка</param>
         /// <returns></returns>
-        private double CalculateTriangleArea(PointsPolygon p1, PointsPolygon p2, PointsPolygon p3)
+        private double CalculateTriangleArea(Point p1, Point p2, Point p3)
         {
             return Math.Abs((p1.X * (p2.Y - p3.Y) + p2.X * (p3.Y - p1.Y) + p3.X * (p1.Y - p2.Y)) / 2.0);
         }
@@ -75,26 +75,12 @@ namespace ConsoleApp1
         }
 
         /// <summary>
-        /// Переопределение метода для отображения информации о многоугольнике.
-        /// </summary>
-        public override void Display()
-        {
-            Console.WriteLine($"Многоугольник:");
-            for (int i = 0; i < Points.Count; i++)
-            {
-                Console.WriteLine($"Точка {i + 1}: ({Points[i].X}, {Points[i].Y})");
-            }
-            Console.WriteLine($"Площадь = {GetArea():F2}");
-            Console.WriteLine($"Периметр = {GetPerimeter():F2}");
-        }
-
-        /// <summary>
         /// Создает новый экземпляр правильного многоугольника на основе ввода пользователя.
         /// </summary>
         /// <returns>Новый экземпляр многоугольника или <c>null</c>, если ввод неверен.</returns>
         public static Polygon CreateRegularPolygon()
         {
-            List<PointsPolygon> points = new List<PointsPolygon>();
+            List<Point> points = new List<Point>();
             string input;
 
             Console.WriteLine("Введите точки многоугольника. Для завершения ввода введите 'done'.");
@@ -122,7 +108,7 @@ namespace ConsoleApp1
                     continue;
                 }
 
-                points.Add(new PointsPolygon(x, y));
+                points.Add(new Point(x, y));
             }
 
             // Проверяем, что многоугольник имеет как минимум 3 точки

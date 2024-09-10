@@ -43,21 +43,32 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Geometry.cs" />
-    <Compile Include="MyList.cs" />
-    <Compile Include="PointsPolygon.cs" />
-    <Compile Include="Polygon.cs" />
+    <Compile Include="CreateCommand\CommandDispetcher.cs" />
+    <Compile Include="CreateCommand\CreateCircleCommand.cs" />
+    <Compile Include="CreateCommand\CreatePolygonCommand.cs" />
+    <Compile Include="CreateCommand\CreateRectangleCommand.cs" />
+    <Compile Include="CreateCommand\CreateSquareCommand.cs" />
+    <Compile Include="CreateCommand\CreateTriangleCommand.cs" />
+    <Compile Include="CreateCommand\DisplayTotalAreaCommand.cs" />
+    <Compile Include="CreateCommand\DisplayTotalPerimetrsCommand.cs" />
+    <Compile Include="CreateCommand\ExitCommand.cs" />
+    <Compile Include="GeometricShapeCalculator.Infrastructure\Geometry.cs" />
+    <Compile Include="IApp.cs" />
+    <Compile Include="ShapeCollection.cs" />
+    <Compile Include="GeometricShapeCalculator.Core\Point.cs" />
+    <Compile Include="GeometricShapeCalculator.Infrastructure\Polygon.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Circle.cs" />
-    <Compile Include="Rectangle.cs" />
-    <Compile Include="Shape.cs" />
+    <Compile Include="GeometricShapeCalculator.Infrastructure\Circle.cs" />
+    <Compile Include="GeometricShapeCalculator.Infrastructure\Rectangle.cs" />
+    <Compile Include="GeometricShapeCalculator.Core\Shape.cs" />
     <Compile Include="App.cs" />
-    <Compile Include="Square.cs" />
-    <Compile Include="Triangle.cs" />
+    <Compile Include="GeometricShapeCalculator.Infrastructure\Square.cs" />
+    <Compile Include="GeometricShapeCalculator.Infrastructure\Triangle.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -42,16 +42,6 @@ namespace ConsoleApp1
         /// </summary>
         /// <returns>Периметр прямоугольника</returns>
         public override double GetPerimeter() => 2 * (Width + Height);
-        /// <summary>
-        /// Переопределение метода для отображения информации о прямоугольнике.
-        /// </summary>
-        public override void Display()
-        {
-            Console.WriteLine($"Прямоугольник: Ширина = {Width}, Высота = {Height}");
-            Console.WriteLine($"Площадь = {GetArea():F2}");
-            Console.WriteLine($"Периметр = {GetPerimeter():F2}");
-        }
-
 
         /// <summary>
         /// Создает новый экземпляр прямоугольника на основе ввода пользователя.

@@ -36,20 +36,6 @@ namespace ConsoleApp1
         /// </summary>
         /// <returns> Периметр квадрата</returns>
         public override double GetPerimeter() => 4 * A;
-
-        /// <summary>
-        /// Переопределение метода для отображения информации о квадрате.
-        /// </summary>
-        public override void Display()
-        {
-            Console.WriteLine($"Квадрат: Ширина = {A}, Высота = {A}");
-            Console.WriteLine($"Площадь = {GetArea():F2}");
-            Console.WriteLine($"Периметр = {GetPerimeter():F2}");
-
-        }
-
-
-
         /// <summary>
         /// Создает новый экземпляр квадрата на основе ввода пользователя.
         /// </summary>

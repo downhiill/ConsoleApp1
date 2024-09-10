@@ -14,7 +14,7 @@ namespace ConsoleApp1
         /// <param name="p1">Первая точка.</param>
         /// <param name="p2">Вторая точка.</param>
         /// <returns>Расстояние между точками.</returns>
-        public static double Distance(PointsPolygon p1, PointsPolygon p2)
+        public static double Distance(Point p1, Point p2)
         {
             return Math.Sqrt(Math.Pow(p2.X - p1.X, 2) + Math.Pow(p2.Y - p1.Y, 2));
         }

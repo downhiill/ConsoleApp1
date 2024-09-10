@@ -10,7 +10,6 @@ namespace ConsoleApp1
     {
         public abstract double GetArea();
         public abstract double GetPerimeter();
-        public abstract void Display();
 
     }
 }

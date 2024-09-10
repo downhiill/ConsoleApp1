@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp1
 {
-    public class PointsPolygon
+    public class Point
     {
-        public int X { get; set; }
-        public int Y { get; set; }
+        public double X { get; set; }
+        public double Y { get; set; }
 
-        public PointsPolygon(int x, int y)
+        public Point(double x, double y)
         {
             X = x;
             Y = y;
