@@ -62,7 +62,7 @@
     <Compile Include="Shapes\Circle.cs" />
     <Compile Include="Shapes\Rectangle.cs" />
     <Compile Include="Shapes\Shape.cs" />
-    <Compile Include="App.cs" />
+    <Compile Include="Infrastructure\App.cs" />
     <Compile Include="Shapes\Square.cs" />
     <Compile Include="Shapes\Triangle.cs" />
   </ItemGroup>
