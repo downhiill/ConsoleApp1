@@ -8,10 +8,22 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
 {
-    internal class CreateRectangleCommand : IApp
+    /// <summary>
+    /// Команда для создания и добавления прямоугольника в коллекцию.
+    /// </summary>
+    internal class CreateRectangleCommand : ICommand
     {
+        /// <summary>
+        /// Получает имя команды.
+        /// </summary>
+        /// <value>Имя команды, используемое для её идентификации. В данном случае — "добавить_прямоугольник".</value>
         public string Name => "добавить_прямоугольник";
 
+        /// <summary>
+        /// Выполняет команду, создавая прямоугольник с заданными шириной и высотой и добавляя его в коллекцию фигур.
+        /// </summary>
+        /// <param name="app">Экземпляр приложения, содержащий коллекцию фигур, в которую добавляется прямоугольник.</param>
+        /// <param name="parameters">Строка параметров, содержащая ширину и высоту прямоугольника в формате [ширина;высота].</param>
         public void Execute(App app, string parameters = "")
         {
             // Разделяем параметры на ширину и высоту
@@ -24,8 +36,15 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
             Console.WriteLine($"Площадь прямоугольника: {area}");
             Console.WriteLine($"Периметр прямоугольника: {perimeter}");
 
-            app.Add(rectangle); // Добавляем прямоугольник в список фигур
+            app.ShapeCollection.Add(rectangle); // Добавляем прямоугольник в список фигур
         }
+
+        /// <summary>
+        /// Парсит строку с параметрами ширины и высоты прямоугольника из строки формата [ширина;высота].
+        /// </summary>
+        /// <param name="parameters">Строка параметров, содержащая ширину и высоту прямоугольника в формате [ширина;высота].</param>
+        /// <returns>Кортеж с шириной и высотой прямоугольника.</returns>
+        /// <exception cref="ArgumentException">Выбрасывается, если формат строки некорректен или размеры некорректны.</exception>
         private (double Width, double Height) ParseDimensions(string parameters)
         {
             // Регулярное выражение для извлечения ширины и высоты из строки в формате [ширина;высота]

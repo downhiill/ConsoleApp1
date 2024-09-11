@@ -42,35 +42,6 @@ namespace ConsoleApp1
         /// </summary>
         /// <returns>Периметр прямоугольника</returns>
         public override double GetPerimeter() => 2 * (Width + Height);
-
-        /// <summary>
-        /// Создает новый экземпляр прямоугольника на основе ввода пользователя.
-        /// </summary>
-        /// <returns>Новый экземпляр прямоугольника или <c>null</c>, если ввод неверен.</returns>
-        /*
-        public static Rectangle CreateRectangle()
-        {
-            Console.Write("Введите ширину прямоугольника: ");
-            if (double.TryParse(Console.ReadLine(), out double width))
-            {
-                Console.Write("Введите высоту прямоугольника: ");
-                if (double.TryParse(Console.ReadLine(), out double height))
-                {
-                    return new Rectangle(width, height);
-                }
-                else
-                {
-                    Console.WriteLine("Неверное значение высоты.");
-                    return null;
-                }
-            }
-            else
-            {
-                Console.WriteLine("Неверное значение ширины.");
-                return null;
-            }
-        }
-        */
     }
 }
 

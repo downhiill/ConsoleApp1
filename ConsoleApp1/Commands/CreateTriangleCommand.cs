@@ -8,13 +8,25 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
 {
-    internal class CreateTriangleCommand : IApp
+    /// <summary>
+    /// Команда для создания и добавления треугольника в коллекцию.
+    /// </summary>
+    internal class CreateTriangleCommand : ICommand
     {
+        /// <summary>
+        /// Получает имя команды.
+        /// </summary>
+        /// <value>Имя команды, используемое для её идентификации. В данном случае — "добавить_треугольник".</value>
         public string Name => "добавить_треугольник";
 
+        /// <summary>
+        /// Выполняет команду, создавая треугольник с заданными сторонами и добавляя его в коллекцию фигур.
+        /// </summary>
+        /// <param name="app">Экземпляр приложения, содержащий коллекцию фигур, в которую добавляется треугольник.</param>
+        /// <param name="parameters">Строка параметров, содержащая стороны треугольника в формате [сторона1; сторона2; сторона3].</param>
         public void Execute(App app, string parameters = "")
         {
-            // Извлекаем параметры треугольника из строки в формате [2;4;3]
+            // Извлекаем параметры треугольника из строки в формате [1;2;3]
             var sides = ParseSides(parameters);
 
             if (sides.Length == 3 &&
@@ -31,13 +43,20 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
                 Console.WriteLine($"Площадь треугольника: {area}");
                 Console.WriteLine($"Периметр треугольника: {perimeter}");
 
-                app.Add(triangle); // Добавляем треугольник в список фигур
+                app.ShapeCollection.Add(triangle); // Добавляем треугольник в список фигур
             }
             else
             {
                 Console.WriteLine("Некорректные параметры. Пожалуйста, введите положительные числа для сторон треугольника в формате [сторона1;сторона2;сторона3].");
             }
         }
+
+        /// <summary>
+        /// Парсит строки с параметрами сторон треугольника из строки формата [сторона1;сторона2;сторона3].
+        /// </summary>
+        /// <param name="parameters">Строка параметров, содержащая стороны треугольника в формате [сторона1;сторона2;сторона3].</param>
+        /// <returns>Массив строк, представляющий стороны треугольника.</returns>
+        /// <exception cref="ArgumentException">Выбрасывается, если формат строки некорректен или количество параметров не равно трем.</exception>
         private string[] ParseSides(string parameters)
         {
             var pattern = @"\[(.*?)\]";

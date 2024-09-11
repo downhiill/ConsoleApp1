@@ -73,54 +73,5 @@ namespace ConsoleApp1
 
             return perimeter;
         }
-
-        /// <summary>
-        /// Создает новый экземпляр правильного многоугольника на основе ввода пользователя.
-        /// </summary>
-        /// <returns>Новый экземпляр многоугольника или <c>null</c>, если ввод неверен.</returns>
-        /*
-        public static Polygon CreateRegularPolygon()
-        {
-            List<Point> points = new List<Point>();
-            string input;
-
-            Console.WriteLine("Введите точки многоугольника. Для завершения ввода введите 'done'.");
-
-            while (true)
-            {
-                Console.Write("Введите координату X (или 'done' для завершения): ");
-                input = Console.ReadLine();
-
-                if (input.ToLower() == "done")
-                {
-                    break;
-                }
-
-                if (!int.TryParse(input, out int x))
-                {
-                    Console.WriteLine("Некорректное значение. Попробуйте снова.");
-                    continue;
-                }
-
-                Console.Write("Введите координату Y: ");
-                if (!int.TryParse(Console.ReadLine(), out int y))
-                {
-                    Console.WriteLine("Некорректное значение. Попробуйте снова.");
-                    continue;
-                }
-
-                points.Add(new Point(x, y));
-            }
-
-            // Проверяем, что многоугольник имеет как минимум 3 точки
-            if (points.Count < 3)
-            {
-                Console.WriteLine("Для формирования многоугольника нужно как минимум 3 точки.");
-                return null;
-            }
-
-            return new Polygon(points);
-        }
-        */
     }
 }

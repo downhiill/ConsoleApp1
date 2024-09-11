@@ -8,42 +8,47 @@ using System.Windows.Input;
 
 namespace ConsoleApp1
 {
-     
     /// <summary>
     /// Представляет основное приложение для работы с различными фигурами.
     /// </summary>
-    public class App: ShapeCollection
+    public class App
     {
-        private readonly Dictionary<string, IApp> commands = new Dictionary<string, IApp>();
-        public App()
-        {
-            // Регистрация команд
-            commands["добавить_круг"] = new CreateCircleCommand();
-            commands["добавить_прямоугольник"] = new CreateRectangleCommand();
-            commands["добавить_треугольник"] = new CreateTriangleCommand();
-            commands["добавить_квадрат"] = new CreateSquareCommand();
-            commands["добавить_многоугольник"] = new CreatePolygonCommand();
-            commands["показать_сумму_площадей"] = new DisplayTotalAreaCommand();
-            commands["показать_периметры"] = new DisplayTotalPerimetrsCommand();
-            commands["выход"] = new ExitCommand();
-        }
+        /// <summary>
+        /// Коллекция фигур, используемая в приложении.
+        /// </summary>
+        public ShapeCollection ShapeCollection { get; } = new ShapeCollection();
 
         /// <summary>
-        /// Обрабатывает выбор фигуры и выполняет соответствующие действия.
+        /// Список команд, доступных для выполнения в приложении.
         /// </summary>
-        private void HandleShapeSelection()
+        private readonly List<ICommand> commands = new List<ICommand>
+        {
+            new CreateCircleCommand(),
+            new CreateRectangleCommand(),
+            new CreateTriangleCommand(),
+            new CreateSquareCommand(),
+            new CreatePolygonCommand(),
+            new DisplayTotalAreaCommand(),
+            new DisplayTotalPerimetrsCommand(),
+            new ExitCommand()
+        };
+
+        /// <summary>
+        /// Обрабатывает выбор команды пользователя и выполняет соответствующие действия.
+        /// </summary>
+        /// <returns>Возвращает <c>true</c>, если обработка команды была успешной, <c>false</c> в противном случае.</returns>
+        private bool HandleShapeSelection()
         {
             Console.Clear();
-            string text = "Список команд";
-            PrintCenteredText(text);
-            PrintLine();
+            ConsoleExtensions.PrintCenteredText("Список команд");
+            ConsoleExtensions.PrintLine();
             // Печать доступных команд
-            foreach (var command in commands.Keys)
-            {       
-                Console.Write("\t"+ command +"\n");
+            foreach (var command in commands)
+            {
+                Console.Write($"\t{command.Name}\n");
                 
             }
-            PrintLine();
+            ConsoleExtensions.PrintLine();
             string input = Console.ReadLine()?.Trim();
             if (input != null)
             {
@@ -51,7 +56,9 @@ namespace ConsoleApp1
                 var commandKey = parts[0].ToLower();
                 var parameters = parts.Length > 1 ? parts[1] : "";
 
-                if (commands.TryGetValue(commandKey, out IApp command))
+                var command = commands.FirstOrDefault(c => c.Name == commandKey);
+
+                if (command != null)
                 {
                     try
                     {
@@ -71,32 +78,20 @@ namespace ConsoleApp1
             {
                 Console.WriteLine("Неверный ввод.");
             }
+            Console.ReadKey();
+            return true;
         }
 
-        private static void PrintCenteredText(string text)
-        {
-            int width = Console.WindowWidth;
-            int textLength = text.Length;
-            int spaces = (width - textLength) / 2;
-
-            Console.WriteLine(new string(' ', spaces) + text);
-        }
-        private void PrintLine()
-        {
-            int width = Console.WindowWidth;
-            string line = new string('_', width);
-            Console.WriteLine(line);
-        }
         /// <summary>
         /// Запускает основной цикл приложения для обработки выбора пользователя.
         /// </summary>
         public void Run()
         {
-            while (true)
+            if (HandleShapeSelection())
             {
-                HandleShapeSelection();
-                Console.WriteLine("Нажмите любую клавишу для продолжения...");
-                Console.ReadKey();
+
+                // Рекурсивный вызов для обработки следующей команды
+                Run();
             }
         }
     }

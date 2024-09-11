@@ -34,25 +34,5 @@ namespace ConsoleApp1
         /// </summary>
         /// <returns>Периметр круга</returns>
         public override double GetPerimeter() => 2 * Math.PI * Radius;
-
-        /// <summary>
-        /// Создает новый экземпляр круга на основе ввода пользователя.
-        /// </summary>
-        /// <returns>Новый экземпляр круга или <c>null</c>, если ввод неверен.</returns>
-        /*
-        public static Circle CreateCircle()
-        {
-            Console.Write("Введите радиус круга: ");
-            if (double.TryParse(Console.ReadLine(), out double radius))
-            {
-                return new Circle(radius);
-            }
-            else
-            {
-                Console.WriteLine("Неверное значение радиуса.");
-                return null;
-            }
-        }
-        */
     }
 }

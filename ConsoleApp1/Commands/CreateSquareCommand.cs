@@ -8,10 +8,22 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
 {
-    internal class CreateSquareCommand : IApp
+    /// <summary>
+    /// Команда для создания и добавления квадрата в коллекцию.
+    /// </summary>
+    internal class CreateSquareCommand : ICommand
     {
+        /// <summary>
+        /// Получает имя команды.
+        /// </summary>
+        /// <value>Имя команды, используемое для её идентификации. В данном случае — "добавить_квадрат".</value>
         public string Name => "добавить_квадрат";
 
+        /// <summary>
+        /// Выполняет команду, создавая квадрат с заданной длиной стороны и добавляя его в коллекцию фигур.
+        /// </summary>
+        /// <param name="app">Экземпляр приложения, содержащий коллекцию фигур, в которую добавляется квадрат.</param>
+        /// <param name="parameters">Строка параметров, содержащая длину стороны квадрата в формате [длина_стороны].</param>
         public void Execute(App app, string parameters = "")
         {
 
@@ -24,8 +36,15 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
             Console.WriteLine($"Площадь квадрата: {area}");
             Console.WriteLine($"Периметр квадрата: {perimeter}");
 
-            app.Add(square); // Добавляем квадрат в список фигур
+            app.ShapeCollection.Add(square); // Добавляем квадрат в список фигур
         }
+
+        /// <summary>
+        /// Парсит строку с параметром длины стороны квадрата из строки формата [длина_стороны].
+        /// </summary>
+        /// <param name="parameters">Строка параметров, содержащая длину стороны квадрата в формате [длина_стороны].</param>
+        /// <returns>Длину стороны квадрата.</returns>
+        /// <exception cref="ArgumentException">Выбрасывается, если формат строки некорректен или длина стороны некорректна.</exception>
         private double ParseSide(string parameters)
         {
             // Регулярное выражение для извлечения длины стороны из строки в формате [длина_стороны]

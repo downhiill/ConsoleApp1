@@ -36,25 +36,5 @@ namespace ConsoleApp1
         /// </summary>
         /// <returns> Периметр квадрата</returns>
         public override double GetPerimeter() => 4 * A;
-        /// <summary>
-        /// Создает новый экземпляр квадрата на основе ввода пользователя.
-        /// </summary>
-        /// <returns>Новый экземпляр квадрата или <c>null</c>, если ввод неверен.</returns>
-        /*
-        public static Square CreateSquare()
-        {
-
-            Console.Write("Введите ширину и высоту квадрата: ");
-            if (double.TryParse(Console.ReadLine(), out double a))
-            {
-                return new Square(a);
-            }
-            else
-            {
-                Console.WriteLine("Неверное значение ширины и высоты. (Для расчета введите одно значение)");
-                return null;
-            }
-        }
-        */
     }
 }
