@@ -11,8 +11,14 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
     /// <summary>
     /// Команда для создания и добавления квадрата в коллекцию.
     /// </summary>
-    internal class CreateSquareCommand : ICommand
+    internal class CommandCreateSquare : ICommand
     {
+        private readonly ShapeCollection _shapeCollection;
+
+        public CommandCreateSquare(ShapeCollection shapeCollection)
+        {
+            _shapeCollection = shapeCollection;
+        }
         /// <summary>
         /// Получает имя команды.
         /// </summary>
@@ -22,21 +28,20 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
         /// <summary>
         /// Выполняет команду, создавая квадрат с заданной длиной стороны и добавляя его в коллекцию фигур.
         /// </summary>
-        /// <param name="app">Экземпляр приложения, содержащий коллекцию фигур, в которую добавляется квадрат.</param>
         /// <param name="parameters">Строка параметров, содержащая длину стороны квадрата в формате [длина_стороны].</param>
-        public void Execute(App app, string parameters = "")
+        public void Execute(string parameters)
         {
 
             double a = ParseSide(parameters);
             var square = new Square(a);
 
-            double area = square.GetArea();
-            double perimeter = square.GetPerimeter();
+            double area = square.S();
+            double perimeter = square.P();
 
             Console.WriteLine($"Площадь квадрата: {area}");
             Console.WriteLine($"Периметр квадрата: {perimeter}");
 
-            app.ShapeCollection.Add(square); // Добавляем квадрат в список фигур
+            _shapeCollection.Add(square); // Добавляем квадрат в список фигур
         }
 
         /// <summary>

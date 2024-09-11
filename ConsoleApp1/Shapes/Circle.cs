@@ -27,12 +27,12 @@ namespace ConsoleApp1
         /// Переопределяет метод для вычисления площади круга.
         /// </summary>
         /// <returns>Площадь круга</returns>
-        public override double GetArea() => Math.PI * Radius * Radius;
+        public override double S() => Math.PI * Radius * Radius;
 
         /// <summary>
         /// Переопределяет метод для вычисления периметра круга.
         /// </summary>
         /// <returns>Периметр круга</returns>
-        public override double GetPerimeter() => 2 * Math.PI * Radius;
+        public override double P() => 2 * Math.PI * Radius;
     }
 }

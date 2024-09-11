@@ -43,15 +43,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\CommandHelp.cs" />
     <Compile Include="Extensions\ConsoleExtensions.cs" />
-    <Compile Include="Commands\CreateCircleCommand.cs" />
-    <Compile Include="Commands\CreatePolygonCommand.cs" />
-    <Compile Include="Commands\CreateRectangleCommand.cs" />
-    <Compile Include="Commands\CreateSquareCommand.cs" />
-    <Compile Include="Commands\CreateTriangleCommand.cs" />
-    <Compile Include="Commands\DisplayTotalAreaCommand.cs" />
-    <Compile Include="Commands\DisplayTotalPerimetrsCommand.cs" />
-    <Compile Include="Commands\ExitCommand.cs" />
+    <Compile Include="Commands\CommandCreateCircle.cs" />
+    <Compile Include="Commands\CommandCreatePolygon.cs" />
+    <Compile Include="Commands\CommandCreateRectangle.cs" />
+    <Compile Include="Commands\CommandCreateSquare.cs" />
+    <Compile Include="Commands\CommandCreateTriangle.cs" />
+    <Compile Include="Commands\CommandDisplayTotalArea.cs" />
+    <Compile Include="Commands\CommandDisplayTotalPerimetrs.cs" />
+    <Compile Include="Commands\CommandExit.cs" />
     <Compile Include="Infrastructure\ICommand.cs" />
     <Compile Include="Infrastructure\ShapeCollection.cs" />
     <Compile Include="Shapes\Geometry.cs" />

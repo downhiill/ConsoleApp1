@@ -1,4 +1,7 @@
-﻿using ConsoleApp1.GeometricShapeCalculator.Infrastructure;
+﻿using ConsoleApp1.Commands;
+using ConsoleApp1.GeometricShapeCalculator.Infrastructure;
+using ConsoleApp1_Extensions;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,78 +24,72 @@ namespace ConsoleApp1
         /// <summary>
         /// Список команд, доступных для выполнения в приложении.
         /// </summary>
-        private readonly List<ICommand> commands = new List<ICommand>
+        private readonly List<ICommand> commands;
+
+        /// <summary>
+        /// Инициализирует новый экземпляр класса <see cref="App"/> и настраивает доступные команды.
+        /// </summary>
+        public App()
         {
-            new CreateCircleCommand(),
-            new CreateRectangleCommand(),
-            new CreateTriangleCommand(),
-            new CreateSquareCommand(),
-            new CreatePolygonCommand(),
-            new DisplayTotalAreaCommand(),
-            new DisplayTotalPerimetrsCommand(),
-            new ExitCommand()
-        };
+            commands = new List<ICommand>
+            {
+            new CommandCreateCircle(ShapeCollection),
+            new CommandCreateRectangle(ShapeCollection),
+            new CommandCreateTriangle(ShapeCollection),
+            new CommandCreateSquare(ShapeCollection),
+            new CommandCreatePolygon(ShapeCollection),
+            new CommandDisplayTotalArea(ShapeCollection),
+            new CommandDisplayTotalPerimetrs(ShapeCollection),
+            new CommandExit()
+            };
+            commands.Add(new CommandHelp(commands));
+        }
 
         /// <summary>
         /// Обрабатывает выбор команды пользователя и выполняет соответствующие действия.
         /// </summary>
         /// <returns>Возвращает <c>true</c>, если обработка команды была успешной, <c>false</c> в противном случае.</returns>
-        private bool HandleShapeSelection()
+        public void Run()
         {
-            Console.Clear();
-            ConsoleExtensions.PrintCenteredText("Список команд");
-            ConsoleExtensions.PrintLine();
-            // Печать доступных команд
-            foreach (var command in commands)
+            while(true)
             {
-                Console.Write($"\t{command.Name}\n");
-                
-            }
-            ConsoleExtensions.PrintLine();
-            string input = Console.ReadLine()?.Trim();
-            if (input != null)
-            {
-                var parts = input.Split(new[] { ' ' }, 2);
-                var commandKey = parts[0].ToLower();
-                var parameters = parts.Length > 1 ? parts[1] : "";
-
-                var command = commands.FirstOrDefault(c => c.Name == commandKey);
-
-                if (command != null)
+                Console.Clear();
+                ConsoleExtensions.PrintCenteredText("Введите команду (или 'помощь' для списка команд):");
+                ConsoleExtensions.PrintLine("");
+                string input = Console.ReadLine()?.Trim();
+                if (input != null)
                 {
-                    try
+                    var parts = input.Split(new[] { ' ' }, 2);
+                    var commandKey = parts[0].ToLower();
+                    var parameters = parts.Length > 1 ? parts[1] : "";
+
+                    var command = commands.FirstOrDefault(c => c.Name == commandKey);
+
+                    if (command != null)
                     {
-                        command.Execute(this, parameters);
+                        try
+                        {
+                            command.Execute(parameters);
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"Ошибка: {ex.Message}");
+                        }
                     }
-                    catch (Exception ex)
+                    else
                     {
-                        Console.WriteLine($"Ошибка: {ex.Message}");
+                        Console.WriteLine("Неизвестная команда. Пожалуйста, попробуйте снова.");
                     }
                 }
                 else
                 {
-                    Console.WriteLine("Неизвестная команда. Пожалуйста, попробуйте снова.");
+                    Console.WriteLine("Неверный ввод.");
                 }
+                Console.ReadKey();
+                
             }
-            else
-            {
-                Console.WriteLine("Неверный ввод.");
-            }
-            Console.ReadKey();
-            return true;
+            
         }
 
-        /// <summary>
-        /// Запускает основной цикл приложения для обработки выбора пользователя.
-        /// </summary>
-        public void Run()
-        {
-            if (HandleShapeSelection())
-            {
-
-                // Рекурсивный вызов для обработки следующей команды
-                Run();
-            }
-        }
     }
 }

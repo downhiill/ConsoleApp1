@@ -12,8 +12,14 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
     /// <summary>
     /// Команда для создания и добавления многоугольника в коллекцию.
     /// </summary>
-    internal class CreatePolygonCommand : ICommand
+    internal class CommandCreatePolygon : ICommand
     {
+        private readonly ShapeCollection _shapeCollection;
+
+        public CommandCreatePolygon(ShapeCollection shapeCollection)
+        {
+            _shapeCollection = shapeCollection;
+        }
         /// <summary>
         /// Список фигур. Не используется в данной реализации.
         /// </summary>
@@ -28,20 +34,19 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
         /// <summary>
         /// Выполняет команду, создавая многоугольник с заданными вершинами и добавляя его в коллекцию фигур.
         /// </summary>
-        /// <param name="app">Экземпляр приложения, содержащий коллекцию фигур, в которую добавляется многоугольник.</param>
         /// <param name="parameters">Строка параметров, содержащая вершины многоугольника в формате [(x;y),(x;y),...].</param>
-        public void Execute(App app, string parameters = "" )
+        public void Execute(string parameters)
         {
             var points = ParsePoints(parameters);
             var polygon = new Polygon(points);
 
-            double area = polygon.GetArea();
-            double perimeter = polygon.GetPerimeter();
+            double area = polygon.S();
+            double perimeter = polygon.P();
 
             Console.WriteLine($"Площадь многоугольника: {area}");
             Console.WriteLine($"Периметр многоугольника: {perimeter}");
 
-            app.ShapeCollection.Add(polygon); // Добавляем многоугольник в список фигур
+            _shapeCollection.Add(polygon); // Добавляем многоугольник в список фигур
         }
         /// <summary>
         /// Парсит строку с параметрами вершин многоугольника из строки формата [(x;y),(x;y),...].

@@ -15,13 +15,13 @@ namespace ConsoleApp1
         /// Получает площадь фигуры.
         /// </summary>
         /// <returns>Площадь фигуры.</returns>
-        public abstract double GetArea();
+        public abstract double S();
 
         /// <summary>
         /// Получает периметр фигуры.
         /// </summary>
         /// <returns>Периметр фигуры.</returns>
-        public abstract double GetPerimeter();
+        public abstract double P();
 
     }
 }

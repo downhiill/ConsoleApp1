@@ -11,8 +11,15 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
     /// <summary>
     /// Команда для создания и добавления круга в коллекцию.
     /// </summary>
-    public class CreateCircleCommand : ICommand
+    public class CommandCreateCircle : ICommand
     {
+        private readonly ShapeCollection _shapeCollection;
+
+        public CommandCreateCircle(ShapeCollection shapeCollection)
+        {
+            _shapeCollection = shapeCollection;
+        }
+
         /// <summary>
         /// Получает имя команды.
         /// </summary>
@@ -22,20 +29,19 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
         /// <summary>
         /// Выполняет команду, создавая круг с заданным радиусом и добавляя его в коллекцию фигур.
         /// </summary>
-        /// <param name="app">Экземпляр приложения, содержащий коллекцию фигур, в которую добавляется круг.</param>
         /// <param name="parameters">Строка параметров, содержащая радиус круга в формате [x].</param>
-        public void Execute( App app, string parameters = "")
+        public void Execute(string parameters)
         {
             double radius = ParseRadius(parameters);
             var circle = new Circle(radius); // Создаем круг с заданным радиусом
 
-            double area = circle.GetArea();
-            double circumference = circle.GetPerimeter();
+            double area = circle.S();
+            double circumference = circle.P();
 
             Console.WriteLine($"Площадь круга: {area}");
             Console.WriteLine($"Длина окружности: {circumference}");
 
-            app.ShapeCollection.Add(circle);
+            _shapeCollection.Add(circle);
         }
 
         /// <summary>
@@ -46,7 +52,6 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
         /// <exception cref="ArgumentException">Выбрасывается, если формат строки некорректен или радиус не является положительным числом.</exception>
         private double ParseRadius(string parameters)
         {
-            // Регулярное выражение для извлечения радиуса из строки в формате [x]
             var pattern = @"\[(.*?)\]";
             var match = Regex.Match(parameters, pattern);
 

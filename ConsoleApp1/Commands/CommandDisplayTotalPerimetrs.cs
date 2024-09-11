@@ -9,8 +9,14 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
     /// <summary>
     /// Команда для отображения периметров всех фигур в коллекции.
     /// </summary>
-    internal class DisplayTotalPerimetrsCommand : ICommand
+    internal class CommandDisplayTotalPerimetrs : ICommand
     {
+        private readonly ShapeCollection _shapeCollection;
+
+        public CommandDisplayTotalPerimetrs(ShapeCollection shapeCollection)
+        {
+            _shapeCollection = shapeCollection;
+        }
         /// <summary>
         /// Получает имя команды.
         /// </summary>
@@ -20,17 +26,16 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
         /// <summary>
         /// Выполняет команду, отображая периметры всех фигур в коллекции приложения.
         /// </summary>
-        /// <param name="app">Экземпляр приложения, содержащий коллекцию фигур.</param>
         /// <param name="parameters">Параметры команды. Не используются в данной реализации. Значение по умолчанию — пустая строка.</param>
-        public void Execute(App app, string parameters = "")
+        public void Execute( string parameters)
         {
             Console.Clear();
             Console.WriteLine("Периметры всех фигур:");
 
             // Перебираем все фигуры в коллекции
-            foreach (var shape in app.ShapeCollection.shapes) 
+            foreach (var shape in _shapeCollection.shapes) 
             {
-                double perimeter = app.ShapeCollection.P();
+                double perimeter = _shapeCollection.P();
                 string shapeName = shape.GetType().Name;
 
                 

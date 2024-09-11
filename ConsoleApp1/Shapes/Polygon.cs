@@ -41,7 +41,7 @@ namespace ConsoleApp1
         /// Переопределяет метод для вычисления площади многоугольника, используя координаты его вершин по формуле Гаусса.
         /// </summary>
         /// <returns>Площадь многоугольника.</returns>
-        public override double GetArea()
+        public override double S()
         {
             double area = 0;
             int n = Points.Count;
@@ -60,7 +60,7 @@ namespace ConsoleApp1
         /// Переопределяет метод для вычисления периметра многоугольника.
         /// </summary>
         /// <returns>Периметр многоугольника.</returns>
-        public override double GetPerimeter()
+        public override double P()
         {
             double perimeter = 0;
             int n = Points.Count;

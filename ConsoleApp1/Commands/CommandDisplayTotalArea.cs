@@ -9,8 +9,14 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
     /// <summary>
     /// Команда для отображения общей площади всех фигур в коллекции.
     /// </summary>
-    internal class DisplayTotalAreaCommand : ICommand
+    internal class CommandDisplayTotalArea : ICommand
     {
+        private readonly ShapeCollection _shapeCollection;
+
+        public CommandDisplayTotalArea(ShapeCollection shapeCollection)
+        {
+            _shapeCollection = shapeCollection;
+        }
         /// <summary>
         /// Получает имя команды.
         /// </summary>
@@ -20,12 +26,11 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
         /// <summary>
         /// Выполняет команду, отображая общую площадь всех фигур в коллекции приложения.
         /// </summary>
-        /// <param name="app">Экземпляр приложения, содержащий коллекцию фигур.</param>
         /// <param name="parameters">Параметры команды. Не используются в данной реализации. Значение по умолчанию — пустая строка.</param>
-        public void Execute(App app, string parameters = "")
+        public void Execute(string parameters)
         {
             Console.Clear();
-            double totalArea = app.ShapeCollection.S(); // Получаем общую площадь
+            double totalArea = _shapeCollection.S(); // Получаем общую площадь
             Console.WriteLine($"Сумма площадей всех фигур: {totalArea}");
         }
     }

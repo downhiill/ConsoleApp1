@@ -35,13 +35,13 @@ namespace ConsoleApp1
         /// Переопределение метода для вычисления площади.
         /// </summary>
         /// <returns>Площадь прямоугольника</returns>
-        public override double GetArea() => Width * Height;
+        public override double S() => Width * Height;
 
         /// <summary>
         /// Переопределение метода для вычисления периметра.
         /// </summary>
         /// <returns>Периметр прямоугольника</returns>
-        public override double GetPerimeter() => 2 * (Width + Height);
+        public override double P() => 2 * (Width + Height);
     }
 }
 

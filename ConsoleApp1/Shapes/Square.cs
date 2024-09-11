@@ -29,12 +29,12 @@ namespace ConsoleApp1
         /// Переопределение метода для вычисления площади.
         /// </summary>
         /// <returns>Площадь квадрата</returns>
-        public override double GetArea() => A * A;
+        public override double S() => A * A;
 
         /// <summary>
         /// Переопределение метода для вычисления периметра.
         /// </summary>
         /// <returns> Периметр квадрата</returns>
-        public override double GetPerimeter() => 4 * A;
+        public override double P() => 4 * A;
     }
 }

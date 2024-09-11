@@ -11,8 +11,14 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
     /// <summary>
     /// Команда для создания и добавления треугольника в коллекцию.
     /// </summary>
-    internal class CreateTriangleCommand : ICommand
+    internal class CommandCreateTriangle : ICommand
     {
+        private readonly ShapeCollection _shapeCollection;
+
+        public CommandCreateTriangle(ShapeCollection shapeCollection)
+        {
+            _shapeCollection = shapeCollection;
+        }
         /// <summary>
         /// Получает имя команды.
         /// </summary>
@@ -22,9 +28,8 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
         /// <summary>
         /// Выполняет команду, создавая треугольник с заданными сторонами и добавляя его в коллекцию фигур.
         /// </summary>
-        /// <param name="app">Экземпляр приложения, содержащий коллекцию фигур, в которую добавляется треугольник.</param>
         /// <param name="parameters">Строка параметров, содержащая стороны треугольника в формате [сторона1; сторона2; сторона3].</param>
-        public void Execute(App app, string parameters = "")
+        public void Execute(string parameters)
         {
             // Извлекаем параметры треугольника из строки в формате [1;2;3]
             var sides = ParseSides(parameters);
@@ -37,13 +42,13 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
             {
                 var triangle = new Triangle(a, b, c);
 
-                double area = triangle.GetArea();
-                double perimeter = triangle.GetPerimeter();
+                double area = triangle.S();
+                double perimeter = triangle.P();
 
                 Console.WriteLine($"Площадь треугольника: {area}");
                 Console.WriteLine($"Периметр треугольника: {perimeter}");
 
-                app.ShapeCollection.Add(triangle); // Добавляем треугольник в список фигур
+                _shapeCollection.Add(triangle); // Добавляем треугольник в список фигур
             }
             else
             {

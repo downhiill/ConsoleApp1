@@ -43,9 +43,9 @@ namespace ConsoleApp1
         /// Переопределение метода для вычисления площади треугольника по формуле Герона.
         /// </summary>
         /// <returns>Площадь треугольника.</returns>
-        public override double GetArea()
+        public override double S()
         {
-            double s = GetPerimeter() / 2;
+            double s = P() / 2;
             return Math.Sqrt(s * (s - A) * (s - B) * (s - C));
         }
 
@@ -53,7 +53,7 @@ namespace ConsoleApp1
         /// Переопределение метода для вычисления периметра треугольника.
         /// </summary>
         /// <returns>Периметр треугольника</returns>
-        public override double GetPerimeter() => A + B + C;
+        public override double P() => A + B + C;
    
     }
 }

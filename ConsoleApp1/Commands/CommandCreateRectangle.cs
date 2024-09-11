@@ -11,8 +11,15 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
     /// <summary>
     /// Команда для создания и добавления прямоугольника в коллекцию.
     /// </summary>
-    internal class CreateRectangleCommand : ICommand
+    internal class CommandCreateRectangle : ICommand
     {
+        private readonly ShapeCollection _shapeCollection;
+
+        public CommandCreateRectangle(ShapeCollection shapeCollection)
+        {
+            _shapeCollection = shapeCollection;
+        }
+
         /// <summary>
         /// Получает имя команды.
         /// </summary>
@@ -22,21 +29,20 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
         /// <summary>
         /// Выполняет команду, создавая прямоугольник с заданными шириной и высотой и добавляя его в коллекцию фигур.
         /// </summary>
-        /// <param name="app">Экземпляр приложения, содержащий коллекцию фигур, в которую добавляется прямоугольник.</param>
         /// <param name="parameters">Строка параметров, содержащая ширину и высоту прямоугольника в формате [ширина;высота].</param>
-        public void Execute(App app, string parameters = "")
+        public void Execute(string parameters)
         {
             // Разделяем параметры на ширину и высоту
             var dimensions = ParseDimensions(parameters);
             var rectangle = new Rectangle(dimensions.Width, dimensions.Height); // Создаем прямоугольник
 
-            double area = rectangle.GetArea();
-            double perimeter = rectangle.GetPerimeter();
+            double area = rectangle.S();
+            double perimeter = rectangle.P();
 
             Console.WriteLine($"Площадь прямоугольника: {area}");
             Console.WriteLine($"Периметр прямоугольника: {perimeter}");
 
-            app.ShapeCollection.Add(rectangle); // Добавляем прямоугольник в список фигур
+            _shapeCollection.Add(rectangle); // Добавляем прямоугольник в список фигур
         }
 
         /// <summary>

@@ -22,6 +22,6 @@ namespace ConsoleApp1
         /// </summary>
         /// <param name="app">Экземпляр приложения, в котором выполняется команда.</param>
         /// <param name="parameters">Параметры, необходимые для выполнения команды. Значение по умолчанию — пустая строка.</param>
-        void Execute(App app, string parameters = "");
+        void Execute(string parameters);
     }
 }

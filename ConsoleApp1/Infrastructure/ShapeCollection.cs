@@ -32,14 +32,7 @@ namespace ConsoleApp1
         /// <returns>Общая площадь фигур указанного типа.</returns>
         public double S<T>() where T : Shape
         {
-            double totalArea = 0;
-            foreach (var shape in shapes)
-            {
-                if (shape is T typedShape)
-                {
-                    totalArea += typedShape.GetPerimeter();
-                }
-            }
+            double totalArea = shapes.OfType<T>().Sum(shape => shape.S());
             return totalArea;
         }
         /// <summary>
@@ -48,11 +41,7 @@ namespace ConsoleApp1
         /// <returns>Общая площадь всех фигур в коллекции.</returns>
         public double S()
         {
-            double totalArea = 0;
-            foreach (var shape in shapes)
-            {
-                totalArea += shape.GetArea();
-            }
+            double totalArea = shapes.Sum(shape => shape.S());
             return totalArea;
         }
         /// <summary>
@@ -62,15 +51,7 @@ namespace ConsoleApp1
         /// <returns>Периметры фигур указанного типа в виде строки, разделенной переводами строк.</returns>
         public double P<T>() where T : Shape
         {
-            double totalPerimeter = 0;
-
-            foreach (var shape in shapes)
-            {
-                if (shape is T typedShape)
-                {
-                    totalPerimeter += typedShape.GetPerimeter();
-                }
-            }
+            double totalPerimeter = shapes.OfType<T>().Sum(shape => shape.P());
 
             return totalPerimeter;
         }
@@ -80,12 +61,8 @@ namespace ConsoleApp1
         /// <returns>Периметры всех фигур в коллекции в виде строки, разделенной переводами строк.</returns>
         public double P()
         {
-            double totalPerimeter = 0;
+            double totalPerimeter = shapes.Sum(shape => shape.P());
 
-            foreach (var shape in shapes)
-            {
-                totalPerimeter += shape.GetPerimeter();
-            }
 
             return totalPerimeter;
         }
