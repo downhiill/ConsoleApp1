@@ -20,6 +20,7 @@ namespace ConsoleApp1
         /// Инициализация нового экземпляра квадрата с указаной шириной и высотой.
         /// </summary>
         /// <param name="a">Ширина и высота квадрата</param>
+        public Square() { }
         public Square (double a)
         {
             A = a;

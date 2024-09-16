@@ -19,6 +19,8 @@ namespace ConsoleApp1
         /// Инициализация нового экземпляра круга с указанным радиусом 
         /// </summary>
         /// <param name="radius">Радиус круга</param>
+
+        public Circle() { }
         public Circle(double radius)
         {
             Radius = radius;

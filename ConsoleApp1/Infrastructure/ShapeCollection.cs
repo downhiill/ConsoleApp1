@@ -22,7 +22,14 @@ namespace ConsoleApp1
         /// <param name="shape">Фигура, которую нужно добавить.</param>
         public void Add(Shape shape)
         {
-            shapes.Add(shape);
+            if (shape != null)
+            {
+                shapes.Add(shape);
+            }
+        }
+        public List<Shape> GetAllShapes()
+        {
+            return new List<Shape>(shapes);
         }
 
         /// <summary>
@@ -32,8 +39,7 @@ namespace ConsoleApp1
         /// <returns>Общая площадь фигур указанного типа.</returns>
         public double S<T>() where T : Shape
         {
-            double totalArea = shapes.OfType<T>().Sum(shape => shape.S());
-            return totalArea;
+            return shapes.OfType<T>().Sum(shape => shape.S());
         }
         /// <summary>
         /// Вычисляет общую площадь всех фигур в коллекции.
@@ -41,30 +47,25 @@ namespace ConsoleApp1
         /// <returns>Общая площадь всех фигур в коллекции.</returns>
         public double S()
         {
-            double totalArea = shapes.Sum(shape => shape.S());
-            return totalArea;
+            return shapes.Sum(shape => shape.S());
         }
         /// <summary>
         /// Выводит периметры всех фигур указанного типа в коллекции.
         /// </summary>
         /// <typeparam name="T">Тип фигур для расчета периметра. Тип должен наследовать от <see cref="Shape"/>.</typeparam>
         /// <returns>Периметры фигур указанного типа в виде строки, разделенной переводами строк.</returns>
-        public double P<T>() where T : Shape
+        public string P<T>() where T : Shape
         {
-            double totalPerimeter = shapes.OfType<T>().Sum(shape => shape.P());
-
-            return totalPerimeter;
+            return string.Join(Environment.NewLine, shapes.OfType<T>().Select(shape => shape.P()));
         }
         /// <summary>
         /// Выводит периметры всех фигур в коллекции.
         /// </summary>
         /// <returns>Периметры всех фигур в коллекции в виде строки, разделенной переводами строк.</returns>
-        public double P()
+        public string P()
         {
-            double totalPerimeter = shapes.Sum(shape => shape.P());
-
-
-            return totalPerimeter;
+            // Формируем строку с периметрами всех фигур
+            return string.Join(Environment.NewLine, shapes.Select(shape => shape.P()));
         }
 
     }

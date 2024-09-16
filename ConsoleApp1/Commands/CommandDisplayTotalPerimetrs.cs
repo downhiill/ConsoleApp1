@@ -32,15 +32,23 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
             Console.Clear();
             Console.WriteLine("Периметры всех фигур:");
 
-            // Перебираем все фигуры в коллекции
-            foreach (var shape in _shapeCollection.shapes) 
+            // Для каждой фигуры в коллекции выводим ее периметр
+            foreach (var shape in _shapeCollection.GetAllShapes())
             {
-                double perimeter = _shapeCollection.P();
-                string shapeName = shape.GetType().Name;
-
-                
-                Console.WriteLine($"Фигура: {shapeName}, Периметр = {perimeter}");
+                Console.WriteLine($"Фигура: {shape.GetType().Name}, Периметр = {shape.P()}");
             }
+        }
+
+        /// <summary>
+        /// Получает описание команды и её использования.
+        /// </summary>
+        /// <returns>Описание команды.</returns>
+        public string Help()
+        {
+            return "Команда 'показать_все_периметры' отображает периметры всех фигур, которые добавлены в коллекцию.\n" +
+                   "Параметры команды не требуются.\n" +
+                   "Пример использования:\n" +
+                   "показать_все_периметры\n";
         }
     }
 }

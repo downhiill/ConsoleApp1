@@ -26,5 +26,18 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
         {
             Environment.Exit(0);
         }
+
+
+        /// <summary>
+        /// Получает описание команды и её использования.
+        /// </summary>
+        /// <returns>Описание команды.</returns>
+        public string Help()
+        {
+            return "Команда 'выход' завершает выполнение приложения.\n" +
+                   "Параметры команды не требуются.\n" +
+                   "Пример использования:\n" +
+                   "выход\n";
+        }
     }
 }

@@ -30,8 +30,19 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
         public void Execute(string parameters)
         {
             Console.Clear();
-            double totalArea = _shapeCollection.S(); // Получаем общую площадь
-            Console.WriteLine($"Сумма площадей всех фигур: {totalArea}");
+            Console.WriteLine($"Сумма площадей всех фигур: {_shapeCollection.S()}");
+        }
+
+        /// <summary>
+        /// Получает описание команды и её использования.
+        /// </summary>
+        /// <returns>Описание команды.</returns>
+        public string Help()
+        {
+            return "Команда 'показать_сумму_площади' отображает общую площадь всех фигур, которые добавлены в коллекцию.\n" +
+                   "Параметры команды не требуются.\n" +
+                   "Пример использования:\n" +
+                   "показать_сумму_площади\n";
         }
     }
 }

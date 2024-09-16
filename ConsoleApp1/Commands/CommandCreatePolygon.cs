@@ -40,11 +40,8 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
             var points = ParsePoints(parameters);
             var polygon = new Polygon(points);
 
-            double area = polygon.S();
-            double perimeter = polygon.P();
-
-            Console.WriteLine($"Площадь многоугольника: {area}");
-            Console.WriteLine($"Периметр многоугольника: {perimeter}");
+            Console.WriteLine($"Площадь многоугольника: {polygon.S()}");
+            Console.WriteLine($"Периметр многоугольника: {polygon.P()}");
 
             _shapeCollection.Add(polygon); // Добавляем многоугольник в список фигур
         }
@@ -85,6 +82,20 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
             }
 
             return points;
+        }
+
+        /// <summary>
+        /// Получает описание команды и её использования.
+        /// </summary>
+        /// <returns>Описание команды.</returns>
+        public string Help()
+        {
+            return "Команда 'добавить_многоугольник' создает многоугольник с заданными вершинами и добавляет его в коллекцию фигур.\n" +
+                   "Формат параметров: [(x;y),(x;y),...], где x и y — координаты вершин многоугольника. \n" +
+                   "Минимальное количество вершин — 3.\n" +
+                   "Примеры использования:\n" +
+                   "добавить_многоугольник [(1;1),(1;4),(4;4),(4;1)]\n" +
+                   "добавить_многоугольник [(0;0),(5;0),(5;5),(0;5)]\n";
         }
 
     }

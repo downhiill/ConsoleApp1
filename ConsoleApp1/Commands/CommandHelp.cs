@@ -39,6 +39,13 @@ namespace ConsoleApp1.Commands
             PrintHelp();
         }
 
+        public string Help()
+        {
+            return "Выводит список доступных команд и их описание.\n" +
+                   "Параметры команды не требуются.\n" +
+                   "Пример использования:\n" +
+                   "помощь\n";
+        }
         /// <summary>
         /// Выводит список команд и их описание в консоль.
         /// </summary>
@@ -46,14 +53,14 @@ namespace ConsoleApp1.Commands
         {
             Console.Clear();
             ConsoleExtensions.PrintCenteredText("Список команд");
-            ConsoleExtensions.PrintLine("");
+            ConsoleExtensions.PrintLine();
 
-            foreach (var command in commands)
-            {
-                Console.WriteLine($"\t{command.Name}");
-            }
+            commands
+            .Select(command => $"\t{command.Name} -  {command.Help()}") // Проектируем каждую команду в строку
+            .ToList() // Преобразуем в List<string> для использования ForEach
+            .ForEach(Console.WriteLine); // Печатаем каждую строку
 
-            ConsoleExtensions.PrintLine("");
+            ConsoleExtensions.PrintLine();
         }
     }
 }

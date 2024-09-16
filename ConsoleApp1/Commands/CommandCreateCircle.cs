@@ -35,14 +35,12 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
             double radius = ParseRadius(parameters);
             var circle = new Circle(radius); // Создаем круг с заданным радиусом
 
-            double area = circle.S();
-            double circumference = circle.P();
-
-            Console.WriteLine($"Площадь круга: {area}");
-            Console.WriteLine($"Длина окружности: {circumference}");
+            Console.WriteLine($"Площадь круга: {circle.S()}");
+            Console.WriteLine($"Длина окружности: {circle.P()}");
 
             _shapeCollection.Add(circle);
         }
+
 
         /// <summary>
         /// Парсит строку с параметром радиуса из строки формата [x].
@@ -50,7 +48,7 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
         /// <param name="parameters">Строка параметров, содержащая радиус круга в формате [x].</param>
         /// <returns>Радиус круга.</returns>
         /// <exception cref="ArgumentException">Выбрасывается, если формат строки некорректен или радиус не является положительным числом.</exception>
-        private double ParseRadius(string parameters)
+         double ParseRadius(string parameters)
         {
             var pattern = @"\[(.*?)\]";
             var match = Regex.Match(parameters, pattern);
@@ -71,6 +69,19 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
             {
                 throw new ArgumentException("Некорректный формат данных. Пожалуйста, используйте формат [x], где x — радиус круга.");
             }
+        }
+
+        /// <summary>
+        /// Получает описание команды и её использования.
+        /// </summary>
+        /// <returns>Описание команды.</returns>
+        public string Help()
+        {
+            return "Команда 'добавить_круг' создает круг с заданным радиусом и добавляет его в коллекцию фигур.\n" +
+                   "Формат параметров: [x], где x — радиус круга, положительное число.\n" +
+                   "Примеры использования:\n" +
+                   "добавить_круг [5.5]\n" +
+                   "добавить_круг [10]\n";
         }
 
     }

@@ -1,4 +1,5 @@
 ﻿using ConsoleApp1.Commands;
+using ConsoleApp1.Extensions;
 using ConsoleApp1.GeometricShapeCalculator.Infrastructure;
 using ConsoleApp1_Extensions;
 
@@ -40,6 +41,8 @@ namespace ConsoleApp1
             new CommandCreatePolygon(ShapeCollection),
             new CommandDisplayTotalArea(ShapeCollection),
             new CommandDisplayTotalPerimetrs(ShapeCollection),
+            new CommandSaveData(ShapeCollection),
+            new CommandLoadData(ShapeCollection),
             new CommandExit()
             };
             commands.Add(new CommandHelp(commands));
@@ -53,43 +56,21 @@ namespace ConsoleApp1
         {
             while(true)
             {
-                Console.Clear();
-                ConsoleExtensions.PrintCenteredText("Введите команду (или 'помощь' для списка команд):");
-                ConsoleExtensions.PrintLine("");
-                string input = Console.ReadLine()?.Trim();
-                if (input != null)
+                var (commandKey, parameters) = CommandParser.GetCommandAndParameters();
+                var command = commands.FirstOrDefault(c => c.Name == commandKey);
+
+                if (command != null)
                 {
-                    var parts = input.Split(new[] { ' ' }, 2);
-                    var commandKey = parts[0].ToLower();
-                    var parameters = parts.Length > 1 ? parts[1] : "";
-
-                    var command = commands.FirstOrDefault(c => c.Name == commandKey);
-
-                    if (command != null)
-                    {
-                        try
-                        {
-                            command.Execute(parameters);
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine($"Ошибка: {ex.Message}");
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("Неизвестная команда. Пожалуйста, попробуйте снова.");
-                    }
+                    CommandExtensions.TryExecute(command, parameters);
                 }
                 else
                 {
-                    Console.WriteLine("Неверный ввод.");
+                    Console.WriteLine("Неизвестная команда. Введите 'помощь' для списка команд.");
                 }
-                Console.ReadKey();
-                
             }
             
         }
-
     }
+
 }
+

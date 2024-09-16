@@ -35,11 +35,8 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
             double a = ParseSide(parameters);
             var square = new Square(a);
 
-            double area = square.S();
-            double perimeter = square.P();
-
-            Console.WriteLine($"Площадь квадрата: {area}");
-            Console.WriteLine($"Периметр квадрата: {perimeter}");
+            Console.WriteLine($"Площадь квадрата: {square.S()}");
+            Console.WriteLine($"Периметр квадрата: {square.P()}");
 
             _shapeCollection.Add(square); // Добавляем квадрат в список фигур
         }
@@ -72,6 +69,19 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
             {
                 throw new ArgumentException("Некорректный формат данных. Пожалуйста, используйте формат [длина_стороны], где длина стороны — положительное число.");
             }
+        }
+
+        /// <summary>
+        /// Получает описание команды и её использования.
+        /// </summary>
+        /// <returns>Описание команды.</returns>
+        public string Help()
+        {
+            return "Команда 'добавить_квадрат' создает квадрат с заданной длиной стороны и добавляет его в коллекцию фигур.\n" +
+                   "Формат параметров: [длина_стороны], где длина стороны — положительное число.\n" +
+                   "Примеры использования:\n" +
+                   "добавить_квадрат [4.5]\n" +
+                   "добавить_квадрат [10]\n";
         }
     }
     

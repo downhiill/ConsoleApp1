@@ -36,11 +36,8 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
             var dimensions = ParseDimensions(parameters);
             var rectangle = new Rectangle(dimensions.Width, dimensions.Height); // Создаем прямоугольник
 
-            double area = rectangle.S();
-            double perimeter = rectangle.P();
-
-            Console.WriteLine($"Площадь прямоугольника: {area}");
-            Console.WriteLine($"Периметр прямоугольника: {perimeter}");
+            Console.WriteLine($"Площадь прямоугольника: {rectangle.S()}");
+            Console.WriteLine($"Периметр прямоугольника: {rectangle.P()}");
 
             _shapeCollection.Add(rectangle); // Добавляем прямоугольник в список фигур
         }
@@ -77,6 +74,19 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
             {
                 throw new ArgumentException("Некорректный формат данных. Пожалуйста, используйте формат [ширина;высота], где ширина и высота — положительные числа.");
             }
+        }
+
+        /// <summary>
+        /// Получает описание команды и её использования.
+        /// </summary>
+        /// <returns>Описание команды.</returns>
+        public string Help()
+        {
+            return "Команда 'добавить_прямоугольник' создает прямоугольник с заданными шириной и высотой и добавляет его в коллекцию фигур.\n" +
+                   "Формат параметров: [ширина;высота], где ширина и высота — положительные числа.\n" +
+                   "Примеры использования:\n" +
+                   "добавить_прямоугольник [5.0;10.0]\n" +
+                   "добавить_прямоугольник [3;7]\n";
         }
     }
 }

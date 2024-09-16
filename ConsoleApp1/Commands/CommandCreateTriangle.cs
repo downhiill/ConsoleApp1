@@ -42,11 +42,8 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
             {
                 var triangle = new Triangle(a, b, c);
 
-                double area = triangle.S();
-                double perimeter = triangle.P();
-
-                Console.WriteLine($"Площадь треугольника: {area}");
-                Console.WriteLine($"Периметр треугольника: {perimeter}");
+                Console.WriteLine($"Площадь треугольника: {triangle.S()}");
+                Console.WriteLine($"Периметр треугольника: {triangle.P()}");
 
                 _shapeCollection.Add(triangle); // Добавляем треугольник в список фигур
             }
@@ -86,6 +83,19 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
                 throw new ArgumentException("Некорректный формат данных. Пожалуйста, используйте формат [сторона1;сторона2;сторона3].");
             }
         }
-    
+
+        /// <summary>
+        /// Получает описание команды и её использования.
+        /// </summary>
+        /// <returns>Описание команды.</returns>
+        public string Help()
+        {
+            return "Команда 'добавить_треугольник' создает треугольник с заданными сторонами и добавляет его в коллекцию фигур.\n" +
+                   "Формат параметров: [сторона1; сторона2; сторона3], где стороны — положительные числа.\n" +
+                   "Примеры использования:\n" +
+                   "добавить_треугольник [3;4;5]\n" +
+                   "добавить_треугольник [6.5;7.8;9.1]\n";
+        }
+
     }
 }
