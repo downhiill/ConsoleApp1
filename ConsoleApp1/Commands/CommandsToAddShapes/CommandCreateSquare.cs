@@ -15,6 +15,10 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
     {
         private readonly ShapeCollection _shapeCollection;
 
+        /// <summary>
+        /// Инициализирует новый экземпляр <see cref="CommandCreateSquare"/> с указанной коллекцией фигур.
+        /// </summary>
+        /// <param name="shapeCollection">Коллекция фигур, в которую будет добавлен новый многоугольник.</param>
         public CommandCreateSquare(ShapeCollection shapeCollection)
         {
             _shapeCollection = shapeCollection;
@@ -69,6 +73,37 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
             {
                 throw new ArgumentException("Некорректный формат данных. Пожалуйста, используйте формат [длина_стороны], где длина стороны — положительное число.");
             }
+        }
+
+        /// <summary>
+        /// Создает объект <see cref="Square"/> из строки, содержащей информацию о квадрате.
+        /// </summary>
+        /// <param name="data">Строка данных, содержащая информацию о квадрате в формате, где указано значение стороны, например "Сторона: 5.0".</param>
+        /// <returns>Объект <see cref="Square"/>, созданный на основе данных из строки.</returns>
+        /// <exception cref="FormatException">Выбрасывается, если строка не содержит корректного значения стороны квадрата.</exception>
+        public static Square FromString(string data)
+        {
+            var sidePart = data.Split(',').FirstOrDefault(p => p.Contains("Сторона:"));
+            if (sidePart != null)
+            {
+                var side = ExtractValue(sidePart);
+                if (double.TryParse(side, out double s))
+                {
+                    return new Square(s);
+                }
+            }
+            throw new FormatException("Неверный формат данных для Square");
+        }
+
+        /// <summary>
+        /// Извлекает значение из строки в формате "Ключ: Значение".
+        /// </summary>
+        /// <param name="part">Строка, содержащая ключ и значение, разделенные двоеточием, например "Сторона: 5.0".</param>
+        /// <returns>Значение после двоеточия, удаляя ведущие и завершающие пробелы.</returns>
+        private static string ExtractValue(string part)
+        {
+            var parts = part.Split(':');
+            return parts.Length > 1 ? parts[1].Trim() : string.Empty;
         }
 
         /// <summary>

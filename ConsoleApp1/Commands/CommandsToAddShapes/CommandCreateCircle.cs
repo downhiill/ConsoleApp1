@@ -15,6 +15,10 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
     {
         private readonly ShapeCollection _shapeCollection;
 
+        /// <summary>
+        /// Инициализирует новый экземпляр <see cref="CommandCreateCircle"/> с указанной коллекцией фигур.
+        /// </summary>
+        /// <param name="shapeCollection">Коллекция фигур, в которую будет добавлен новый многоугольник.</param>
         public CommandCreateCircle(ShapeCollection shapeCollection)
         {
             _shapeCollection = shapeCollection;
@@ -69,6 +73,37 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
             {
                 throw new ArgumentException("Некорректный формат данных. Пожалуйста, используйте формат [x], где x — радиус круга.");
             }
+        }
+
+        /// <summary>
+        /// Создает объект <see cref="Circle"/> из строки, содержащей информацию о круге.
+        /// </summary>
+        /// <param name="data">Строка данных, содержащая информацию о круге в формате, где указано значение радиуса, например "Радиус: 5.0".</param>
+        /// <returns>Объект <see cref="Circle"/>, созданный на основе данных из строки.</returns>
+        /// <exception cref="FormatException">Выбрасывается, если строка не содержит корректного значения радиуса.</exception>
+        internal static Circle FromString(string data)
+        {
+            var radiusPart = data.Split(',').FirstOrDefault(p => p.Contains("Радиус:"));
+            if (radiusPart != null)
+            {
+                var radius = ExtractValue(radiusPart);
+                if (double.TryParse(radius, out double r))
+                {
+                    return new Circle(r);
+                }
+            }
+            throw new FormatException("Неверный формат данных для Circle");
+        }
+
+        /// <summary>
+        /// Извлекает значение из строки в формате "Ключ: Значение".
+        /// </summary>
+        /// <param name="part">Строка, содержащая ключ и значение, разделенные двоеточием, например "Радиус: 5.0".</param>
+        /// <returns>Значение после двоеточия, удаляя ведущие и завершающие пробелы.</returns>
+        private static string ExtractValue(string part)
+        {
+            var parts = part.Split(':');
+            return parts.Length > 1 ? parts[1].Trim() : string.Empty;
         }
 
         /// <summary>

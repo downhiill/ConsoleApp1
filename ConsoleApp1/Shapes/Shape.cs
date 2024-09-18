@@ -22,6 +22,5 @@ namespace ConsoleApp1
         /// </summary>
         /// <returns>Периметр фигуры.</returns>
         public abstract double P();
-
     }
 }

@@ -5,9 +5,21 @@ using System.Linq;
 
 namespace ConsoleApp1.Commands
 {
-    internal class ShapeJsonConverter : JsonConverter<Shape>
+    /// <summary>
+    /// Конвертер JSON для сериализации и десериализации объектов типа <see cref="Shape"/>.
+    /// </summary>
+    internal class CommandJsonConverter : JsonConverter<Shape>
     {
-
+        /// <summary>
+        /// Десериализует JSON в объект типа <see cref="Shape"/>.
+        /// </summary>
+        /// <param name="reader">Чтение JSON.</param>
+        /// <param name="objectType">Тип объекта, который будет создан (в этом случае <see cref="Shape"/>).</param>
+        /// <param name="existingValue">Существующее значение объекта, если оно есть.</param>
+        /// <param name="hasExistingValue">Указывает, есть ли существующее значение.</param>
+        /// <param name="serializer">Объект сериализатора, который используется для десериализации.</param>
+        /// <returns>Объект типа <see cref="Shape"/> созданный на основе данных JSON.</returns>
+        /// <exception cref="JsonSerializationException">Если тип фигуры неизвестен.</exception>
         public override Shape ReadJson(JsonReader reader, Type objectType, Shape existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
             var jsonObject = JObject.Load(reader);
@@ -47,7 +59,12 @@ namespace ConsoleApp1.Commands
             }
         }
 
-
+        /// <summary>
+        /// Сериализует объект типа <see cref="Shape"/> в JSON.
+        /// </summary>
+        /// <param name="writer">Запись JSON.</param>
+        /// <param name="value">Объект типа <see cref="Shape"/> для сериализации.</param>
+        /// <param name="serializer">Объект сериализатора, который используется для сериализации.</param>
         public override void WriteJson(JsonWriter writer, Shape value, JsonSerializer serializer)
         {
             writer.WriteStartObject();

@@ -54,6 +54,5 @@ namespace ConsoleApp1
         /// </summary>
         /// <returns>Периметр треугольника</returns>
         public override double P() => A + B + C;
-   
     }
 }

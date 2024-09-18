@@ -74,22 +74,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\CommandHelp.cs" />
-    <Compile Include="Commands\CommandLoadData.cs" />
-    <Compile Include="Commands\CommandParser.cs" />
-    <Compile Include="Commands\CommandSaveData.cs" />
-    <Compile Include="Commands\ShapeInfo.cs" />
-    <Compile Include="Commands\ShapeJsonConverter.cs" />
+    <Compile Include="Commands\CommandsOptional\CommandHelp.cs" />
+    <Compile Include="Commands\CommandsOptional\CommandLoadData.cs" />
+    <Compile Include="Infrastructure\CommandsParser.cs" />
+    <Compile Include="Commands\CommandsOptional\CommandSaveData.cs" />
+    <Compile Include="Commands\CommandsOptional\CommandDataImporter.cs" />
+    <Compile Include="Commands\CommandsJSON\CommandJsonConverter.cs" />
     <Compile Include="Extensions\CommandExtensions.cs" />
     <Compile Include="Extensions\ConsoleExtensions.cs" />
-    <Compile Include="Commands\CommandCreateCircle.cs" />
-    <Compile Include="Commands\CommandCreatePolygon.cs" />
-    <Compile Include="Commands\CommandCreateRectangle.cs" />
-    <Compile Include="Commands\CommandCreateSquare.cs" />
-    <Compile Include="Commands\CommandCreateTriangle.cs" />
-    <Compile Include="Commands\CommandDisplayTotalArea.cs" />
-    <Compile Include="Commands\CommandDisplayTotalPerimetrs.cs" />
-    <Compile Include="Commands\CommandExit.cs" />
+    <Compile Include="Commands\CommandsToAddShapes\CommandCreateCircle.cs" />
+    <Compile Include="Commands\CommandsToAddShapes\CommandCreatePolygon.cs" />
+    <Compile Include="Commands\CommandsToAddShapes\CommandCreateRectangle.cs" />
+    <Compile Include="Commands\CommandsToAddShapes\CommandCreateSquare.cs" />
+    <Compile Include="Commands\CommandsToAddShapes\CommandCreateTriangle.cs" />
+    <Compile Include="Commands\CommandCalculation\CommandDisplayTotalArea.cs" />
+    <Compile Include="Commands\CommandCalculation\CommandDisplayTotalPerimetrs.cs" />
+    <Compile Include="Commands\CommandsOptional\CommandExit.cs" />
     <Compile Include="Infrastructure\ICommand.cs" />
     <Compile Include="Infrastructure\ShapeCollection.cs" />
     <Compile Include="Shapes\Geometry.cs" />

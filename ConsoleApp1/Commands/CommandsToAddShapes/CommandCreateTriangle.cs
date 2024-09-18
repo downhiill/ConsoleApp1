@@ -15,6 +15,10 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
     {
         private readonly ShapeCollection _shapeCollection;
 
+        /// <summary>
+        /// Инициализирует новый экземпляр <see cref="CommandCreateTriangle"/> с указанной коллекцией фигур.
+        /// </summary>
+        /// <param name="shapeCollection">Коллекция фигур, в которую будет добавлен новый многоугольник.</param>
         public CommandCreateTriangle(ShapeCollection shapeCollection)
         {
             _shapeCollection = shapeCollection;
@@ -31,7 +35,6 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
         /// <param name="parameters">Строка параметров, содержащая стороны треугольника в формате [сторона1; сторона2; сторона3].</param>
         public void Execute(string parameters)
         {
-            // Извлекаем параметры треугольника из строки в формате [1;2;3]
             var sides = ParseSides(parameters);
 
             if (sides.Length == 3 &&
@@ -45,7 +48,7 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
                 Console.WriteLine($"Площадь треугольника: {triangle.S()}");
                 Console.WriteLine($"Периметр треугольника: {triangle.P()}");
 
-                _shapeCollection.Add(triangle); // Добавляем треугольник в список фигур
+                _shapeCollection.Add(triangle); 
             }
             else
             {
@@ -82,6 +85,35 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
             {
                 throw new ArgumentException("Некорректный формат данных. Пожалуйста, используйте формат [сторона1;сторона2;сторона3].");
             }
+        }
+
+        /// <summary>
+        /// Создает объект <see cref="Triangle"/> из строки, содержащей информацию о сторонах треугольника.
+        /// </summary>
+        /// <param name="data">Строка данных, содержащая информацию о сторонах треугольника в формате, где указаны значения сторон, например "Стороны: A=3, B=4, C=5".</param>
+        /// <returns>Объект <see cref="Triangle"/>, созданный на основе данных из строки.</returns>
+        /// <exception cref="FormatException">Выбрасывается, если строка не содержит корректных данных для создания треугольника, таких как значения сторон или формат данных некорректен.</exception>
+        public static Triangle FromString(string data)
+        {
+            // Разделяем строку на части по запятым и убираем лишние пробелы
+            var parts = data.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                             .Select(part => part.Trim())
+                             .ToDictionary(
+                                 part => part.Split('=')[0].Trim(),
+                                 part => part.Split('=')[1].Trim());
+
+            // Проверяем наличие всех необходимых данных
+            if (parts.TryGetValue("Стороны: A", out string a) &&
+                parts.TryGetValue("B", out string b) &&
+                parts.TryGetValue("C", out string c) &&
+                double.TryParse(a, out double sideA) &&
+                double.TryParse(b, out double sideB) &&
+                double.TryParse(c, out double sideC))
+            {
+                return new Triangle(sideA, sideB, sideC);
+            }
+
+            throw new FormatException("Неверный формат данных для Triangle.");
         }
 
         /// <summary>

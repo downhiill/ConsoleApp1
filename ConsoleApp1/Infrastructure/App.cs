@@ -56,7 +56,7 @@ namespace ConsoleApp1
         {
             while(true)
             {
-                var (commandKey, parameters) = CommandParser.GetCommandAndParameters();
+                var (commandKey, parameters) = CommandsParser.GetCommandAndParameters();
                 var command = commands.FirstOrDefault(c => c.Name == commandKey);
 
                 if (command != null)

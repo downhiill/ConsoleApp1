@@ -15,6 +15,10 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
     {
         private readonly ShapeCollection _shapeCollection;
 
+        /// <summary>
+        /// Инициализирует новый экземпляр <see cref="CommandCreateRectangle"/> с указанной коллекцией фигур.
+        /// </summary>
+        /// <param name="shapeCollection">Коллекция фигур, в которую будет добавлен новый многоугольник.</param>
         public CommandCreateRectangle(ShapeCollection shapeCollection)
         {
             _shapeCollection = shapeCollection;
@@ -74,6 +78,39 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
             {
                 throw new ArgumentException("Некорректный формат данных. Пожалуйста, используйте формат [ширина;высота], где ширина и высота — положительные числа.");
             }
+        }
+
+        /// <summary>
+        /// Создает объект <see cref="Rectangle"/> из строки, содержащей информацию о прямоугольнике.
+        /// </summary>
+        /// <param name="data">Строка данных, содержащая информацию о прямоугольнике в формате, где указаны значения ширины и высоты, например "Ширина: 10.0, Высота: 5.0".</param>
+        /// <returns>Объект <see cref="Rectangle"/>, созданный на основе данных из строки.</returns>
+        /// <exception cref="FormatException">Выбрасывается, если строка не содержит корректных значений ширины и высоты.</exception>
+        public static Rectangle FromString(string data)
+        {
+            var widthPart = data.Split(',').FirstOrDefault(p => p.Contains("Ширина:"));
+            var heightPart = data.Split(',').FirstOrDefault(p => p.Contains("Высота:"));
+            if (widthPart != null && heightPart != null)
+            {
+                var width = ExtractValue(widthPart);
+                var height = ExtractValue(heightPart);
+                if (double.TryParse(width, out double w) && double.TryParse(height, out double h))
+                {
+                    return new Rectangle(w, h);
+                }
+            }
+            throw new FormatException("Неверный формат данных для Rectangle");
+        }
+
+        /// <summary>
+        /// Извлекает значение из строки в формате "Ключ: Значение".
+        /// </summary>
+        /// <param name="part">Строка, содержащая ключ и значение, разделенные двоеточием, например "Ширина: 10.0".</param>
+        /// <returns>Значение после двоеточия, удаляя ведущие и завершающие пробелы.</returns>
+        private static string ExtractValue(string part)
+        {
+            var parts = part.Split(':');
+            return parts.Length > 1 ? parts[1].Trim() : string.Empty;
         }
 
         /// <summary>

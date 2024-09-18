@@ -41,7 +41,7 @@ namespace ConsoleApp1
         /// Переопределение метода для вычисления периметра.
         /// </summary>
         /// <returns>Периметр прямоугольника</returns>
-        public override double P() => 2 * (Width + Height);
+        public override double P() => 2 * (Width + Height); 
     }
 }
 

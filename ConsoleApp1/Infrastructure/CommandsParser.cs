@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp1.Commands
 {
-    internal class CommandParser
+    internal class CommandsParser
     {
         /// <summary>
         /// Ожидает ввода команды пользователя и возвращает название команды и параметры.
