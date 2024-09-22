@@ -48,10 +48,10 @@ namespace ConsoleApp1.Commands
                 // Открываем файл в режиме добавления (append)
                 using (var writer = new StreamWriter(fileName, true, Encoding.UTF8))
                 {
-                     shapes
-                    .Select(FormatShapeData)  
-                    .ToList()                 
-                    .ForEach(writer.WriteLine);
+                    shapes
+                   .Select(FormatShapeData)
+                   .ToList()
+                   .ForEach(writer.WriteLine);
                 }
 
                 Console.WriteLine($"Данные успешно сохранены в файл '{fileName}'.");
@@ -60,43 +60,6 @@ namespace ConsoleApp1.Commands
             {
                 Console.WriteLine($"Ошибка при сохранении данных: {ex.Message}");
             }
-            /*SaveJSON
-            var fileName = string.IsNullOrEmpty(parameters) ? DefaultFileName : parameters;
-
-            try
-            {
-                var shapes = _shapeCollection.GetAllShapes();
-                List<Shape> existingShapes = new List<Shape>();
-                if (File.Exists(fileName))
-                {
-                    var existingJson = File.ReadAllText(fileName, Encoding.UTF8);
-                    existingShapes = JsonConvert.DeserializeObject<List<Shape>>(existingJson, new JsonSerializerSettings
-                    {
-                        Converters = { new ShapeJsonConverter() }
-                    }) ?? new List<Shape>();
-                }
-
-                // Сериализация фигур в JSON
-                // Объединяем старые данные с новыми
-                existingShapes.AddRange(shapes);
-
-                // Сериализация всех фигур (старые + новые) в JSON
-                var jsonSettings = new JsonSerializerSettings
-                {
-                    Formatting = Formatting.Indented,
-                    Converters = { new ShapeJsonConverter() }
-                };
-                var json = JsonConvert.SerializeObject(existingShapes, jsonSettings);
-
-                File.WriteAllText(fileName, json, Encoding.UTF8);
-
-                Console.WriteLine($"Данные успешно сохранены в файл '{fileName}'.");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Произошла ошибка при сохранении данных: {ex.Message}");
-            }
-            */
         }
 
         /// <summary>
@@ -106,22 +69,7 @@ namespace ConsoleApp1.Commands
         /// <returns>Строка, представляющая данные о фигуре в формате текста.</returns>
         private string FormatShapeData(Shape shape)
         {
-            switch (shape)
-            {
-                case Circle circle:
-                    return $"Фигура: Circle, Радиус: {circle.Radius}, Периметр: {circle.P()}, Площадь: {circle.S()}";
-                case Square square:
-                    return $"Фигура: Square, Сторона: {square.A}, Периметр: {square.P()}, Площадь: {square.S()}";
-                case Rectangle rectangle:
-                    return $"Фигура: Rectangle, Ширина: {rectangle.Width}, Высота: {rectangle.Height}, Периметр: {rectangle.P()}, Площадь: {rectangle.S()}";
-                case Triangle triangle:
-                    return $"Фигура: Triangle, Стороны: A={triangle.A}, B={triangle.B}, C={triangle.C}, Периметр: {triangle.P()}, Площадь: {triangle.S()}";
-                case Polygon polygon:
-                    var points = string.Join(", ", polygon.Points.Select(p => $"({p.X};{p.Y})"));
-                    return $"Фигура: Polygon, Точки: {points}, Периметр: {polygon.P()}, Площадь: {polygon.S()}";
-                default:
-                    return "Неизвестная фигура";
-            }
+            return shape.GetFormattedData();
         }
 
         /// <summary>

@@ -19,6 +19,6 @@ namespace ConsoleApp1
         {
             var controller = new App();
             controller.Run();
-        }   
+        }
     }
 }

@@ -45,8 +45,16 @@ namespace ConsoleApp1
         /// <returns>Площадь треугольника.</returns>
         public override double S()
         {
+
             double s = P() / 2;
-            return Math.Sqrt(s * (s - A) * (s - B) * (s - C));
+            double area = Math.Sqrt(s * (s - A) * (s - B) * (s - C));
+
+            if (double.IsNaN(area) || area < 0)
+            {
+                area = 0;
+            }
+
+            return area;
         }
 
         /// <summary>
@@ -54,5 +62,15 @@ namespace ConsoleApp1
         /// </summary>
         /// <returns>Периметр треугольника</returns>
         public override double P() => A + B + C;
+
+        /// <summary>
+        /// Форматирует данные о треугольнике в строку для вывода.
+        /// </summary>
+        /// <returns>Строка, представляющая данные о треугольнике.</returns>
+        /// <remarks>
+        /// Строка содержит информацию о стороне, периметре и площади треугольника.
+        /// </remarks>
+        public override string GetFormattedData() =>
+        $"Фигура: Triangle, Стороны: A={A}, B={B}, C={C}, Периметр: {P()}, Площадь: {S()}";
     }
 }

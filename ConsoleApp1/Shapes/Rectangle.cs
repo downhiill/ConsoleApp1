@@ -9,7 +9,7 @@ namespace ConsoleApp1
     /// <summary>
     /// Представляет прямоугольник с заданной шириной и высотой.
     /// </summary>
-    internal class Rectangle: Shape
+    internal class Rectangle : Shape
     {
         /// <summary>
         /// Ширина прямоугольника
@@ -41,7 +41,14 @@ namespace ConsoleApp1
         /// Переопределение метода для вычисления периметра.
         /// </summary>
         /// <returns>Периметр прямоугольника</returns>
-        public override double P() => 2 * (Width + Height); 
+        public override double P() => 2 * (Width + Height);
+
+        /// <summary>
+        /// Форматирует данные о прямоугольнике в строку для вывода.
+        /// </summary>
+        /// <returns>Строка, представляющая прямоугольник с его шириной, высотой, периметром и площадью.</returns>
+        public override string GetFormattedData() =>
+        $"Фигура: Rectangle, Ширина: {Width}, Высота: {Height}, Периметр: {P()}, Площадь: {S()}";
     }
 }
 

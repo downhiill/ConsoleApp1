@@ -7,7 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
+namespace ConsoleApp1.CommandsToAddShapes
 {
     /// <summary>
     /// Команда для создания и добавления многоугольника в коллекцию.
@@ -42,13 +42,20 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
         /// <param name="parameters">Строка параметров, содержащая вершины многоугольника в формате [(x;y),(x;y),...].</param>
         public void Execute(string parameters)
         {
-            var points = WriteParsePoints(parameters);
-            var polygon = new Polygon(points);
+            try
+            {
+                var points = WriteParsePoints(parameters);
+                var polygon = new Polygon(points);
 
-            Console.WriteLine($"Площадь многоугольника: {polygon.S()}");
-            Console.WriteLine($"Периметр многоугольника: {polygon.P()}");
+                Console.WriteLine($"Площадь многоугольника: {polygon.S()}");
+                Console.WriteLine($"Периметр многоугольника: {polygon.P()}");
 
-            _shapeCollection.Add(polygon); // Добавляем многоугольник в список фигур
+                _shapeCollection.Add(polygon); // Добавляем многоугольник в список фигур
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Ошибка при разборе Polygon: {ex.Message}");
+            }
         }
 
         /// <summary>
@@ -60,31 +67,24 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
         private List<Point> WriteParsePoints(string data)
         {
             var points = new List<Point>();
-            var pattern = @"\[(.*?)\]";
-            var match = Regex.Match(data, pattern);
+            var pattern = @"\((\d+(\.\d+)?);(\d+(\.\d+)?)\)";
+            var matches = Regex.Matches(data, pattern);
 
-            if (match.Success)
+            if (matches.Count < 3)
             {
-                var pointsStr = match.Groups[1].Value;
-                var pointPattern = @"\((\d+(\.\d+)?);(\d+(\.\d+)?)\)";
-                var matches = Regex.Matches(pointsStr, pointPattern);
-
-                if (matches.Count < 3)
-                {
-                    throw new ArgumentException("Для многоугольника требуется минимум три точки.");
-                }
-
-                foreach (Match m in matches)
-                {
-                    double x = double.Parse(m.Groups[1].Value, CultureInfo.InvariantCulture);
-                    double y = double.Parse(m.Groups[3].Value, CultureInfo.InvariantCulture);
-                    points.Add(new Point(x, y));
-                }
+                throw new ArgumentException("Для многоугольника требуется минимум три точки.");
             }
-            else
+
+            foreach (Match m in matches)
             {
-                throw new ArgumentException("Некорректный формат данных. Пожалуйста, используйте формат [(x;y),(x;y),...], " +
-                "где x — первая координата; y — вторая координата (минимум 3 точки).");
+                double x = double.Parse(m.Groups[1].Value, CultureInfo.InvariantCulture);
+                double y = double.Parse(m.Groups[3].Value, CultureInfo.InvariantCulture);
+                points.Add(new Point(x, y));
+            }
+
+            if (points.Count == 0)
+            {
+                throw new ArgumentException("Ни одна точка не была разобрана.");
             }
 
             return points;
@@ -96,16 +96,21 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
         /// <param name="data">Строка, содержащая информацию о многоугольнике, в формате, где "Точки:" указывает на начало списка вершин, а "Периметр:" — на конец списка.</param>
         /// <returns>Экземпляр <see cref="Polygon"/>, созданный на основе указанных вершин.</returns>
         /// <exception cref="FormatException">Выбрасывается, если формат строки некорректен или если количество вершин меньше трёх.</exception>
-        internal static Polygon FromString(string data)
+        public static Polygon FromString(string data)
         {
             var pointsStartIndex = data.IndexOf("Точки:") + "Точки:".Length;
-            var pointsString = data.Substring(pointsStartIndex)
-                .Split(new[] { "Периметр:" }, StringSplitOptions.None)
-                .FirstOrDefault()
-                ?.Trim()
+            var pointsEndIndex = data.IndexOf("Периметр:");
+
+            if (pointsStartIndex < 0 || pointsEndIndex < 0)
+            {
+                throw new FormatException("Не удается найти разделители 'Точки:' и 'Периметр:' в строке.");
+            }
+
+            var pointsString = data.Substring(pointsStartIndex, pointsEndIndex - pointsStartIndex)
+                .Trim()
                 .TrimEnd(',');
 
-            // Разбираем строку с точками
+            // Передаем pointsString напрямую, без префиксов
             var points = ReadParsePoints(pointsString);
 
             if (points != null && points.Count >= 3)
@@ -124,19 +129,27 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
         /// <exception cref="FormatException">Выбрасывается, если формат точки в строке некорректен.</exception>
         private static List<Point> ReadParsePoints(string pointsString)
         {
-             var points = pointsString
-            .Trim('(', ')')
-            .Split(new[] { "),(" }, StringSplitOptions.RemoveEmptyEntries)
-            .Select(pointString => pointString.Split(';'))
-            .Where(coordinates => coordinates.Length == 2 &&
-                                  double.TryParse(coordinates[0], out _) &&
-                                  double.TryParse(coordinates[1], out _))
-            .Select(coordinates => new Point(double.Parse(coordinates[0]), double.Parse(coordinates[1])))
+
+            // Убираем все лишние пробелы
+            pointsString = pointsString.Replace(" ", "");
+
+            // Создаем список для точек
+            var points = new List<Point>();
+
+            // Используем регулярное выражение для поиска точек в формате (x;y)
+            var pattern = @"\((\d+(\.\d+)?);(\d+(\.\d+)?)\)";
+            var matches = Regex.Matches(pointsString, pattern);
+
+            points = matches
+            .Cast<Match>()
+            .Select(m => new Point(
+                double.Parse(m.Groups[1].Value, CultureInfo.InvariantCulture),
+                double.Parse(m.Groups[3].Value, CultureInfo.InvariantCulture)))
             .ToList();
 
-            if (points.Count == 0)
+            if (points.Count < 3)
             {
-                Console.WriteLine("Ни одна точка не была разобрана.");
+                throw new ArgumentException("Для многоугольника требуется минимум три точки.");
             }
 
             return points;

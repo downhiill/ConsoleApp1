@@ -39,6 +39,9 @@ namespace ConsoleApp1.Commands
             PrintHelp();
         }
 
+        /// <summary>
+        /// Выводит список команд и их описание в консоль.
+        /// </summary>
         public string Help()
         {
             return "Выводит список доступных команд и их описание.\n" +
@@ -46,8 +49,9 @@ namespace ConsoleApp1.Commands
                    "Пример использования:\n" +
                    "помощь\n";
         }
+
         /// <summary>
-        /// Выводит список команд и их описание в консоль.
+        /// Печатает список команд и их описание в консоль.
         /// </summary>
         private void PrintHelp()
         {

@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
+namespace ConsoleApp1.CommandsToAddShapes
 {
     /// <summary>
     /// Команда для создания и добавления треугольника в коллекцию.
@@ -48,7 +48,7 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
                 Console.WriteLine($"Площадь треугольника: {triangle.S()}");
                 Console.WriteLine($"Периметр треугольника: {triangle.P()}");
 
-                _shapeCollection.Add(triangle); 
+                _shapeCollection.Add(triangle);
             }
             else
             {
@@ -95,22 +95,17 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
         /// <exception cref="FormatException">Выбрасывается, если строка не содержит корректных данных для создания треугольника, таких как значения сторон или формат данных некорректен.</exception>
         public static Triangle FromString(string data)
         {
-            // Разделяем строку на части по запятым и убираем лишние пробелы
-            var parts = data.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
-                             .Select(part => part.Trim())
-                             .ToDictionary(
-                                 part => part.Split('=')[0].Trim(),
-                                 part => part.Split('=')[1].Trim());
+            // Используем регулярное выражение для безопасного извлечения сторон A, B и C
+            var match = Regex.Match(data, @"Стороны:\s*A=(\d+(\.\d+)?),\s*B=(\d+(\.\d+)?),\s*C=(\d+(\.\d+)?)");
 
-            // Проверяем наличие всех необходимых данных
-            if (parts.TryGetValue("Стороны: A", out string a) &&
-                parts.TryGetValue("B", out string b) &&
-                parts.TryGetValue("C", out string c) &&
-                double.TryParse(a, out double sideA) &&
-                double.TryParse(b, out double sideB) &&
-                double.TryParse(c, out double sideC))
+            if (match.Success)
             {
-                return new Triangle(sideA, sideB, sideC);
+                if (double.TryParse(match.Groups[1].Value, out double sideA) &&
+                    double.TryParse(match.Groups[3].Value, out double sideB) &&
+                    double.TryParse(match.Groups[5].Value, out double sideC))
+                {
+                    return new Triangle(sideA, sideB, sideC);
+                }
             }
 
             throw new FormatException("Неверный формат данных для Triangle.");

@@ -9,7 +9,7 @@ namespace ConsoleApp1
     /// <summary>
     /// Коллекция геометрических фигур, предоставляющая методы для работы с ними.
     /// </summary>
-    public class ShapeCollection 
+    public class ShapeCollection
     {
         /// <summary>
         /// Список фигур, содержащихся в коллекции.

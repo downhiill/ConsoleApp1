@@ -78,7 +78,6 @@
     <Compile Include="Commands\CommandsOptional\CommandLoadData.cs" />
     <Compile Include="Infrastructure\CommandsParser.cs" />
     <Compile Include="Commands\CommandsOptional\CommandSaveData.cs" />
-    <Compile Include="Commands\CommandsOptional\CommandDataImporter.cs" />
     <Compile Include="Commands\CommandsJSON\CommandJsonConverter.cs" />
     <Compile Include="Extensions\CommandExtensions.cs" />
     <Compile Include="Extensions\ConsoleExtensions.cs" />

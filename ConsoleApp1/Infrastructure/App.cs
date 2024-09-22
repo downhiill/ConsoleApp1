@@ -1,4 +1,5 @@
 ﻿using ConsoleApp1.Commands;
+using ConsoleApp1.CommandsToAddShapes;
 using ConsoleApp1.Extensions;
 using ConsoleApp1.GeometricShapeCalculator.Infrastructure;
 using ConsoleApp1_Extensions;
@@ -54,7 +55,7 @@ namespace ConsoleApp1
         /// <returns>Возвращает <c>true</c>, если обработка команды была успешной, <c>false</c> в противном случае.</returns>
         public void Run()
         {
-            while(true)
+            while (true)
             {
                 var (commandKey, parameters) = CommandsParser.GetCommandAndParameters();
                 var command = commands.FirstOrDefault(c => c.Name == commandKey);
@@ -68,7 +69,7 @@ namespace ConsoleApp1
                     Console.WriteLine("Неизвестная команда. Введите 'помощь' для списка команд.");
                 }
             }
-            
+
         }
     }
 

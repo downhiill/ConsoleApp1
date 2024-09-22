@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -18,7 +19,7 @@ namespace ConsoleApp1.Commands
     {
         private readonly ShapeCollection _shapeCollection;
         private const string DefaultFileName = "ShapeData.txt"; // Имя файла по умолчанию
-        
+
         /// <summary>
         /// Получает имя команды.
         /// </summary>
@@ -54,9 +55,8 @@ namespace ConsoleApp1.Commands
             {
                 // Чтение содержимого файла построчно
                 var lines = File.ReadAllLines(fileName, Encoding.UTF8);
-                var importer = new CommandDataImporter(_shapeCollection);
 
-                lines.ToList().ForEach(line => importer.ParseAndAddShape(line));
+                lines.ToList().ForEach(line => ParseAndAddShape(line));
 
                 Console.WriteLine("Данные успешно загружены в коллекцию.");
             }
@@ -65,78 +65,54 @@ namespace ConsoleApp1.Commands
                 Console.WriteLine($"Ошибка при загрузке данных: {ex.Message}");
             }
 
+        }
 
-            /* LoadJSON
-            // Используем имя файла по умолчанию, если параметр пустой
-            var fileName = string.IsNullOrWhiteSpace(parameters) ? DefaultFileName : parameters;
+        /// <summary>
+        /// Разбирает строку и добавляет соответствующую фигуру в коллекцию.
+        /// </summary>
+        /// <param name="line">Строка, содержащая данные о фигуре.</param>
+        public void ParseAndAddShape(string line)
+        {
+            var parts = line.Split(',')
+        .Select(part => part.Trim())
+        .ToArray();
 
-            if (!File.Exists(fileName))
+            if (parts.Length < 2)
             {
-                Console.WriteLine($"Файл {fileName} не найден.");
+                Console.WriteLine($"Неверный формат строки: {line}");
                 return;
             }
 
+            var shapeType = parts[0].Split(':').Last().Trim();
 
             try
             {
-                // Чтение содержимого файла
-                var jsonData = File.ReadAllText(fileName);
+                // Указываем полное пространство имен + имя класса
+                var namespacePrefix = "ConsoleApp1.CommandsToAddShapes";  // Замените на ваше пространство имен
+                var className = $"{namespacePrefix}.CommandCreate{shapeType}";
+                var type = Type.GetType(className);
 
-                // Чтение массива объектов JSON
-                var shapesArray = JArray.Parse(jsonData);
-
-                // Для каждой фигуры в JSON создаём объект ShapeInfo и добавляем его в коллекцию _shapeCollection
-                foreach (var shape in shapesArray)
+                if (type == null)
                 {
-                    var shapeInfo = new ShapeInfo
-                    {
-                        Name = (string)shape["Фигура"],  // Название фигуры
-                        Perimeter = (double)shape["Периметр"],  // Периметр
-                        Area = (double)shape["Площадь"]  // Площадь
-                    };
-
-                    // Создаём фигуру на основе названия и добавляем её в коллекцию _shapeCollection
-                    switch (shapeInfo.Name)
-                    {
-                        case "Circle":
-                            var radius = (double)shape["Радиус"];
-                            _shapeCollection.Add(new Circle(radius));
-                            break;
-                        case "Square":
-                            var side = (double)shape["Сторона"];
-                            _shapeCollection.Add(new Square(side));
-                            break;
-                        case "Rectangle":
-                            var width = (double)shape["Ширина"];
-                            var height = (double)shape["Высота"];
-                            _shapeCollection.Add(new Rectangle(width, height));
-                            break;
-                        case "Triangle":
-                            var a = (double)shape["A"];
-                            var b = (double)shape["B"];
-                            var c = (double)shape["C"];
-                            _shapeCollection.Add(new Triangle(a,b,c));
-                            break;
-                        case "Polygon":
-                            // Извлечение списка точек из JSON
-                            var pointsArray = shape["Точки"].Children<JObject>()
-                                .Select(p => new Point((double)p["X"], (double)p["Y"]))
-                                .ToList();
-                            _shapeCollection.Add(new Polygon(pointsArray));
-                            break;
-                        default:
-                            Console.WriteLine($"Неизвестная фигура: {shapeInfo.Name}");
-                            break;
-                    }
+                    throw new FormatException($"Неизвестная фигура: {shapeType}");
                 }
 
-                Console.WriteLine("Данные успешно загружены в коллекцию.");
+                // Ищем статический метод FromString
+                var method = type.GetMethod("FromString", BindingFlags.Static | BindingFlags.Public);
+
+                if (method == null)
+                {
+                    throw new FormatException($"Метод FromString не найден для {shapeType}");
+                }
+
+                // Вызов метода для создания фигуры
+                var shape = (Shape)method.Invoke(null, new object[] { line });
+                _shapeCollection.Add(shape);
             }
-            catch (Exception ex)
+            catch (FormatException ex)
             {
-                Console.WriteLine($"Ошибка при загрузке данных: {ex.Message}");
+                Console.WriteLine($"Ошибка при разборе {shapeType}: {ex.Message}");
             }
-            */
         }
 
         /// <summary>

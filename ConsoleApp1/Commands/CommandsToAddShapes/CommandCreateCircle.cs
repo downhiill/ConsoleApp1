@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
+namespace ConsoleApp1.CommandsToAddShapes
 {
     /// <summary>
     /// Команда для создания и добавления круга в коллекцию.
@@ -52,7 +52,7 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
         /// <param name="parameters">Строка параметров, содержащая радиус круга в формате [x].</param>
         /// <returns>Радиус круга.</returns>
         /// <exception cref="ArgumentException">Выбрасывается, если формат строки некорректен или радиус не является положительным числом.</exception>
-         double ParseRadius(string parameters)
+        double ParseRadius(string parameters)
         {
             var pattern = @"\[(.*?)\]";
             var match = Regex.Match(parameters, pattern);
@@ -81,7 +81,7 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
         /// <param name="data">Строка данных, содержащая информацию о круге в формате, где указано значение радиуса, например "Радиус: 5.0".</param>
         /// <returns>Объект <see cref="Circle"/>, созданный на основе данных из строки.</returns>
         /// <exception cref="FormatException">Выбрасывается, если строка не содержит корректного значения радиуса.</exception>
-        internal static Circle FromString(string data)
+        public static Circle FromString(string data)
         {
             var radiusPart = data.Split(',').FirstOrDefault(p => p.Contains("Радиус:"));
             if (radiusPart != null)

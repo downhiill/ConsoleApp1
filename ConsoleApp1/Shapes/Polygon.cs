@@ -73,5 +73,13 @@ namespace ConsoleApp1
 
             return perimeter;
         }
+
+        /// <summary>
+        /// Форматирует данные о многоугольнике в строку для вывода.
+        /// </summary>
+        /// <returns>Строка, представляющая многоугольник с его точками, периметром и площадью.</returns>
+        public override string GetFormattedData() =>
+        $"Фигура: Polygon, Точки: {string.Join(", ", Points.Select(p => $"({p.X};{p.Y})"))}, Периметр: {P()}, Площадь: {S()}";
     }
 }
+

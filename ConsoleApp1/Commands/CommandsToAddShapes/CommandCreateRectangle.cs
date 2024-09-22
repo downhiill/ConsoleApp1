@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
+namespace ConsoleApp1.CommandsToAddShapes
 {
     /// <summary>
     /// Команда для создания и добавления прямоугольника в коллекцию.
