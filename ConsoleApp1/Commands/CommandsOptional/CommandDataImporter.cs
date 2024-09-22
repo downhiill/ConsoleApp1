@@ -39,7 +39,7 @@ namespace ConsoleApp1.Commands
 
             if (parts.Length < 2)
             {
-                Console.WriteLine($"Неверный формат строки: {line}");
+                Console.WriteLine($"Невный формат строки: {line}");
                 return;
             }
 
