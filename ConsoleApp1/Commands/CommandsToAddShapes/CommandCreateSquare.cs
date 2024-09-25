@@ -33,16 +33,19 @@ namespace ConsoleApp1.CommandsToAddShapes
         /// Выполняет команду, создавая квадрат с заданной длиной стороны и добавляя его в коллекцию фигур.
         /// </summary>
         /// <param name="parameters">Строка параметров, содержащая длину стороны квадрата в формате [длина_стороны].</param>
-        public void Execute(string parameters)
+        public void Execute(string parameters, bool shouldDisplayInfo = true)
         {
 
             double a = ParseSide(parameters);
             var square = new Square(a);
 
-            Console.WriteLine($"Площадь квадрата: {square.S()}");
-            Console.WriteLine($"Периметр квадрата: {square.P()}");
-
             _shapeCollection.Add(square); // Добавляем квадрат в список фигур
+
+            if(shouldDisplayInfo)
+            {
+                Console.WriteLine($"Площадь квадрата: {square.S()}");
+                Console.WriteLine($"Периметр квадрата: {square.P()}");
+            }
         }
 
         /// <summary>

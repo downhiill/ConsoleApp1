@@ -36,7 +36,7 @@ namespace ConsoleApp1.Commands
         /// Если имя файла не указано, используется значение по умолчанию "ShapeData.txt".
         /// </summary>
         /// <param name="parameters">Имя файла, в который будут сохранены данные. Если параметр пустой, используется значение по умолчанию.</param>
-        public void Execute(string parameters)
+        public void Execute(string parameters, bool shouldDisplayInfo = true)
         {
             // Используем имя файла по умолчанию, если параметр пустой
             var fileName = string.IsNullOrWhiteSpace(parameters) ? DefaultFileName : parameters;
@@ -49,7 +49,7 @@ namespace ConsoleApp1.Commands
                 using (var writer = new StreamWriter(fileName, true, Encoding.UTF8))
                 {
                     shapes
-                   .Select(FormatShapeData)
+                   .Select(shape => shape.GetCommand())
                    .ToList()
                    .ForEach(writer.WriteLine);
                 }
@@ -62,15 +62,7 @@ namespace ConsoleApp1.Commands
             }
         }
 
-        /// <summary>
-        /// Форматирует данные о фигуре в строку для записи в файл.
-        /// </summary>
-        /// <param name="shape">Фигура, данные о которой необходимо отформатировать.</param>
-        /// <returns>Строка, представляющая данные о фигуре в формате текста.</returns>
-        private string FormatShapeData(Shape shape)
-        {
-            return shape.GetFormattedData();
-        }
+
 
         /// <summary>
         /// Получает описание команды и её использования.

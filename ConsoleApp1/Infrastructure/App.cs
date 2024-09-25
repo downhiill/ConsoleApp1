@@ -26,7 +26,7 @@ namespace ConsoleApp1
         /// <summary>
         /// Список команд, доступных для выполнения в приложении.
         /// </summary>
-        private readonly List<ICommand> commands;
+        public readonly List<ICommand> commands;
 
         /// <summary>
         /// Инициализирует новый экземпляр класса <see cref="App"/> и настраивает доступные команды.
@@ -43,9 +43,10 @@ namespace ConsoleApp1
             new CommandDisplayTotalArea(ShapeCollection),
             new CommandDisplayTotalPerimetrs(ShapeCollection),
             new CommandSaveData(ShapeCollection),
-            new CommandLoadData(ShapeCollection),
             new CommandExit()
             };
+            // Теперь, когда список команд полностью инициализирован, добавляем CommandLoadData
+            commands.Add(new CommandLoadData(ShapeCollection, commands)); // Передаем список команд
             commands.Add(new CommandHelp(commands));
         }
 

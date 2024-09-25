@@ -22,7 +22,7 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
         /// Выполняет команду выхода из приложения.
         /// </summary>
         /// <param name="parameters">Параметры команды. Не используются в данной реализации. Значение по умолчанию — пустая строка.</param>
-        public void Execute(string parameters)
+        public void Execute(string parameters, bool shouldDisplayInfo = true)
         {
             Environment.Exit(0);
         }

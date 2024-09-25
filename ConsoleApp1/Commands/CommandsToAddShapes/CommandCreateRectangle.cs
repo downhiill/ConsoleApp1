@@ -34,16 +34,19 @@ namespace ConsoleApp1.CommandsToAddShapes
         /// Выполняет команду, создавая прямоугольник с заданными шириной и высотой и добавляя его в коллекцию фигур.
         /// </summary>
         /// <param name="parameters">Строка параметров, содержащая ширину и высоту прямоугольника в формате [ширина;высота].</param>
-        public void Execute(string parameters)
+        public void Execute(string parameters, bool shouldDisplayInfo = true)
         {
             // Разделяем параметры на ширину и высоту
             var dimensions = ParseDimensions(parameters);
             var rectangle = new Rectangle(dimensions.Width, dimensions.Height); // Создаем прямоугольник
 
-            Console.WriteLine($"Площадь прямоугольника: {rectangle.S()}");
-            Console.WriteLine($"Периметр прямоугольника: {rectangle.P()}");
-
             _shapeCollection.Add(rectangle); // Добавляем прямоугольник в список фигур
+
+            if(shouldDisplayInfo)
+            {
+                Console.WriteLine($"Площадь прямоугольника: {rectangle.S()}");
+                Console.WriteLine($"Периметр прямоугольника: {rectangle.P()}");
+            }
         }
 
         /// <summary>

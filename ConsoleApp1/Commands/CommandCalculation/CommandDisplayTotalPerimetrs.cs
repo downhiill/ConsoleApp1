@@ -27,7 +27,7 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
         /// Выполняет команду, отображая периметры всех фигур в коллекции приложения.
         /// </summary>
         /// <param name="parameters">Параметры команды. Не используются в данной реализации. Значение по умолчанию — пустая строка.</param>
-        public void Execute(string parameters)
+        public void Execute(string parameters, bool shouldDisplayInfo = true)
         {
             Console.Clear();
             Console.WriteLine("Периметры всех фигур:");

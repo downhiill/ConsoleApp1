@@ -40,5 +40,6 @@ namespace ConsoleApp1
         /// чтобы предоставить форматированное представление данных о фигуре.
         /// </remarks>
         public abstract string GetFormattedData();
+        public abstract string GetCommand();
     }
 }

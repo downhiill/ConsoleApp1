@@ -40,17 +40,18 @@ namespace ConsoleApp1.CommandsToAddShapes
         /// Выполняет команду, создавая многоугольник с заданными вершинами и добавляя его в коллекцию фигур.
         /// </summary>
         /// <param name="parameters">Строка параметров, содержащая вершины многоугольника в формате [(x;y),(x;y),...].</param>
-        public void Execute(string parameters)
+        public void Execute(string parameters, bool shouldDisplayInfo = true)
         {
             try
             {
                 var points = WriteParsePoints(parameters);
                 var polygon = new Polygon(points);
-
-                Console.WriteLine($"Площадь многоугольника: {polygon.S()}");
-                Console.WriteLine($"Периметр многоугольника: {polygon.P()}");
-
                 _shapeCollection.Add(polygon); // Добавляем многоугольник в список фигур
+                if(shouldDisplayInfo)
+                {
+                    Console.WriteLine($"Площадь многоугольника: {polygon.S()}");
+                    Console.WriteLine($"Периметр многоугольника: {polygon.P()}");
+                }
             }
             catch (Exception ex)
             {

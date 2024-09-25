@@ -52,5 +52,12 @@ namespace ConsoleApp1
         /// <returns>Строка, представляющая круг с радиусом, периметром и площадью.</returns>
         public override string GetFormattedData() =>
         $"Фигура: Circle, Радиус: {Radius}, Периметр: {P()}, Площадь: {S()}";
+
+        /// <summary>
+        /// Возвращает команду для создания круга.
+        /// </summary>
+        /// <returns>Строка команды для создания круга.</returns>
+        public override string GetCommand() =>
+        $"добавить_круг [{Radius}]";
     }
 }

@@ -49,6 +49,13 @@ namespace ConsoleApp1
         /// <returns>Строка, представляющая прямоугольник с его шириной, высотой, периметром и площадью.</returns>
         public override string GetFormattedData() =>
         $"Фигура: Rectangle, Ширина: {Width}, Высота: {Height}, Периметр: {P()}, Площадь: {S()}";
+
+        /// <summary>
+        /// Возвращает команду для создания прямоугольника.
+        /// </summary>
+        /// <returns>Строка команды для создания прямоугольника.</returns>
+        public override string GetCommand() =>
+            $"добавить_прямоугольник [{Width};{Height}]";
     }
 }
 

@@ -33,7 +33,7 @@ namespace ConsoleApp1.CommandsToAddShapes
         /// Выполняет команду, создавая треугольник с заданными сторонами и добавляя его в коллекцию фигур.
         /// </summary>
         /// <param name="parameters">Строка параметров, содержащая стороны треугольника в формате [сторона1; сторона2; сторона3].</param>
-        public void Execute(string parameters)
+        public void Execute(string parameters, bool shouldDisplayInfo = true)
         {
             var sides = ParseSides(parameters);
 
@@ -45,10 +45,13 @@ namespace ConsoleApp1.CommandsToAddShapes
             {
                 var triangle = new Triangle(a, b, c);
 
-                Console.WriteLine($"Площадь треугольника: {triangle.S()}");
-                Console.WriteLine($"Периметр треугольника: {triangle.P()}");
-
                 _shapeCollection.Add(triangle);
+                
+                if(shouldDisplayInfo)
+                {
+                    Console.WriteLine($"Площадь треугольника: {triangle.S()}");
+                    Console.WriteLine($"Периметр треугольника: {triangle.P()}");
+                }
             }
             else
             {

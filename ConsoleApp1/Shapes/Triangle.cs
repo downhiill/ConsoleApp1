@@ -72,5 +72,12 @@ namespace ConsoleApp1
         /// </remarks>
         public override string GetFormattedData() =>
         $"Фигура: Triangle, Стороны: A={A}, B={B}, C={C}, Периметр: {P()}, Площадь: {S()}";
+
+        /// <summary>
+        /// Возвращает команду для создания треугольника.
+        /// </summary>
+        /// <returns>Строка команды для создания треугольника.</returns>
+        public override string GetCommand() =>
+            $"добавить_треугольник [{A};{B};{C}]";
     }
 }

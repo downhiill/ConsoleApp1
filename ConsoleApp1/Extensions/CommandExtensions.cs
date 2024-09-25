@@ -18,22 +18,15 @@ namespace ConsoleApp1.Extensions
         /// </summary>
         /// <param name="command">Команда, которую нужно выполнить.</param>
         /// <param name="parameters">Параметры для выполнения команды.</param>
-        public static void TryExecute(this ICommand command, string parameters)
+        public static void TryExecute(ICommand command, string parameters, bool shouldDisplayInfo = true)
         {
-            if (command != null)
+            try
             {
-                try
-                {
-                    command.Execute(parameters);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Ошибка: {ex.Message}");
-                }
+                command.Execute(parameters, shouldDisplayInfo);
             }
-            else
+            catch (Exception ex)
             {
-                Console.WriteLine("Неизвестная команда. Пожалуйста, попробуйте снова.");
+                Console.WriteLine($"Ошибка при выполнении команды {command.Name}: {ex.Message}");
             }
         }
     }

@@ -34,17 +34,18 @@ namespace ConsoleApp1.CommandsToAddShapes
         /// Выполняет команду, создавая круг с заданным радиусом и добавляя его в коллекцию фигур.
         /// </summary>
         /// <param name="parameters">Строка параметров, содержащая радиус круга в формате [x].</param>
-        public void Execute(string parameters)
+        public void Execute(string parameters, bool shouldDisplayInfo = true)
         {
             double radius = ParseRadius(parameters);
             var circle = new Circle(radius); // Создаем круг с заданным радиусом
-
-            Console.WriteLine($"Площадь круга: {circle.S()}");
-            Console.WriteLine($"Длина окружности: {circle.P()}");
-
             _shapeCollection.Add(circle);
-        }
 
+            if(shouldDisplayInfo)
+            {
+                Console.WriteLine($"Площадь круга: {circle.S()}");
+                Console.WriteLine($"Длина окружности: {circle.P()}");
+            }  
+        }
 
         /// <summary>
         /// Парсит строку с параметром радиуса из строки формата [x].

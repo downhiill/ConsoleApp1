@@ -53,5 +53,12 @@ namespace ConsoleApp1
         /// </remarks>
         public override string GetFormattedData() =>
         $"Фигура: Square, Сторона: {A}, Периметр: {P()}, Площадь: {S()}";
+
+        /// <summary>
+        /// Возвращает команду для создания квадрата.
+        /// </summary>
+        /// <returns>Строка команды для создания квадрата.</returns>
+        public override string GetCommand() =>
+            $"добавить_квадрат [{A}]";
     }
 }

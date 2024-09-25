@@ -80,6 +80,14 @@ namespace ConsoleApp1
         /// <returns>Строка, представляющая многоугольник с его точками, периметром и площадью.</returns>
         public override string GetFormattedData() =>
         $"Фигура: Polygon, Точки: {string.Join(", ", Points.Select(p => $"({p.X};{p.Y})"))}, Периметр: {P()}, Площадь: {S()}";
+
+        // <summary>
+        /// Возвращает команду для создания многоугольника.
+        /// </summary>
+        /// <returns>Строка команды для создания многоугольника.</returns>
+        public override string GetCommand() =>
+            $"добавить_многоугольник [{string.Join(", ", Points.Select(p => $"({p.X};{p.Y})"))}]";
     }
 }
+
 

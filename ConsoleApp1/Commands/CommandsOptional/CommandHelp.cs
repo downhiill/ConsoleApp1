@@ -34,7 +34,7 @@ namespace ConsoleApp1.Commands
         /// Выполняет команду, выводя список команд и их описание.
         /// </summary>
         /// <param name="parameters">Параметры команды. В данном случае игнорируются.</param>
-        public void Execute(string parameters)
+        public void Execute(string parameters, bool shouldDisplayInfo = true)
         {
             PrintHelp();
         }

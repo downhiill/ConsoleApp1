@@ -1,6 +1,5 @@
 ﻿
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using ConsoleApp1.Extensions;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,6 +17,7 @@ namespace ConsoleApp1.Commands
     internal class CommandLoadData : ICommand
     {
         private readonly ShapeCollection _shapeCollection;
+        private readonly List<ICommand> _commands;
         private const string DefaultFileName = "ShapeData.txt"; // Имя файла по умолчанию
 
         /// <summary>
@@ -30,9 +30,10 @@ namespace ConsoleApp1.Commands
         /// Инициализирует новый экземпляр класса <see cref="CommandLoadData"/>.
         /// </summary>
         /// <param name="shapeCollection">Коллекция фигур, в которую будут добавлены загруженные данные.</param>
-        public CommandLoadData(ShapeCollection shapeCollection)
+        public CommandLoadData(ShapeCollection shapeCollection, List<ICommand> commands)
         {
             _shapeCollection = shapeCollection;
+            _commands = commands ?? throw new ArgumentNullException(nameof(commands), "Список команд не может быть null");
         }
 
         /// <summary>
@@ -40,9 +41,8 @@ namespace ConsoleApp1.Commands
         /// Если имя файла не указано, используется значение по умолчанию "ShapeData.txt".
         /// </summary>
         /// <param name="parameters">Имя файла, из которого будут загружены данные. Если параметр пустой, используется значение по умолчанию.</param>
-        public void Execute(string parameters)
+        public void Execute(string parameters, bool shouldDisplayInfo = true)
         {
-            // Используем имя файла по умолчанию, если параметр пустой
             var fileName = string.IsNullOrWhiteSpace(parameters) ? DefaultFileName : parameters;
 
             if (!File.Exists(fileName))
@@ -53,8 +53,13 @@ namespace ConsoleApp1.Commands
 
             try
             {
-                // Чтение содержимого файла построчно
                 var lines = File.ReadAllLines(fileName, Encoding.UTF8);
+
+                if (lines == null || !lines.Any())
+                {
+                    Console.WriteLine("Файл пуст или не содержит данных.");
+                    return;
+                }
 
                 lines.ToList().ForEach(line => ParseAndAddShape(line));
 
@@ -73,45 +78,32 @@ namespace ConsoleApp1.Commands
         /// <param name="line">Строка, содержащая данные о фигуре.</param>
         public void ParseAndAddShape(string line)
         {
-            var parts = line.Split(',')
-        .Select(part => part.Trim())
-        .ToArray();
-
-            if (parts.Length < 2)
+            if (string.IsNullOrWhiteSpace(line))
             {
-                Console.WriteLine($"Неверный формат строки: {line}");
+                Console.WriteLine("Пустая или невалидная строка для разбора: " + line);
                 return;
             }
 
-            var shapeType = parts[0].Split(':').Last().Trim();
-
-            try
+            // Разделение строки на имя команды и параметры
+            var parts = line.Split(new[] { ' ' }, 2);
+            if (parts.Length < 1 || string.IsNullOrWhiteSpace(parts[0]))
             {
-                // Указываем полное пространство имен + имя класса
-                var namespacePrefix = "ConsoleApp1.CommandsToAddShapes";  // Замените на ваше пространство имен
-                var className = $"{namespacePrefix}.CommandCreate{shapeType}";
-                var type = Type.GetType(className);
-
-                if (type == null)
-                {
-                    throw new FormatException($"Неизвестная фигура: {shapeType}");
-                }
-
-                // Ищем статический метод FromString
-                var method = type.GetMethod("FromString", BindingFlags.Static | BindingFlags.Public);
-
-                if (method == null)
-                {
-                    throw new FormatException($"Метод FromString не найден для {shapeType}");
-                }
-
-                // Вызов метода для создания фигуры
-                var shape = (Shape)method.Invoke(null, new object[] { line });
-                _shapeCollection.Add(shape);
+                Console.WriteLine($"Неверный формат строки команды: {line}");
+                return;
             }
-            catch (FormatException ex)
+
+            var commandName = parts[0];
+            var parameters = parts.Length > 1 ? parts[1] : string.Empty;
+
+            var command = _commands.FirstOrDefault(c => c.Name == commandName);
+            if (command != null)
             {
-                Console.WriteLine($"Ошибка при разборе {shapeType}: {ex.Message}");
+                // При загрузке данных передаем параметр false, чтобы подавить вывод
+                CommandExtensions.TryExecute(command, parameters, false);
+            }
+            else
+            {
+                Console.WriteLine($"Неизвестная команда: {commandName}");
             }
         }
 
