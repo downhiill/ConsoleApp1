@@ -61,7 +61,6 @@ namespace ConsoleApp1.Commands
                     return;
                 }
 
-                // Передаем каждую строку на исполнение через метод Run
                 foreach (var line in lines)
                 {
                     if (string.IsNullOrWhiteSpace(line)) continue;

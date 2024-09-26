@@ -59,7 +59,7 @@ namespace ConsoleApp1
             while (true)
             {
                 var (commandKey, parameters) = CommandsParser.GetCommandAndParameters();
-                ExecuteCommand(commandKey, parameters); // Выполняем команду
+                ExecuteCommand(commandKey, parameters); 
             }
         }
 
