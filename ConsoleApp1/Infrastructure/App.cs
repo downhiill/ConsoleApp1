@@ -45,8 +45,8 @@ namespace ConsoleApp1
             new CommandSaveData(ShapeCollection),
             new CommandExit()
             };
-            // Теперь, когда список команд полностью инициализирован, добавляем CommandLoadData
-            commands.Add(new CommandLoadData(ShapeCollection, commands)); // Передаем список команд
+       
+            commands.Add(new CommandLoadData(ShapeCollection, this)); // Передаем список команд
             commands.Add(new CommandHelp(commands));
         }
 
@@ -59,19 +59,24 @@ namespace ConsoleApp1
             while (true)
             {
                 var (commandKey, parameters) = CommandsParser.GetCommandAndParameters();
-                var command = commands.FirstOrDefault(c => c.Name == commandKey);
-
-                if (command != null)
-                {
-                    CommandExtensions.TryExecute(command, parameters);
-                }
-                else
-                {
-                    Console.WriteLine("Неизвестная команда. Введите 'помощь' для списка команд.");
-                }
+                ExecuteCommand(commandKey, parameters); // Выполняем команду
             }
-
         }
+
+        public void ExecuteCommand(string commandKey, string parameters)
+        {
+            var command = commands.FirstOrDefault(c => c.Name == commandKey);
+
+            if (command != null)
+            {
+                CommandExtensions.TryExecute(command, parameters);
+            }
+            else
+            {
+                Console.WriteLine("Неизвестная команда. Введите 'помощь' для списка команд.");
+            }
+        }
+
     }
 
 }

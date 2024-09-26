@@ -17,7 +17,7 @@ namespace ConsoleApp1.Commands
     internal class CommandLoadData : ICommand
     {
         private readonly ShapeCollection _shapeCollection;
-        private readonly List<ICommand> _commands;
+        private readonly App _app;
         private const string DefaultFileName = "ShapeData.txt"; // Имя файла по умолчанию
 
         /// <summary>
@@ -30,10 +30,10 @@ namespace ConsoleApp1.Commands
         /// Инициализирует новый экземпляр класса <see cref="CommandLoadData"/>.
         /// </summary>
         /// <param name="shapeCollection">Коллекция фигур, в которую будут добавлены загруженные данные.</param>
-        public CommandLoadData(ShapeCollection shapeCollection, List<ICommand> commands)
+        public CommandLoadData(ShapeCollection shapeCollection, App app)
         {
             _shapeCollection = shapeCollection;
-            _commands = commands ?? throw new ArgumentNullException(nameof(commands), "Список команд не может быть null");
+            _app = app ?? throw new ArgumentNullException(nameof(app), "Экземпляр App не может быть null");
         }
 
         /// <summary>
@@ -61,7 +61,17 @@ namespace ConsoleApp1.Commands
                     return;
                 }
 
-                lines.ToList().ForEach(line => ParseAndAddShape(line));
+                // Передаем каждую строку на исполнение через метод Run
+                foreach (var line in lines)
+                {
+                    if (string.IsNullOrWhiteSpace(line)) continue;
+
+                    var parts = line.Split(new[] { ' ' }, 2);
+                    var commandName = parts[0];
+                    var commandParams = parts.Length > 1 ? parts[1] : string.Empty;
+
+                    _app.ExecuteCommand(commandName, commandParams);
+                }
 
                 Console.WriteLine("Данные успешно загружены в коллекцию.");
             }
@@ -70,41 +80,6 @@ namespace ConsoleApp1.Commands
                 Console.WriteLine($"Ошибка при загрузке данных: {ex.Message}");
             }
 
-        }
-
-        /// <summary>
-        /// Разбирает строку и добавляет соответствующую фигуру в коллекцию.
-        /// </summary>
-        /// <param name="line">Строка, содержащая данные о фигуре.</param>
-        public void ParseAndAddShape(string line)
-        {
-            if (string.IsNullOrWhiteSpace(line))
-            {
-                Console.WriteLine("Пустая или невалидная строка для разбора: " + line);
-                return;
-            }
-
-            // Разделение строки на имя команды и параметры
-            var parts = line.Split(new[] { ' ' }, 2);
-            if (parts.Length < 1 || string.IsNullOrWhiteSpace(parts[0]))
-            {
-                Console.WriteLine($"Неверный формат строки команды: {line}");
-                return;
-            }
-
-            var commandName = parts[0];
-            var parameters = parts.Length > 1 ? parts[1] : string.Empty;
-
-            var command = _commands.FirstOrDefault(c => c.Name == commandName);
-            if (command != null)
-            {
-                // При загрузке данных передаем параметр false, чтобы подавить вывод
-                CommandExtensions.TryExecute(command, parameters, false);
-            }
-            else
-            {
-                Console.WriteLine($"Неизвестная команда: {commandName}");
-            }
         }
 
         /// <summary>
