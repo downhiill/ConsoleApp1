@@ -51,10 +51,7 @@ namespace ConsoleApp1.Commands.CommandSaveType
                     var formatter = new BinaryFormatter();
                     var shapes = (List<Shape>)formatter.Deserialize(fileStream); // Предполагается, что вы сериализуете List<Shape>
 
-                    foreach (var shape in shapes)
-                    {
-                        _shapeCollection.Add(shape);
-                    }
+                    shapes.ToList().ForEach(shape => _shapeCollection.Add(shape));
                 }
 
                 Console.WriteLine("Данные успешно загружены в коллекцию.");
