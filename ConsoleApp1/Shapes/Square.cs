@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp1
 {
+    [Serializable]
     /// <summary>
     /// Представляет квадрат с заданной шириной и высотой.
     /// </summary>

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp1
 {
+    [Serializable]
     /// <summary>
     /// Представляет правильный многоугольник, заданный с помощью точек на плоскости.
     /// </summary>

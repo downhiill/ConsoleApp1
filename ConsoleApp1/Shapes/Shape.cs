@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp1
 {
+    [Serializable]
     /// <summary>
     /// Абстрактный базовый класс для геометрических фигур.
     /// </summary>

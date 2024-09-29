@@ -1,4 +1,5 @@
 ﻿using ConsoleApp1.Commands;
+using ConsoleApp1.Commands.CommandSaveType;
 using ConsoleApp1.CommandsToAddShapes;
 using ConsoleApp1.Extensions;
 using ConsoleApp1.GeometricShapeCalculator.Infrastructure;
@@ -42,11 +43,11 @@ namespace ConsoleApp1
             new CommandCreatePolygon(ShapeCollection),
             new CommandDisplayTotalArea(ShapeCollection),
             new CommandDisplayTotalPerimetrs(ShapeCollection),
-            new CommandSaveData(ShapeCollection),
+            new CommandBinSaveData(ShapeCollection),
             new CommandExit()
             };
        
-            commands.Add(new CommandLoadData(ShapeCollection, this)); // Передаем список команд
+            commands.Add(new CommandBinLoadData(ShapeCollection, this)); // Передаем список команд
             commands.Add(new CommandHelp(commands));
         }
 

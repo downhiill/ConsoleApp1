@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp1
 {
+    [Serializable]
     /// <summary>
     /// Представляет треугольник с заданными сторонами.
     /// </summary>

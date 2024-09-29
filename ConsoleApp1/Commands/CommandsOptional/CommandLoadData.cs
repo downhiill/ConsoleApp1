@@ -1,4 +1,6 @@
 ﻿
+using ConsoleApp1.Commands.CommandSaveType.txt;
+using ConsoleApp1.Commands.CommandSaveType;
 using ConsoleApp1.Extensions;
 using System;
 using System.Collections.Generic;
@@ -18,79 +20,43 @@ namespace ConsoleApp1.Commands
     {
         private readonly ShapeCollection _shapeCollection;
         private readonly App _app;
-        private const string DefaultFileName = "ShapeData.txt"; // Имя файла по умолчанию
+        private const string DefaultTxtFileName = "ShapeData.txt";
+        private const string DefaultBinFileName = "ShapeData.bin";
 
-        /// <summary>
-        /// Получает имя команды.
-        /// </summary>
-        /// <value>Имя команды, используемое для её идентификации. В данном случае — "загрузить_данные".</value>
         public string Name => "загрузить_данные";
 
-        /// <summary>
-        /// Инициализирует новый экземпляр класса <see cref="CommandLoadData"/>.
-        /// </summary>
-        /// <param name="shapeCollection">Коллекция фигур, в которую будут добавлены загруженные данные.</param>
         public CommandLoadData(ShapeCollection shapeCollection, App app)
         {
-            _shapeCollection = shapeCollection;
+            _shapeCollection = shapeCollection ?? throw new ArgumentNullException(nameof(shapeCollection), "Коллекция фигур не может быть null");
             _app = app ?? throw new ArgumentNullException(nameof(app), "Экземпляр App не может быть null");
         }
 
-        /// <summary>
-        /// Выполняет команду, загружая данные о фигурах из указанного файла и добавляя их в коллекцию.
-        /// Если имя файла не указано, используется значение по умолчанию "ShapeData.txt".
-        /// </summary>
-        /// <param name="parameters">Имя файла, из которого будут загружены данные. Если параметр пустой, используется значение по умолчанию.</param>
         public void Execute(string parameters, bool shouldDisplayInfo = true)
         {
-            var fileName = string.IsNullOrWhiteSpace(parameters) ? DefaultFileName : parameters;
+            var fileName = string.IsNullOrWhiteSpace(parameters) ? DefaultTxtFileName : parameters;
 
-            if (!File.Exists(fileName))
+            ICommand commandToExecute;
+
+            if (fileName.EndsWith(".bin", StringComparison.OrdinalIgnoreCase))
             {
-                Console.WriteLine($"Файл {fileName} не найден.");
-                return;
+                commandToExecute = new CommandBinLoadData(_shapeCollection, _app);
+            }
+            else // По умолчанию загружаем из txt
+            {
+                commandToExecute = new CommandTxtLoadData(_shapeCollection, _app);
             }
 
-            try
-            {
-                var lines = File.ReadAllLines(fileName, Encoding.UTF8);
-
-                if (lines == null || !lines.Any())
-                {
-                    Console.WriteLine("Файл пуст или не содержит данных.");
-                    return;
-                }
-
-                foreach (var line in lines)
-                {
-                    if (string.IsNullOrWhiteSpace(line)) continue;
-
-                    var parts = line.Split(new[] { ' ' }, 2);
-                    var commandName = parts[0];
-                    var commandParams = parts.Length > 1 ? parts[1] : string.Empty;
-
-                    _app.ExecuteCommand(commandName, commandParams);
-                }
-
-                Console.WriteLine("Данные успешно загружены в коллекцию.");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Ошибка при загрузке данных: {ex.Message}");
-            }
-
+            commandToExecute.Execute(fileName, shouldDisplayInfo);
         }
 
-        /// <summary>
-        /// Получает описание команды и её использования.
-        /// </summary>
-        /// <returns>Описание команды.</returns>
         public string Help()
         {
             return "Команда 'загрузить_данные' загружает данные о фигурах из файла.\n" +
-                   "Параметры команды: имя файла для загрузки. Если имя файла не указано, используется значение по умолчанию 'default_shapes_data.json'.\n" +
+                   "Параметры команды: имя файла для загрузки с расширением (.txt или .bin). Если имя файла не указано, используется значение по умолчанию 'ShapeData.txt'.\n" +
                    "Пример использования:\n" +
-                   "загрузить_данные имя_файла.json\n" +
+                   "загрузить_данные имя_файла.txt\n" +
+                   "или\n" +
+                   "загрузить_данные имя_файла.bin\n" +
                    "или\n" +
                    "загрузить_данные\n";
         }
