@@ -33,7 +33,7 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
             Console.WriteLine("Периметры всех фигур:");
 
             // Для каждой фигуры в коллекции выводим ее периметр
-            foreach (var shape in _shapeCollection.GetAllShapes())
+            foreach (var shape in _shapeCollection.ToList())
             {
                 Console.WriteLine($"Фигура: {shape.GetType().Name}, Периметр = {shape.P()}");
             }

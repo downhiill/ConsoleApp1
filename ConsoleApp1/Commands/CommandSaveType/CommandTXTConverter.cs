@@ -33,7 +33,7 @@ namespace ConsoleApp1.Commands.CommandSaveType
         {
             using (var writer = new StreamWriter(fileName, false, Encoding.UTF8))
             {
-                foreach (var shape in shapeCollection.GetAllShapes())
+                foreach (var shape in shapeCollection.ToList())
                 {
                     writer.WriteLine(shape.GetCommand());
                 }

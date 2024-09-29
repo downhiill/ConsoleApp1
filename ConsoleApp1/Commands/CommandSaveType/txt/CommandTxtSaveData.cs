@@ -2,37 +2,34 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleApp1.Commands.CommandSaveType
+namespace ConsoleApp1.Commands.CommandSaveType.txt
 {
-    /// <summary>
-    /// Команда для сохранения данных о фигурах в бинарный файл.
-    /// </summary>
-    internal class CommandBinSaveData : ICommand
+    internal class CommandTxtSaveData : ICommand
     {
         private readonly ShapeCollection _shapeCollection;
-        private const string DefaultFileName = "ShapeData.bin"; // Имя файла по умолчанию
+        private const string DefaultFileName = "ShapeData.txt"; // Имя файла по умолчанию
 
         /// <summary>
         /// Получает имя команды.
         /// </summary>
+        /// <value>Имя команды, используемое для её идентификации. В данном случае — "сохранить_данные".</value>
         public string Name => "сохранить_данные";
 
         /// <summary>
         /// Инициализирует новый экземпляр класса <see cref="CommandSaveData"/>.
         /// </summary>
         /// <param name="shapeCollection">Коллекция фигур, данные из которой будут сохранены в файл.</param>
-        public CommandBinSaveData(ShapeCollection shapeCollection)
+        public CommandTxtSaveData(ShapeCollection shapeCollection)
         {
             _shapeCollection = shapeCollection;
         }
 
         /// <summary>
-        /// Выполняет команду, сохраняя данные о фигурах из коллекции в указанный бинарный файл.
-        /// Если имя файла не указано, используется значение по умолчанию "ShapeData.bin".
+        /// Выполняет команду, сохраняя данные о фигурах из коллекции в указанный файл.
+        /// Если имя файла не указано, используется значение по умолчанию "ShapeData.txt".
         /// </summary>
         /// <param name="parameters">Имя файла, в который будут сохранены данные. Если параметр пустой, используется значение по умолчанию.</param>
         public void Execute(string parameters, bool shouldDisplayInfo = true)
@@ -42,13 +39,15 @@ namespace ConsoleApp1.Commands.CommandSaveType
 
             try
             {
-                var shapes = _shapeCollection.GetAllShapes();
+                var shapes = _shapeCollection.ToList();
 
-                // Сериализуем данные в бинарный файл
-                using (var stream = new FileStream(fileName, FileMode.Create, FileAccess.Write))
+                // Открываем файл в режиме добавления (append)
+                using (var writer = new StreamWriter(fileName, true, Encoding.UTF8))
                 {
-                    var formatter = new BinaryFormatter();
-                    formatter.Serialize(stream, shapes.ToList());
+                    shapes
+                   .Select(shape => shape.GetCommand())
+                   .ToList()
+                   .ForEach(writer.WriteLine);
                 }
 
                 Console.WriteLine($"Данные успешно сохранены в файл '{fileName}'.");
@@ -58,17 +57,16 @@ namespace ConsoleApp1.Commands.CommandSaveType
                 Console.WriteLine($"Ошибка при сохранении данных: {ex.Message}");
             }
         }
-
         /// <summary>
         /// Получает описание команды и её использования.
         /// </summary>
         /// <returns>Описание команды.</returns>
         public string Help()
         {
-            return "Команда 'сохранить_данные' сохраняет данные о фигурах в бинарный файл.\n" +
-                   "Параметры команды: имя файла для сохранения. Если имя файла не указано, используется значение по умолчанию 'ShapeData.bin'.\n" +
+            return "Команда 'сохранить_данные' сохраняет данные о фигурах в текстовый файл.\n" +
+                   "Параметры команды: имя файла для сохранения. Если имя файла не указано, используется значение по умолчанию 'ShapeData.txt'.\n" +
                    "Пример использования:\n" +
-                   "сохранить_данные имя_файла.bin\n" +
+                   "сохранить_данные имя_файла.txt\n" +
                    "или\n" +
                    "сохранить_данные\n";
         }
