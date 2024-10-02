@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using ConsoleApp1.Commands.CommandSaveType.bin;
 
 namespace ConsoleApp1.Commands
 {

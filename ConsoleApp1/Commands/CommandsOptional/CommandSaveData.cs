@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using ConsoleApp1.Commands.CommandSaveType.bin;
 
 namespace ConsoleApp1.Commands
 {

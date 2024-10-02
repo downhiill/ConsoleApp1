@@ -1,5 +1,6 @@
 ﻿using ConsoleApp1.Commands;
 using ConsoleApp1.Commands.CommandSaveType;
+using ConsoleApp1.Commands.CommandSaveType.bin;
 using ConsoleApp1.CommandsToAddShapes;
 using ConsoleApp1.Extensions;
 using ConsoleApp1.GeometricShapeCalculator.Infrastructure;
