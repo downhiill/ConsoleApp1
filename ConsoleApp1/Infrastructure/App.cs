@@ -1,17 +1,12 @@
 ﻿using ConsoleApp1.Commands;
 using ConsoleApp1.Commands.CommandSaveType;
-using ConsoleApp1.Commands.CommandSaveType.bin;
 using ConsoleApp1.CommandsToAddShapes;
 using ConsoleApp1.Extensions;
 using ConsoleApp1.GeometricShapeCalculator.Infrastructure;
-using ConsoleApp1_Extensions;
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace ConsoleApp1
 {
@@ -45,10 +40,11 @@ namespace ConsoleApp1
             new CommandDisplayTotalArea(ShapeCollection),
             new CommandDisplayTotalPerimetrs(ShapeCollection),
             new CommandBinSaveData(ShapeCollection),
+            new CommandBinLoadData(ShapeCollection),
             new CommandExit()
             };
        
-            commands.Add(new CommandBinLoadData(ShapeCollection, this)); // Передаем список команд
+            
             commands.Add(new CommandHelp(commands));
         }
 

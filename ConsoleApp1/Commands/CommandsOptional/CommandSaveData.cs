@@ -1,13 +1,5 @@
 ﻿using ConsoleApp1.Commands.CommandSaveType.txt;
-using ConsoleApp1.Commands.CommandSaveType;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using ConsoleApp1.Commands.CommandSaveType.bin;
 
 namespace ConsoleApp1.Commands
 {

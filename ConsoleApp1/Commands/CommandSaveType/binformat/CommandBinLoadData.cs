@@ -5,12 +5,11 @@ using System.IO;
 namespace ConsoleApp1.Commands.CommandSaveType
 {
     /// <summary>
-    /// Команда для загрузки данных о фигурах из бинарного ф
+    /// Команда для загрузки данных о фигурах из бинарного файла
     /// </summary>
     internal class CommandBinLoadData : ICommand
     {
         private readonly ShapeCollection _shapeCollection;
-        private readonly App _app;
         private const string DefaultFileName = "ShapeData.bin"; // Имя файла по умолчанию
 
         /// <summary>
@@ -22,12 +21,9 @@ namespace ConsoleApp1.Commands.CommandSaveType
         /// Инициализирует новый экземпляр класса <see cref="CommandBinLoadData"/>.
         /// </summary>
         /// <param name="shapeCollection">Коллекция фигур, в которую будут загружены данные из файла.</param>
-        /// <param name="app">Экземпляр приложения для выполнения команд.</param>
-        /// <exception cref="ArgumentNullException">Выбрасывается, если <paramref name="shapeCollection"/> или <paramref name="app"/> равны null.</exception>
-        public CommandBinLoadData(ShapeCollection shapeCollection, App app)
+        public CommandBinLoadData(ShapeCollection shapeCollection)
         {
             _shapeCollection = shapeCollection ?? throw new ArgumentNullException(nameof(shapeCollection), "Коллекция фигур не может быть null");
-            _app = app ?? throw new ArgumentNullException(nameof(app), "Экземпляр App не может быть null");
         }
 
         /// <summary>
@@ -49,15 +45,11 @@ namespace ConsoleApp1.Commands.CommandSaveType
             try
             {
                 using (var fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
-                using (var reader = new BinaryReader(fileStream))
                 {
                     while (fileStream.Position < fileStream.Length)
                     {
-                        var commandName = reader.ReadString(); // Читаем имя команды
-                        var commandParams = reader.ReadString(); // Читаем параметры команды
-
-                        // Выполняем команду в приложении
-                        _app.ExecuteCommand(commandName, commandParams);
+                        var shapeData = ReadShapeData(fileStream);
+                        _shapeCollection.Add(shapeData);
                     }
                 }
 
@@ -73,8 +65,100 @@ namespace ConsoleApp1.Commands.CommandSaveType
         }
 
         /// <summary>
+        /// Считывает данные фигуры из потока.
+        /// </summary>
+        /// <param name="stream">Поток с бинарными данными.</param>
+        /// <returns>Восстановленная фигура.</returns>
+        private Shape ReadShapeData(FileStream stream)
+        {
+            // Чтение уникального идентификатора фигуры
+            int shapeId = stream.ReadByte();
+
+            switch (shapeId)
+            {
+                case 1: // Круг
+                    return ReadCircle(stream);
+                case 2: // Квадрат
+                    return ReadSquare(stream);
+                case 3: // Треугольник
+                    return ReadTriangle(stream);
+                case 4: // Прямоугольник
+                    return ReadRectangle(stream);
+                case 5: // Многоугольник
+                    return ReadPolygon(stream);
+                default:
+                    throw new InvalidOperationException("Неизвестный тип фигуры");
+            }
+        }
+
+        // Метод для чтения данных круга
+        private Circle ReadCircle(FileStream stream)
+        {
+            var radiusBytes = new byte[sizeof(double)];
+            stream.Read(radiusBytes, 0, radiusBytes.Length);
+            double radius = BitConverter.ToDouble(radiusBytes, 0);
+
+            return new Circle(radius);
+        }
+
+        // Метод для чтения данных квадрата
+        private Square ReadSquare(FileStream stream)
+        {
+            var sideBytes = new byte[sizeof(double)];
+            stream.Read(sideBytes, 0, sideBytes.Length);
+            double side = BitConverter.ToDouble(sideBytes, 0);
+
+            return new Square(side);
+        }
+
+        // Метод для чтения данных треугольника
+        private Triangle ReadTriangle(FileStream stream)
+        {
+            var sideBytes = new byte[sizeof(double) * 3];
+            stream.Read(sideBytes, 0, sideBytes.Length);
+            double sideA = BitConverter.ToDouble(sideBytes, 0);
+            double sideB = BitConverter.ToDouble(sideBytes, sizeof(double));
+            double sideC = BitConverter.ToDouble(sideBytes, sizeof(double) * 2);
+
+            return new Triangle(sideA, sideB, sideC);
+        }
+
+        // Метод для чтения данных прямоугольника
+        private Rectangle ReadRectangle(FileStream stream)
+        {
+            var dataBytes = new byte[sizeof(double) * 2];
+            stream.Read(dataBytes, 0, dataBytes.Length);
+            double width = BitConverter.ToDouble(dataBytes, 0);
+            double height = BitConverter.ToDouble(dataBytes, sizeof(double));
+
+            return new Rectangle(width, height);
+        }
+
+        // Метод для чтения данных многоугольника
+        private Polygon ReadPolygon(FileStream stream)
+        {
+            var pointsCountBytes = new byte[sizeof(int)];
+            stream.Read(pointsCountBytes, 0, pointsCountBytes.Length);
+            int pointsCount = BitConverter.ToInt32(pointsCountBytes, 0);
+
+            var points = new List<Point>();
+            for (int i = 0; i < pointsCount; i++)
+            {
+                var pointData = new byte[sizeof(double) * 2];
+                stream.Read(pointData, 0, pointData.Length);
+                double x = BitConverter.ToDouble(pointData, 0);
+                double y = BitConverter.ToDouble(pointData, sizeof(double));
+
+                points.Add(new Point(x, y));
+            }
+
+            return new Polygon(points);
+        }
+
+        /// <summary>
         /// Получает описание команды и её использования.
         /// </summary>
+        /// <returns
         /// <returns>Описание команды.</returns>
         public string Help()
         {

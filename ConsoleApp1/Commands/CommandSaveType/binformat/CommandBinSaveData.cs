@@ -1,89 +1,130 @@
-﻿using System;
+﻿using ConsoleApp1;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
-namespace ConsoleApp1.Commands.CommandSaveType.bin
+internal class CommandBinSaveData : ICommand
 {
-    /// <summary>
-    /// Команда для сохранения данных о фигурах в бинарный файл
-    /// </summary>
-    internal class CommandBinSaveData : ICommand
+    private readonly ShapeCollection _shapeCollection;
+    private const string DefaultFileName = "ShapeData.bin";
+
+    public string Name => "сохранить_данные";
+
+    public CommandBinSaveData(ShapeCollection shapeCollection)
     {
-        private readonly ShapeCollection _shapeCollection;
-        private const string DefaultFileName = "ShapeData.bin"; // Имя файла по умолчанию
+        _shapeCollection = shapeCollection ?? throw new ArgumentNullException(nameof(shapeCollection));
+    }
 
-        /// <summary>
-        /// Получает имя команды.
-        /// </summary>
-        public string Name => "сохранить_данные";
+    public void Execute(string parameters, bool shouldDisplayInfo = true)
+    {
+        var fileName = string.IsNullOrWhiteSpace(parameters) ? DefaultFileName : parameters;
 
-        /// <summary>
-        /// Инициализирует новый экземпляр класса <see cref="CommandBinSaveData"/>.
-        /// </summary>
-        /// <param name="shapeCollection">Коллекция фигур, данные из которой будут сохранены в файл.</param>
-        /// <exception cref="ArgumentNullException">Выбрасывается, если <paramref name="shapeCollection"/> равен null.</exception>
-        public CommandBinSaveData(ShapeCollection shapeCollection)
+        try
         {
-            _shapeCollection = shapeCollection ?? throw new ArgumentNullException(nameof(shapeCollection), "Коллекция фигур не может быть null");
-        }
-
-        /// <summary>
-        /// Выполняет команду, сохраняя данные о фигурах в указанный файл.
-        /// Если имя файла не указано, используется значение по умолчанию "ShapeData.bin".
-        /// </summary>
-        /// <param name="parameters">Имя файла, в который будут сохранены данные. Если параметр пустой, используется значение по умолчанию.</param>
-        /// <param name="shouldDisplayInfo">Указывает, нужно ли отображать информацию об успешном выполнении команды.</param>
-        public void Execute(string parameters, bool shouldDisplayInfo = true)
-        {
-            var fileName = string.IsNullOrWhiteSpace(parameters) ? DefaultFileName : parameters;
-
-            try
+            using (var stream = new FileStream(fileName, FileMode.Create, FileAccess.Write))
             {
-                using (var stream = new FileStream(fileName, FileMode.Create, FileAccess.Write))
-                using (var writer = new BinaryWriter(stream))
-                {
-                    var shapes = _shapeCollection.ToList();
+                var fullData = new List<byte>();
 
-                    foreach (var shape in shapes)
+                foreach (var shape in _shapeCollection)
+                {
+                    byte[] shapeData;
+
+                    switch (shape)
                     {
-                        // Получаем команду для создания фигуры
-                        var command = shape.GetCommand(); // Получить команду создания фигуры
-
-                        // Разделяем команду на имя и параметры
-                        var parts = command.Split(new[] { ' ' }, 2);
-                        var commandName = parts[0]; // Имя команды
-                        var commandParams = parts.Length > 1 ? parts[1] : string.Empty; // Параметры команды
-
-                        // Записываем имя команды и параметры в бинарном формате
-                        writer.Write(commandName);
-                        writer.Write(commandParams);
+                        case Circle circle:
+                            shapeData = CreateCircleData(circle);
+                            break;
+                        case Square square:
+                            shapeData = CreateSquareData(square);
+                            break;
+                        case Triangle triangle:
+                            shapeData = CreateTriangleData(triangle);
+                            break;
+                        case Rectangle rectangle:
+                            shapeData = CreateRectangleData(rectangle);
+                            break;
+                        case Polygon polygon:
+                            shapeData = CreatePolygonData(polygon);
+                            break;
+                        default:
+                            throw new InvalidOperationException("Неизвестная фигура");
                     }
+
+                    // Добавляем байты фигуры в общий массив
+                    fullData.AddRange(shapeData);
                 }
 
-                if (shouldDisplayInfo)
-                {
-                    Console.WriteLine($"Команды успешно сохранены в файл '{fileName}'.");
-                }
+                // Записываем весь массив байтов в файл
+                stream.Write(fullData.ToArray(), 0, fullData.Count);
             }
-            catch (Exception ex)
+
+            if (shouldDisplayInfo)
             {
-                Console.WriteLine($"Ошибка при сохранении данных: {ex.Message}");
+                Console.WriteLine($"Фигуры успешно сохранены в файл '{fileName}'.");
             }
         }
-
-        /// <summary>
-        /// Получает описание команды и её использования.
-        /// </summary>
-        /// <returns>Описание команды.</returns>
-        public string Help()
+        catch (Exception ex)
         {
-            return "Команда 'сохранить_данные' сохраняет команды для создания фигур в бинарный файл.\n" +
-                   "Параметры команды: имя файла для сохранения. Если имя файла не указано, используется значение по умолчанию 'ShapeData.bin'.\n" +
-                   "Пример использования:\n" +
-                   "сохранить_данные имя_файла.bin\n" +
-                   "или\n" +
-                   "сохранить_данные\n";
+            Console.WriteLine($"Ошибка при сохранении данных: {ex.Message}");
         }
     }
+
+    // Метод для создания массива байтов для круга
+    private byte[] CreateCircleData(Circle circle)
+    {
+        var data = new List<byte>();
+        data.Add(1); // Уникальный идентификатор для круга
+        data.AddRange(BitConverter.GetBytes(circle.Radius));
+        return data.ToArray();
+    }
+
+    // Метод для создания массива байтов для квадрата
+    private byte[] CreateSquareData(Square square)
+    {
+        var data = new List<byte>();
+        data.Add(2); // Уникальный идентификатор для квадрата
+        data.AddRange(BitConverter.GetBytes(square.A));
+        return data.ToArray();
+    }
+
+    // Метод для создания массива байтов для треугольника
+    private byte[] CreateTriangleData(Triangle triangle)
+    {
+        var data = new List<byte>();
+        data.Add(3); // Уникальный идентификатор для треугольника
+        data.AddRange(BitConverter.GetBytes(triangle.A));
+        data.AddRange(BitConverter.GetBytes(triangle.B));
+        data.AddRange(BitConverter.GetBytes(triangle.C));
+        return data.ToArray();
+    }
+
+    // Метод для создания массива байтов для прямоугольника
+    private byte[] CreateRectangleData(Rectangle rectangle)
+    {
+        var data = new List<byte>();
+        data.Add(4); // Уникальный идентификатор для прямоугольника
+        data.AddRange(BitConverter.GetBytes(rectangle.Width));
+        data.AddRange(BitConverter.GetBytes(rectangle.Height));
+        return data.ToArray();
+    }
+
+    // Метод для создания массива байтов для многоугольника
+    private byte[] CreatePolygonData(Polygon polygon)
+    {
+        var data = new List<byte>();
+        data.Add(5); // Уникальный идентификатор для многоугольника
+        data.AddRange(BitConverter.GetBytes(polygon.Points.Count));
+
+        foreach (var point in polygon.Points)
+        {
+            data.AddRange(BitConverter.GetBytes(point.X));
+            data.AddRange(BitConverter.GetBytes(point.Y));
+        }
+
+        return data.ToArray();
+    }
+
+    public string Help() =>
+        "Команда 'сохранить_данные' сохраняет фигуры в бинарный файл.\n" +
+        "Пример: сохранить_данные имя_файла.bin";
 }

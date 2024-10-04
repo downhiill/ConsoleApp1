@@ -1,16 +1,7 @@
 ﻿
 using ConsoleApp1.Commands.CommandSaveType.txt;
 using ConsoleApp1.Commands.CommandSaveType;
-using ConsoleApp1.Extensions;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
-using ConsoleApp1.Commands.CommandSaveType.bin;
 
 namespace ConsoleApp1.Commands
 {
@@ -40,7 +31,7 @@ namespace ConsoleApp1.Commands
 
             if (fileName.EndsWith(".bin", StringComparison.OrdinalIgnoreCase))
             {
-                commandToExecute = new CommandBinLoadData(_shapeCollection, _app);
+                commandToExecute = new CommandBinLoadData(_shapeCollection);
             }
             else // По умолчанию загружаем из txt
             {
