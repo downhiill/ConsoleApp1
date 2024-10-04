@@ -6,6 +6,7 @@ using System.IO;
 internal class CommandBinSaveData : ICommand
 {
     private readonly ShapeCollection _shapeCollection;
+    private List<byte> data = new List<byte>();
     private const string DefaultFileName = "ShapeData.bin";
 
     public string Name => "сохранить_данные";
@@ -72,7 +73,7 @@ internal class CommandBinSaveData : ICommand
     // Метод для создания массива байтов для круга
     private byte[] CreateCircleData(Circle circle)
     {
-        var data = new List<byte>();
+        data.Clear();
         data.Add(1); // Уникальный идентификатор для круга
         data.AddRange(BitConverter.GetBytes(circle.Radius));
         return data.ToArray();
@@ -81,7 +82,7 @@ internal class CommandBinSaveData : ICommand
     // Метод для создания массива байтов для квадрата
     private byte[] CreateSquareData(Square square)
     {
-        var data = new List<byte>();
+        data.Clear();
         data.Add(2); // Уникальный идентификатор для квадрата
         data.AddRange(BitConverter.GetBytes(square.A));
         return data.ToArray();
@@ -90,7 +91,7 @@ internal class CommandBinSaveData : ICommand
     // Метод для создания массива байтов для треугольника
     private byte[] CreateTriangleData(Triangle triangle)
     {
-        var data = new List<byte>();
+        data.Clear();
         data.Add(3); // Уникальный идентификатор для треугольника
         data.AddRange(BitConverter.GetBytes(triangle.A));
         data.AddRange(BitConverter.GetBytes(triangle.B));
@@ -101,7 +102,7 @@ internal class CommandBinSaveData : ICommand
     // Метод для создания массива байтов для прямоугольника
     private byte[] CreateRectangleData(Rectangle rectangle)
     {
-        var data = new List<byte>();
+        data.Clear();
         data.Add(4); // Уникальный идентификатор для прямоугольника
         data.AddRange(BitConverter.GetBytes(rectangle.Width));
         data.AddRange(BitConverter.GetBytes(rectangle.Height));
@@ -111,7 +112,7 @@ internal class CommandBinSaveData : ICommand
     // Метод для создания массива байтов для многоугольника
     private byte[] CreatePolygonData(Polygon polygon)
     {
-        var data = new List<byte>();
+        data.Clear();
         data.Add(5); // Уникальный идентификатор для многоугольника
         data.AddRange(BitConverter.GetBytes(polygon.Points.Count));
 
