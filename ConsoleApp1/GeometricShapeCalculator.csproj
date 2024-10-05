@@ -92,10 +92,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\CommandSaveType\binformat\CommandBinLoadData.cs" />
-    <Compile Include="Commands\CommandSaveType\binformat\CommandBinSaveData.cs" />
-    <Compile Include="Commands\CommandSaveType\txt\CommandTxtLoadData.cs" />
-    <Compile Include="Commands\CommandSaveType\txt\CommandTxtSaveData.cs" />
+    <Compile Include="Commands\CommandSaveType\BinFormat\CommandBinLoadData.cs" />
+    <Compile Include="Commands\CommandSaveType\BinFormat\CommandBinSaveData.cs" />
+    <Compile Include="Commands\CommandSaveType\TxtFormat\CommandTxtLoadData.cs" />
+    <Compile Include="Commands\CommandSaveType\TxtFormat\CommandTxtSaveData.cs" />
     <Compile Include="Commands\CommandSaveType\CommandTXTConverter.cs" />
     <Compile Include="Commands\CommandsOptional\CommandHelp.cs" />
     <Compile Include="Commands\CommandsOptional\CommandLoadData.cs" />

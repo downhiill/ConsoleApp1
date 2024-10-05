@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ConsoleApp1
 {
@@ -41,6 +37,11 @@ namespace ConsoleApp1
         /// чтобы предоставить форматированное представление данных о фигуре.
         /// </remarks>
         public abstract string GetFormattedData();
+
+        /// <summary>
+        /// Получает команду для создания фигуры в текстовом формате.
+        /// </summary>
+        /// <returns>Строка, представляющая команду для создания фигуры.</returns>
         public abstract string GetCommand();
     }
 }

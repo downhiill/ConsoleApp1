@@ -3,19 +3,35 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
+/// <summary>
+/// Команда для сохранения данных о фигурах в бинарный файл.
+/// </summary>
 internal class CommandBinSaveData : ICommand
 {
     private readonly ShapeCollection _shapeCollection;
     private List<byte> data = new List<byte>();
     private const string DefaultFileName = "ShapeData.bin";
 
+    /// <summary>
+    /// Имя команды, которое используется для ее вызова.
+    /// </summary>
     public string Name => "сохранить_данные";
 
+    /// <summary>
+    /// Инициализирует новый экземпляр класса <see cref="CommandBinSaveData"/>.
+    /// </summary>
+    /// <param name="shapeCollection">Коллекция фигур для сохранения.</param>
+    /// <exception cref="ArgumentNullException">Выбрасывается, если передана пустая коллекция.</exception>
     public CommandBinSaveData(ShapeCollection shapeCollection)
     {
         _shapeCollection = shapeCollection ?? throw new ArgumentNullException(nameof(shapeCollection));
     }
 
+    /// <summary>
+    /// Выполняет сохранение коллекции фигур в бинарный файл.
+    /// </summary>
+    /// <param name="parameters">Имя файла для сохранения данных.</param>
+    /// <param name="shouldDisplayInfo">Флаг для вывода информации о результате сохранения.</param>
     public void Execute(string parameters, bool shouldDisplayInfo = true)
     {
         var fileName = string.IsNullOrWhiteSpace(parameters) ? DefaultFileName : parameters;
@@ -70,7 +86,11 @@ internal class CommandBinSaveData : ICommand
         }
     }
 
-    // Метод для создания массива байтов для круга
+    /// <summary>
+    /// Создает массив байтов для круга.
+    /// </summary>
+    /// <param name="circle">Круг для сохранения.</param>
+    /// <returns>Массив байтов, представляющий данные круга.</returns>
     private byte[] CreateCircleData(Circle circle)
     {
         data.Clear();
@@ -79,7 +99,11 @@ internal class CommandBinSaveData : ICommand
         return data.ToArray();
     }
 
-    // Метод для создания массива байтов для квадрата
+    /// <summary>
+    /// Создает массив байтов для квадрата.
+    /// </summary>
+    /// <param name="square">Квадрат для сохранения.</param>
+    /// <returns>Массив байтов, представляющий данные квадрата.</returns>
     private byte[] CreateSquareData(Square square)
     {
         data.Clear();
@@ -88,7 +112,11 @@ internal class CommandBinSaveData : ICommand
         return data.ToArray();
     }
 
-    // Метод для создания массива байтов для треугольника
+    /// <summary>
+    /// Создает массив байтов для треугольника.
+    /// </summary>
+    /// <param name="triangle">Треугольник для сохранения.</param>
+    /// <returns>Массив байтов, представляющий данные треугольника.</returns>
     private byte[] CreateTriangleData(Triangle triangle)
     {
         data.Clear();
@@ -99,7 +127,11 @@ internal class CommandBinSaveData : ICommand
         return data.ToArray();
     }
 
-    // Метод для создания массива байтов для прямоугольника
+    /// <summary>
+    /// Создает массив байтов для прямоугольника.
+    /// </summary>
+    /// <param name="rectangle">Прямоугольник для сохранения.</param>
+    /// <returns>Массив байтов, представляющий данные прямоугольника.</returns>
     private byte[] CreateRectangleData(Rectangle rectangle)
     {
         data.Clear();
@@ -109,7 +141,11 @@ internal class CommandBinSaveData : ICommand
         return data.ToArray();
     }
 
-    // Метод для создания массива байтов для многоугольника
+    /// <summary>
+    /// Создает массив байтов для многоугольника.
+    /// </summary>
+    /// <param name="polygon">Многоугольник для сохранения.</param>
+    /// <returns>Массив байтов, представляющий данные многоугольника.</returns>
     private byte[] CreatePolygonData(Polygon polygon)
     {
         data.Clear();
@@ -125,6 +161,9 @@ internal class CommandBinSaveData : ICommand
         return data.ToArray();
     }
 
+    /// <summary>
+    /// Возвращает строку с информацией о команде и примере использования.
+    /// </summary>
     public string Help() =>
         "Команда 'сохранить_данные' сохраняет фигуры в бинарный файл.\n" +
         "Пример: сохранить_данные имя_файла.bin";

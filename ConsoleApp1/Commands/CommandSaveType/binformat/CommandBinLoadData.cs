@@ -5,7 +5,7 @@ using System.IO;
 namespace ConsoleApp1.Commands.CommandSaveType
 {
     /// <summary>
-    /// Команда для загрузки данных о фигурах из бинарного файла
+    /// Команда для загрузки данных о фигурах из бинарного файла.
     /// </summary>
     internal class CommandBinLoadData : ICommand
     {
@@ -21,6 +21,7 @@ namespace ConsoleApp1.Commands.CommandSaveType
         /// Инициализирует новый экземпляр класса <see cref="CommandBinLoadData"/>.
         /// </summary>
         /// <param name="shapeCollection">Коллекция фигур, в которую будут загружены данные из файла.</param>
+        /// <exception cref="ArgumentNullException">Выбрасывается, если коллекция фигур равна null.</exception>
         public CommandBinLoadData(ShapeCollection shapeCollection)
         {
             _shapeCollection = shapeCollection ?? throw new ArgumentNullException(nameof(shapeCollection), "Коллекция фигур не может быть null");
@@ -69,6 +70,7 @@ namespace ConsoleApp1.Commands.CommandSaveType
         /// </summary>
         /// <param name="stream">Поток с бинарными данными.</param>
         /// <returns>Восстановленная фигура.</returns>
+        /// <exception cref="InvalidOperationException">Выбрасывается при неизвестном типе фигуры.</exception>
         private Shape ReadShapeData(FileStream stream)
         {
             // Чтение уникального идентификатора фигуры
@@ -76,42 +78,46 @@ namespace ConsoleApp1.Commands.CommandSaveType
 
             switch (shapeId)
             {
-                case 1: // Круг
-                    return ReadCircle(stream);
-                case 2: // Квадрат
-                    return ReadSquare(stream);
-                case 3: // Треугольник
-                    return ReadTriangle(stream);
-                case 4: // Прямоугольник
-                    return ReadRectangle(stream);
-                case 5: // Многоугольник
-                    return ReadPolygon(stream);
-                default:
-                    throw new InvalidOperationException("Неизвестный тип фигуры");
+                case 1: return ReadCircle(stream);
+                case 2: return ReadSquare(stream);
+                case 3: return ReadTriangle(stream);
+                case 4: return ReadRectangle(stream);
+                case 5: return ReadPolygon(stream);
+                default: throw new InvalidOperationException("Неизвестный тип фигуры");
             }
         }
 
-        // Метод для чтения данных круга
+        /// <summary>
+        /// Чтение данных круга из бинарного потока.
+        /// </summary>
+        /// <param name="stream">Поток данных.</param>
+        /// <returns>Экземпляр <see cref="Circle"/> с восстановленными данными.</returns>
         private Circle ReadCircle(FileStream stream)
         {
             var radiusBytes = new byte[sizeof(double)];
             stream.Read(radiusBytes, 0, radiusBytes.Length);
             double radius = BitConverter.ToDouble(radiusBytes, 0);
-
             return new Circle(radius);
         }
 
-        // Метод для чтения данных квадрата
+        /// <summary>
+        /// Чтение данных квадрата из бинарного потока.
+        /// </summary>
+        /// <param name="stream">Поток данных.</param>
+        /// <returns>Экземпляр <see cref="Square"/> с восстановленными данными.</returns>
         private Square ReadSquare(FileStream stream)
         {
             var sideBytes = new byte[sizeof(double)];
             stream.Read(sideBytes, 0, sideBytes.Length);
             double side = BitConverter.ToDouble(sideBytes, 0);
-
             return new Square(side);
         }
 
-        // Метод для чтения данных треугольника
+        /// <summary>
+        /// Чтение данных треугольника из бинарного потока.
+        /// </summary>
+        /// <param name="stream">Поток данных.</param>
+        /// <returns>Экземпляр <see cref="Triangle"/> с восстановленными данными.</returns>
         private Triangle ReadTriangle(FileStream stream)
         {
             var sideBytes = new byte[sizeof(double) * 3];
@@ -119,22 +125,28 @@ namespace ConsoleApp1.Commands.CommandSaveType
             double sideA = BitConverter.ToDouble(sideBytes, 0);
             double sideB = BitConverter.ToDouble(sideBytes, sizeof(double));
             double sideC = BitConverter.ToDouble(sideBytes, sizeof(double) * 2);
-
             return new Triangle(sideA, sideB, sideC);
         }
 
-        // Метод для чтения данных прямоугольника
+        /// <summary>
+        /// Чтение данных прямоугольника из бинарного потока.
+        /// </summary>
+        /// <param name="stream">Поток данных.</param>
+        /// <returns>Экземпляр <see cref="Rectangle"/> с восстановленными данными.</returns>
         private Rectangle ReadRectangle(FileStream stream)
         {
             var dataBytes = new byte[sizeof(double) * 2];
             stream.Read(dataBytes, 0, dataBytes.Length);
             double width = BitConverter.ToDouble(dataBytes, 0);
             double height = BitConverter.ToDouble(dataBytes, sizeof(double));
-
             return new Rectangle(width, height);
         }
 
-        // Метод для чтения данных многоугольника
+        /// <summary>
+        /// Чтение данных многоугольника из бинарного потока.
+        /// </summary>
+        /// <param name="stream">Поток данных.</param>
+        /// <returns>Экземпляр <see cref="Polygon"/> с восстановленными данными.</returns>
         private Polygon ReadPolygon(FileStream stream)
         {
             var pointsCountBytes = new byte[sizeof(int)];
@@ -148,7 +160,6 @@ namespace ConsoleApp1.Commands.CommandSaveType
                 stream.Read(pointData, 0, pointData.Length);
                 double x = BitConverter.ToDouble(pointData, 0);
                 double y = BitConverter.ToDouble(pointData, sizeof(double));
-
                 points.Add(new Point(x, y));
             }
 
@@ -156,18 +167,13 @@ namespace ConsoleApp1.Commands.CommandSaveType
         }
 
         /// <summary>
-        /// Получает описание команды и её использования.
+        /// Возвращает описание команды и примеры использования.
         /// </summary>
-        /// <returns
         /// <returns>Описание команды.</returns>
         public string Help()
         {
             return "Команда 'загрузить_данные' загружает данные о фигурах из бинарного файла.\n" +
-                   "Параметры команды: имя файла для загрузки. Если имя файла не указано, используется значение по умолчанию 'ShapeData.bin'.\n" +
-                   "Пример использования:\n" +
-                   "загрузить_данные имя_файла.bin\n" +
-                   "или\n" +
-                   "загрузить_данные\n";
+                   "Пример: загрузить_данные имя_файла.bin или загрузить_данные (по умолчанию используется 'ShapeData.bin').";
         }
     }
 }
