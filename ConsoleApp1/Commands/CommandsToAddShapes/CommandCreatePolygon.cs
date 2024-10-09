@@ -15,7 +15,7 @@ namespace ConsoleApp1.CommandsToAddShapes
     internal class CommandCreatePolygon : ICommand
     {
         private readonly ShapeCollection _shapeCollection;
-
+        private List<byte> data = new List<byte>();
         /// <summary>
         /// Инициализирует новый экземпляр <see cref="CommandCreatePolygon"/> с указанной коллекцией фигур.
         /// </summary>
@@ -155,6 +155,7 @@ namespace ConsoleApp1.CommandsToAddShapes
 
             return points;
         }
+
 
         /// <summary>
         /// Получает описание команды и её использования.

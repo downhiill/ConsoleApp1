@@ -14,7 +14,7 @@ namespace ConsoleApp1.CommandsToAddShapes
     internal class CommandCreateTriangle : ICommand
     {
         private readonly ShapeCollection _shapeCollection;
-
+        private List<byte> data = new List<byte>();
         /// <summary>
         /// Инициализирует новый экземпляр <see cref="CommandCreateTriangle"/> с указанной коллекцией фигур.
         /// </summary>
@@ -113,6 +113,7 @@ namespace ConsoleApp1.CommandsToAddShapes
 
             throw new FormatException("Неверный формат данных для Triangle.");
         }
+
 
         /// <summary>
         /// Получает описание команды и её использования.

@@ -13,6 +13,7 @@ namespace ConsoleApp1.CommandsToAddShapes
     /// </summary>
     public class CommandCreateCircle : ICommand
     {
+        private List<byte> data = new List<byte>();
         private readonly ShapeCollection _shapeCollection;
 
         /// <summary>
@@ -106,7 +107,7 @@ namespace ConsoleApp1.CommandsToAddShapes
             var parts = part.Split(':');
             return parts.Length > 1 ? parts[1].Trim() : string.Empty;
         }
-
+        
         /// <summary>
         /// Получает описание команды и её использования.
         /// </summary>

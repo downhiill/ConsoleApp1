@@ -1,26 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 
 namespace ConsoleApp1
 {
     [Serializable]
     /// <summary>
-    /// Представляет круг с его радиусом 
+    /// Представляет круг с его радиусом.
     /// </summary>
     public class Circle : Shape
     {
         /// <summary>
-        /// Радиус круга
+        /// Радиус круга.
         /// </summary>
         public double Radius { get; set; }
-        /// <summary>
-        /// Инициализация нового экземпляра круга с указанным радиусом 
-        /// </summary>
-        /// <param name="radius">Радиус круга</param>
-
 
         /// <summary>
         /// Инициализирует новый экземпляр класса <see cref="Circle"/>.
@@ -35,16 +28,17 @@ namespace ConsoleApp1
         {
             Radius = radius;
         }
+
         /// <summary>
         /// Переопределяет метод для вычисления площади круга.
         /// </summary>
-        /// <returns>Площадь круга</returns>
+        /// <returns>Площадь круга.</returns>
         public override double S() => Math.PI * Radius * Radius;
 
         /// <summary>
         /// Переопределяет метод для вычисления периметра круга.
         /// </summary>
-        /// <returns>Периметр круга</returns>
+        /// <returns>Периметр круга.</returns>
         public override double P() => 2 * Math.PI * Radius;
 
         /// <summary>
@@ -52,13 +46,36 @@ namespace ConsoleApp1
         /// </summary>
         /// <returns>Строка, представляющая круг с радиусом, периметром и площадью.</returns>
         public override string GetFormattedData() =>
-        $"Фигура: Circle, Радиус: {Radius}, Периметр: {P()}, Площадь: {S()}";
+            $"Фигура: Circle, Радиус: {Radius}, Периметр: {P()}, Площадь: {S()}";
 
         /// <summary>
         /// Возвращает команду для создания круга.
         /// </summary>
         /// <returns>Строка команды для создания круга.</returns>
         public override string GetCommand() =>
-        $"добавить_круг [{Radius}]";
+            $"добавить_круг [{Radius}]";
+
+        /// <summary>
+        /// Сериализует данные круга в массив байтов для сохранения в бинарный файл.
+        /// </summary>
+        /// <returns>Массив байтов, представляющий круг в бинарном формате.</returns>
+        public override byte[] SaveToBinary()
+        {
+            var data = new List<byte>();
+            data.Add(1); // Уникальный идентификатор для круга
+            data.AddRange(BitConverter.GetBytes(Radius));
+            return data.ToArray();
+        }
+
+        /// <summary>
+        /// Загружает данные круга из бинарного потока.
+        /// </summary>
+        /// <param name="stream">Поток, из которого будут загружены данные.</param>
+        public override void LoadFromBinary(FileStream stream)
+        {
+            var radiusBytes = new byte[sizeof(double)];
+            stream.Read(radiusBytes, 0, radiusBytes.Length);
+            Radius = BitConverter.ToDouble(radiusBytes, 0);
+        }
     }
 }

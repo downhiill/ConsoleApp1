@@ -9,7 +9,7 @@ namespace ConsoleApp1.Commands.CommandSaveType
     /// </summary>
     internal class CommandBinLoadData : ICommand
     {
-        private readonly ShapeCollection _shapeCollection;
+        private readonly ShapeCollection _shapeCollection; // Коллекция фигур для загрузки данных
         private const string DefaultFileName = "ShapeData.bin"; // Имя файла по умолчанию
 
         /// <summary>
@@ -47,10 +47,12 @@ namespace ConsoleApp1.Commands.CommandSaveType
             {
                 using (var fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
                 {
+                    // Читаем фигуры из бинарного файла
                     while (fileStream.Position < fileStream.Length)
                     {
-                        var shapeData = ReadShapeData(fileStream);
-                        _shapeCollection.Add(shapeData);
+                        var shape = ReadShape(fileStream);
+                        Console.WriteLine($"Загружена фигура: {shape.GetType().Name}"); // Вывод информации о загруженной фигуре
+                        _shapeCollection.Add(shape);
                     }
                 }
 
@@ -71,99 +73,39 @@ namespace ConsoleApp1.Commands.CommandSaveType
         /// <param name="stream">Поток с бинарными данными.</param>
         /// <returns>Восстановленная фигура.</returns>
         /// <exception cref="InvalidOperationException">Выбрасывается при неизвестном типе фигуры.</exception>
-        private Shape ReadShapeData(FileStream stream)
+        private Shape ReadShape(FileStream stream)
         {
-            // Чтение уникального идентификатора фигуры
             int shapeId = stream.ReadByte();
 
-            switch (shapeId)
+            Shape shape = CreateShapeById(shapeId);
+            shape.LoadFromBinary(stream);
+            return shape;
+        }
+
+        // Список фабрик для создания фигур
+        private static readonly List<Func<Shape>> ShapeFactories = new List<Func<Shape>>
+        {
+            () => new Circle(),    // 1
+            () => new Square(),    // 2
+            () => new Triangle(),   // 3
+            () => new Rectangle(),  // 4
+            () => new Polygon()     // 5
+        };
+
+        /// <summary>
+        /// Создает фигуру по ее идентификатору.
+        /// </summary>
+        /// <param name="shapeId">Идентификатор фигуры.</param>
+        /// <returns>Созданная фигура.</returns>
+        /// <exception cref="InvalidOperationException">Выбрасывается при неизвестном типе фигуры.</exception>
+        private Shape CreateShapeById(int shapeId)
+        {
+            if (shapeId >= 1 && shapeId <= ShapeFactories.Count)
             {
-                case 1: return ReadCircle(stream);
-                case 2: return ReadSquare(stream);
-                case 3: return ReadTriangle(stream);
-                case 4: return ReadRectangle(stream);
-                case 5: return ReadPolygon(stream);
-                default: throw new InvalidOperationException("Неизвестный тип фигуры");
-            }
-        }
-
-        /// <summary>
-        /// Чтение данных круга из бинарного потока.
-        /// </summary>
-        /// <param name="stream">Поток данных.</param>
-        /// <returns>Экземпляр <see cref="Circle"/> с восстановленными данными.</returns>
-        private Circle ReadCircle(FileStream stream)
-        {
-            var radiusBytes = new byte[sizeof(double)];
-            stream.Read(radiusBytes, 0, radiusBytes.Length);
-            double radius = BitConverter.ToDouble(radiusBytes, 0);
-            return new Circle(radius);
-        }
-
-        /// <summary>
-        /// Чтение данных квадрата из бинарного потока.
-        /// </summary>
-        /// <param name="stream">Поток данных.</param>
-        /// <returns>Экземпляр <see cref="Square"/> с восстановленными данными.</returns>
-        private Square ReadSquare(FileStream stream)
-        {
-            var sideBytes = new byte[sizeof(double)];
-            stream.Read(sideBytes, 0, sideBytes.Length);
-            double side = BitConverter.ToDouble(sideBytes, 0);
-            return new Square(side);
-        }
-
-        /// <summary>
-        /// Чтение данных треугольника из бинарного потока.
-        /// </summary>
-        /// <param name="stream">Поток данных.</param>
-        /// <returns>Экземпляр <see cref="Triangle"/> с восстановленными данными.</returns>
-        private Triangle ReadTriangle(FileStream stream)
-        {
-            var sideBytes = new byte[sizeof(double) * 3];
-            stream.Read(sideBytes, 0, sideBytes.Length);
-            double sideA = BitConverter.ToDouble(sideBytes, 0);
-            double sideB = BitConverter.ToDouble(sideBytes, sizeof(double));
-            double sideC = BitConverter.ToDouble(sideBytes, sizeof(double) * 2);
-            return new Triangle(sideA, sideB, sideC);
-        }
-
-        /// <summary>
-        /// Чтение данных прямоугольника из бинарного потока.
-        /// </summary>
-        /// <param name="stream">Поток данных.</param>
-        /// <returns>Экземпляр <see cref="Rectangle"/> с восстановленными данными.</returns>
-        private Rectangle ReadRectangle(FileStream stream)
-        {
-            var dataBytes = new byte[sizeof(double) * 2];
-            stream.Read(dataBytes, 0, dataBytes.Length);
-            double width = BitConverter.ToDouble(dataBytes, 0);
-            double height = BitConverter.ToDouble(dataBytes, sizeof(double));
-            return new Rectangle(width, height);
-        }
-
-        /// <summary>
-        /// Чтение данных многоугольника из бинарного потока.
-        /// </summary>
-        /// <param name="stream">Поток данных.</param>
-        /// <returns>Экземпляр <see cref="Polygon"/> с восстановленными данными.</returns>
-        private Polygon ReadPolygon(FileStream stream)
-        {
-            var pointsCountBytes = new byte[sizeof(int)];
-            stream.Read(pointsCountBytes, 0, pointsCountBytes.Length);
-            int pointsCount = BitConverter.ToInt32(pointsCountBytes, 0);
-
-            var points = new List<Point>();
-            for (int i = 0; i < pointsCount; i++)
-            {
-                var pointData = new byte[sizeof(double) * 2];
-                stream.Read(pointData, 0, pointData.Length);
-                double x = BitConverter.ToDouble(pointData, 0);
-                double y = BitConverter.ToDouble(pointData, sizeof(double));
-                points.Add(new Point(x, y));
+                return ShapeFactories[shapeId - 1](); // -1 для корректного индекса
             }
 
-            return new Polygon(points);
+            throw new InvalidOperationException("Неизвестный тип фигуры");
         }
 
         /// <summary>

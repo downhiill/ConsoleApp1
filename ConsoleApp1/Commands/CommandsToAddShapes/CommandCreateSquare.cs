@@ -14,7 +14,7 @@ namespace ConsoleApp1.CommandsToAddShapes
     internal class CommandCreateSquare : ICommand
     {
         private readonly ShapeCollection _shapeCollection;
-
+        private List<byte> data = new List<byte>();
         /// <summary>
         /// Инициализирует новый экземпляр <see cref="CommandCreateSquare"/> с указанной коллекцией фигур.
         /// </summary>
@@ -108,6 +108,7 @@ namespace ConsoleApp1.CommandsToAddShapes
             var parts = part.Split(':');
             return parts.Length > 1 ? parts[1].Trim() : string.Empty;
         }
+
 
         /// <summary>
         /// Получает описание команды и её использования.

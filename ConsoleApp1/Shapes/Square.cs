@@ -1,31 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 
 namespace ConsoleApp1
 {
     [Serializable]
     /// <summary>
-    /// Представляет квадрат с заданной шириной и высотой.
+    /// Представляет квадрат с заданной длиной стороны.
     /// </summary>
     internal class Square : Shape
     {
         /// <summary>
-        /// Ширина и высота квадрата.
+        /// Длина стороны квадрата.
         /// </summary>
         public double A { get; set; }
 
         /// <summary>
-        /// Инициализация нового экземпляра квадрата с указаной шириной и высотой.
+        /// Инициализирует новый экземпляр квадрата с заданной длиной стороны.
         /// </summary>
-        /// <param name="a">Ширина и высота квадрата</param>
-        public Square() { }
+        /// <param name="a">Длина стороны квадрата.</param>
         public Square(double a)
         {
             A = a;
         }
+
+        /// <summary>
+        /// Инициализирует новый экземпляр класса <see cref="Square"/>.
+        /// </summary>
+        public Square() { }
 
         /// <summary>
         /// Переопределяет метод для вычисления площади квадрата.
@@ -53,7 +55,7 @@ namespace ConsoleApp1
         /// Строка содержит информацию о стороне, периметре и площади квадрата.
         /// </remarks>
         public override string GetFormattedData() =>
-        $"Фигура: Square, Сторона: {A}, Периметр: {P()}, Площадь: {S()}";
+            $"Фигура: Square, Сторона: {A}, Периметр: {P()}, Площадь: {S()}";
 
         /// <summary>
         /// Возвращает команду для создания квадрата.
@@ -61,5 +63,28 @@ namespace ConsoleApp1
         /// <returns>Строка команды для создания квадрата.</returns>
         public override string GetCommand() =>
             $"добавить_квадрат [{A}]";
+
+        /// <summary>
+        /// Сериализует данные квадрата в массив байтов для сохранения в бинарный файл.
+        /// </summary>
+        /// <returns>Массив байтов, представляющий квадрат в бинарном формате.</returns>
+        public override byte[] SaveToBinary()
+        {
+            var data = new List<byte>();
+            data.Add(2); // Уникальный идентификатор для квадрата
+            data.AddRange(BitConverter.GetBytes(A));
+            return data.ToArray();
+        }
+
+        /// <summary>
+        /// Загружает данные квадрата из бинарного потока.
+        /// </summary>
+        /// <param name="stream">Поток, из которого будут загружены данные.</param>
+        public override void LoadFromBinary(FileStream stream)
+        {
+            var sideBytes = new byte[sizeof(double)];
+            stream.Read(sideBytes, 0, sideBytes.Length);
+            A = BitConverter.ToDouble(sideBytes, 0);
+        }
     }
 }

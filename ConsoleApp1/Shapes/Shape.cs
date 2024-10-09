@@ -1,11 +1,12 @@
 ﻿using System;
+using System.IO;
 
 namespace ConsoleApp1
 {
-    [Serializable]
     /// <summary>
     /// Абстрактный базовый класс для геометрических фигур.
     /// </summary>
+    [Serializable]
     public abstract class Shape
     {
         /// <summary>
@@ -43,5 +44,21 @@ namespace ConsoleApp1
         /// </summary>
         /// <returns>Строка, представляющая команду для создания фигуры.</returns>
         public abstract string GetCommand();
+
+        /// <summary>
+        /// Сериализует данные фигуры в массив байтов для сохранения в бинарный файл.
+        /// </summary>
+        /// <returns>Массив байтов, представляющий фигуру в бинарном формате.</returns>
+        public abstract byte[] SaveToBinary();
+
+        /// <summary>
+        /// Загружает данные фигуры из бинарного потока.
+        /// </summary>
+        /// <param name="stream">Поток, из которого будут загружены данные.</param>
+        /// <remarks>
+        /// Каждый наследующий класс должен переопределить этот метод, 
+        /// чтобы корректно загрузить данные для конкретного типа фигуры.
+        /// </remarks>
+        public abstract void LoadFromBinary(FileStream stream);
     }
 }
