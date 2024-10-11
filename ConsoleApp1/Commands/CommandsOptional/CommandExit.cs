@@ -11,6 +11,8 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
     /// </summary>
     internal class CommandExit : ICommand
     {
+        private readonly ShapeCollection _shapeCollection;
+
 
         /// <summary>
         /// Получает имя команды.

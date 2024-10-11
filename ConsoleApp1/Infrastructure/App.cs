@@ -6,6 +6,7 @@ using ConsoleApp1.GeometricShapeCalculator.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace ConsoleApp1
 {
@@ -29,23 +30,33 @@ namespace ConsoleApp1
         /// </summary>
         public App()
         {
-            // Инициализация всех команд, доступных в приложении
-            commands = new List<ICommand>
-            {
-                new CommandCreateCircle(ShapeCollection),
-                new CommandCreateRectangle(ShapeCollection),
-                new CommandCreateTriangle(ShapeCollection),
-                new CommandCreateSquare(ShapeCollection),
-                new CommandCreatePolygon(ShapeCollection),
-                new CommandDisplayTotalArea(ShapeCollection),
-                new CommandDisplayTotalPerimetrs(ShapeCollection),
-                new CommandBinSaveData(ShapeCollection), // Команда для сохранения данных в бинарный файл
-                new CommandBinLoadData(ShapeCollection), // Команда для загрузки данных из бинарного файла
-                new CommandExit() // Команда для выхода из приложения
-            };
+            commands = new List<ICommand>(); // Используем поле класса, а не создаем новую локальную переменную
+            var types = Assembly.GetExecutingAssembly().GetTypes();
 
-            // Добавляем команду для отображения списка команд (помощь)
+            foreach (var type in types.Where(t => typeof(ICommand).IsAssignableFrom(t) && !t.IsAbstract))
+            {
+                ICommand instance = null;
+
+                // Если у класса есть конструктор с ShapeCollection
+                if (type.GetConstructor(new[] { typeof(ShapeCollection) }) != null)
+                {
+                    instance = Activator.CreateInstance(type, ShapeCollection) as ICommand;
+                }
+                // Если у класса есть конструктор без параметров
+                else if(type.GetConstructor(Type.EmptyTypes) != null)
+                {
+                    instance = Activator.CreateInstance(type) as ICommand;
+                }
+
+                if (instance != null)
+                {
+                    commands.Add(instance);
+                }
+            }
+            // Добавляем команду помощи с текущим списком команд
             commands.Add(new CommandHelp(commands));
+
+
         }
 
         /// <summary>
