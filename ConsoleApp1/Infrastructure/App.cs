@@ -3,6 +3,7 @@ using ConsoleApp1.Commands.CommandSaveType;
 using ConsoleApp1.CommandsToAddShapes;
 using ConsoleApp1.Extensions;
 using ConsoleApp1.GeometricShapeCalculator.Infrastructure;
+using ConsoleApp1.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,12 +25,17 @@ namespace ConsoleApp1
         /// Список команд, доступных для выполнения в приложении.
         /// </summary>
         public readonly List<ICommand> commands;
-
+        private DependencyContainer container;
         /// <summary>
         /// Инициализирует новый экземпляр класса <see cref="App"/> и настраивает доступные команды.
         /// </summary>
         public App()
         {
+            container = new DependencyContainer();
+
+            // Регистрируем зависимости
+            container.Register<IShapeCollection, ShapeCollection>();
+
             commands = new List<ICommand>(); // Используем поле класса, а не создаем новую локальную переменную
             var types = Assembly.GetExecutingAssembly().GetTypes();
 

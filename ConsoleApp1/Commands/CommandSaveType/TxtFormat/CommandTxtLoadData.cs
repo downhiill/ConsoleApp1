@@ -4,13 +4,14 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ConsoleApp1.Infrastructure;
 
 namespace ConsoleApp1.Commands.CommandSaveType.txt
 {
     internal class CommandTxtLoadData : ICommand
     {
 
-        private readonly ShapeCollection _shapeCollection;
+        private readonly IShapeCollection _shapeCollection;
         private readonly App _app;
         private const string DefaultFileName = "ShapeData.txt"; // Имя файла по умолчанию
 
@@ -24,7 +25,7 @@ namespace ConsoleApp1.Commands.CommandSaveType.txt
         /// Инициализирует новый экземпляр класса <see cref="CommandTxtLoadData"/>.
         /// </summary>
         /// <param name="shapeCollection">Коллекция фигур, в которую будут добавлены загруженные данные.</param>
-        public CommandTxtLoadData(ShapeCollection shapeCollection, App app)
+        public CommandTxtLoadData(IShapeCollection shapeCollection, App app)
         {
             _shapeCollection = shapeCollection;
             _app = app ?? throw new ArgumentNullException(nameof(app), "Экземпляр App не может быть null");

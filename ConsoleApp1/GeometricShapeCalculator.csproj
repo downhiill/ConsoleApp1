@@ -112,8 +112,10 @@
     <Compile Include="Commands\CommandCalculation\CommandDisplayTotalArea.cs" />
     <Compile Include="Commands\CommandCalculation\CommandDisplayTotalPerimetrs.cs" />
     <Compile Include="Commands\CommandsOptional\CommandExit.cs" />
+    <Compile Include="Infrastructure\DependencyContainer.cs" />
     <Compile Include="Infrastructure\ICommand.cs" />
     <Compile Include="Infrastructure\IFileHandler.cs" />
+    <Compile Include="Infrastructure\IShapeCollection.cs" />
     <Compile Include="Infrastructure\ShapeCollection.cs" />
     <Compile Include="Shapes\Geometry.cs" />
     <Compile Include="Shapes\Point.cs" />

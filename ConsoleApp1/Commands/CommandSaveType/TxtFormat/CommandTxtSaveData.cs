@@ -4,12 +4,13 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ConsoleApp1.Infrastructure;
 
 namespace ConsoleApp1.Commands.CommandSaveType.txt
 {
     internal class CommandTxtSaveData : ICommand
     {
-        private readonly ShapeCollection _shapeCollection;
+        private readonly IShapeCollection _shapeCollection;
         private const string DefaultFileName = "ShapeData.txt"; // Имя файла по умолчанию
 
         /// <summary>
@@ -22,7 +23,7 @@ namespace ConsoleApp1.Commands.CommandSaveType.txt
         /// Инициализирует новый экземпляр класса <see cref="CommandSaveData"/>.
         /// </summary>
         /// <param name="shapeCollection">Коллекция фигур, данные из которой будут сохранены в файл.</param>
-        public CommandTxtSaveData(ShapeCollection shapeCollection)
+        public CommandTxtSaveData(IShapeCollection shapeCollection)
         {
             _shapeCollection = shapeCollection;
         }

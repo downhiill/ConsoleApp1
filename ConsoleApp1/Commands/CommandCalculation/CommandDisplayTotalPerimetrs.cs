@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ConsoleApp1.Infrastructure;
 
 namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
 {
@@ -11,9 +12,9 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
     /// </summary>
     internal class CommandDisplayTotalPerimetrs : ICommand
     {
-        private readonly ShapeCollection _shapeCollection;
+        private readonly IShapeCollection _shapeCollection;
 
-        public CommandDisplayTotalPerimetrs(ShapeCollection shapeCollection)
+        public CommandDisplayTotalPerimetrs(IShapeCollection shapeCollection)
         {
             _shapeCollection = shapeCollection;
         }

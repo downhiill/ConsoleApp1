@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using ConsoleApp1.Infrastructure;
 
 namespace ConsoleApp1.Commands.CommandSaveType
 {
@@ -9,7 +10,7 @@ namespace ConsoleApp1.Commands.CommandSaveType
     /// </summary>
     internal class CommandBinLoadData : ICommand
     {
-        private readonly ShapeCollection _shapeCollection; // Коллекция фигур для загрузки данных
+        private readonly IShapeCollection _shapeCollection; // Коллекция фигур для загрузки данных
         private const string DefaultFileName = "ShapeData.bin"; // Имя файла по умолчанию
 
         /// <summary>
@@ -22,7 +23,7 @@ namespace ConsoleApp1.Commands.CommandSaveType
         /// </summary>
         /// <param name="shapeCollection">Коллекция фигур, в которую будут загружены данные из файла.</param>
         /// <exception cref="ArgumentNullException">Выбрасывается, если коллекция фигур равна null.</exception>
-        public CommandBinLoadData(ShapeCollection shapeCollection)
+        public CommandBinLoadData(IShapeCollection shapeCollection)
         {
             _shapeCollection = shapeCollection ?? throw new ArgumentNullException(nameof(shapeCollection), "Коллекция фигур не может быть null");
         }

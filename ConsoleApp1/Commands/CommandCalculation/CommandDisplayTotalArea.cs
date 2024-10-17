@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ConsoleApp1.Infrastructure;
 
 namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
 {
@@ -11,9 +12,9 @@ namespace ConsoleApp1.GeometricShapeCalculator.Infrastructure
     /// </summary>
     internal class CommandDisplayTotalArea : ICommand
     {
-        private readonly ShapeCollection _shapeCollection;
+        private readonly IShapeCollection _shapeCollection;
 
-        public CommandDisplayTotalArea(ShapeCollection shapeCollection)
+        public CommandDisplayTotalArea(IShapeCollection shapeCollection)
         {
             _shapeCollection = shapeCollection;
         }

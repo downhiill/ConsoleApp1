@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ConsoleApp1.Infrastructure;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,7 +8,7 @@ namespace ConsoleApp1
     /// <summary>
     /// Коллекция геометрических фигур, предоставляющая методы для работы с ними.
     /// </summary>
-    public class ShapeCollection : List<Shape>
+    public class ShapeCollection : List<Shape>,IShapeCollection
     {
         /// <summary>
         /// Вычисляет общую площадь всех фигур указанного типа в коллекции.

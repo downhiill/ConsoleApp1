@@ -1,6 +1,7 @@
 ﻿using ConsoleApp1.Commands.CommandSaveType;
 using ConsoleApp1.Commands.CommandSaveType.txt;
 using System;
+using ConsoleApp1.Infrastructure;
 
 namespace ConsoleApp1.Commands
 {
@@ -9,7 +10,7 @@ namespace ConsoleApp1.Commands
     /// </summary>
     internal class CommandLoadData : ICommand
     {
-        private readonly ShapeCollection _shapeCollection;
+        private readonly IShapeCollection _shapeCollection;
         private readonly App _app;
         private const string DefaultTxtFileName = "ShapeData.txt"; // Имя файла по умолчанию для текстового формата
         private const string DefaultBinFileName = "ShapeData.bin"; // Имя файла по умолчанию для бинарного формата
@@ -25,7 +26,7 @@ namespace ConsoleApp1.Commands
         /// <param name="shapeCollection">Коллекция фигур, в которую будут загружены данные из файла.</param>
         /// <param name="app">Экземпляр <see cref="App"/>, через который будут выполняться команды.</param>
         /// <exception cref="ArgumentNullException">Выбрасывается, если переданные коллекция или экземпляр App равны null.</exception>
-        public CommandLoadData(ShapeCollection shapeCollection, App app)
+        public CommandLoadData(IShapeCollection shapeCollection, App app)
         {
             _shapeCollection = shapeCollection ?? throw new ArgumentNullException(nameof(shapeCollection), "Коллекция фигур не может быть null");
             _app = app ?? throw new ArgumentNullException(nameof(app), "Экземпляр App не может быть null");

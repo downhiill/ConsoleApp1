@@ -1,5 +1,6 @@
 ﻿using ConsoleApp1.Commands.CommandSaveType.txt;
 using System;
+using ConsoleApp1.Infrastructure;
 
 namespace ConsoleApp1.Commands
 {
@@ -8,7 +9,7 @@ namespace ConsoleApp1.Commands
     /// </summary>
     internal class CommandSaveData : ICommand
     {
-        private readonly ShapeCollection _shapeCollection;
+        private readonly IShapeCollection _shapeCollection;
         private const string DefaultTxtFileName = "ShapeData.txt"; // Имя файла по умолчанию для текстового формата
         private const string DefaultBinFileName = "ShapeData.bin"; // Имя файла по умолчанию для бинарного формата
 
@@ -21,7 +22,7 @@ namespace ConsoleApp1.Commands
         /// Инициализирует новый экземпляр класса <see cref="CommandSaveData"/>.
         /// </summary>
         /// <param name="shapeCollection">Коллекция фигур, которую нужно сохранить.</param>
-        public CommandSaveData(ShapeCollection shapeCollection)
+        public CommandSaveData(IShapeCollection shapeCollection)
         {
             _shapeCollection = shapeCollection ?? throw new ArgumentNullException(nameof(shapeCollection), "Коллекция фигур не может быть null");
         }

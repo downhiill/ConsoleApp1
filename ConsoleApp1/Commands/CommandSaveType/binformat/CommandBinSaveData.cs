@@ -3,13 +3,14 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using ConsoleApp1.Infrastructure;
 
 /// <summary>
 /// Команда для сохранения данных о фигурах в бинарный файл.
 /// </summary>
 internal class CommandBinSaveData : ICommand
 {
-    private readonly ShapeCollection _shapeCollection; // Коллекция фигур для сохранения
+    private readonly IShapeCollection _shapeCollection; // Коллекция фигур для сохранения
     private const string DefaultFileName = "ShapeData.bin"; // Имя файла по умолчанию
 
     /// <summary>
@@ -22,7 +23,7 @@ internal class CommandBinSaveData : ICommand
     /// </summary>
     /// <param name="shapeCollection">Коллекция фигур для сохранения.</param>
     /// <exception cref="ArgumentNullException">Выбрасывается, если передана пустая коллекция.</exception>
-    public CommandBinSaveData(ShapeCollection shapeCollection)
+    public CommandBinSaveData(IShapeCollection shapeCollection)
     {
         _shapeCollection = shapeCollection ?? throw new ArgumentNullException(nameof(shapeCollection), "Коллекция фигур не может быть null.");
     }

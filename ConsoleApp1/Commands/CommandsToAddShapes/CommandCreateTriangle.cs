@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using ConsoleApp1.Infrastructure;
 
 namespace ConsoleApp1.CommandsToAddShapes
 {
@@ -13,13 +14,13 @@ namespace ConsoleApp1.CommandsToAddShapes
     /// </summary>
     internal class CommandCreateTriangle : ICommand
     {
-        private readonly ShapeCollection _shapeCollection;
+        private readonly IShapeCollection _shapeCollection;
         private List<byte> data = new List<byte>();
         /// <summary>
         /// Инициализирует новый экземпляр <see cref="CommandCreateTriangle"/> с указанной коллекцией фигур.
         /// </summary>
         /// <param name="shapeCollection">Коллекция фигур, в которую будет добавлен новый многоугольник.</param>
-        public CommandCreateTriangle(ShapeCollection shapeCollection)
+        public CommandCreateTriangle(IShapeCollection shapeCollection)
         {
             _shapeCollection = shapeCollection;
         }
