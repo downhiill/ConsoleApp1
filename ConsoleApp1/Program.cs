@@ -17,8 +17,8 @@ namespace ConsoleApp1
         /// <param name="args">Массив строковых аргументов командной строки.</param>
         static void Main(string[] args)
         {
-            var controller = new App();
-            controller.Run();
+            var app = new App();
+            app.Run();
         }
     }
 }

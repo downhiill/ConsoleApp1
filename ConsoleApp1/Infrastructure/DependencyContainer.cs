@@ -33,5 +33,16 @@ namespace ConsoleApp1.Infrastructure
             // Получение экземпляра из словаря и приведение его к TInterface
             return (TInterface)_dependencies[typeof(TInterface)];
         }
+
+        // Перегрузка метода Resolve для поддержки передачи аргумента типа Type
+        public object Resolve(Type type)
+        {
+            if (!_dependencies.TryGetValue(type, out var instance))
+            {
+                throw new KeyNotFoundException($"Зависимость для типа {type} не зарегистрирована.");
+            }
+
+            return instance;
+        }
     }
 }
